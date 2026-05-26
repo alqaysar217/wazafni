@@ -3,12 +3,24 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
 
 export function Navbar() {
+  const pathname = usePathname();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
+
+  const navLinks = [
+    { href: '/', label: 'الرئيسية' },
+    { href: '/jobs', label: 'الوظائف' },
+    { href: '/companies', label: 'الشركات' },
+    { href: '/services', label: 'خدماتنا' },
+    { href: '/about', label: 'عن المنصة' },
+    { href: '/contact', label: 'التواصل' },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b shadow-sm">
@@ -31,13 +43,24 @@ export function Navbar() {
             <span className="text-2xl font-black font-headline text-primary">وظفني</span>
           </Link>
           
-          <div className="hidden lg:flex items-center gap-8 text-[15px] font-semibold text-muted-foreground">
-            <Link href="/" className="hover:text-primary transition-colors">الرئيسية</Link>
-            <Link href="/jobs" className="hover:text-primary transition-colors">الوظائف</Link>
-            <Link href="/companies" className="hover:text-primary transition-colors">الشركات</Link>
-            <Link href="/services" className="hover:text-primary transition-colors">خدماتنا</Link>
-            <Link href="/about" className="hover:text-primary transition-colors">عن المنصة</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">التواصل</Link>
+          <div className="hidden lg:flex items-center gap-8 text-[15px] font-semibold">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative py-1 transition-all duration-300 hover:text-primary",
+                    isActive 
+                      ? "text-primary font-black after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[3px] after:bg-secondary after:rounded-full" 
+                      : "text-muted-foreground hover:translate-y-[-1px]"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
