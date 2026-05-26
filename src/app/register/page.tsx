@@ -2,26 +2,32 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Briefcase, Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function RegisterPage() {
+  const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
+
   return (
     <div className="min-h-screen flex items-stretch">
-      {/* Right side: Visual Content (Moved to right for better RTL flow) */}
+      {/* Right side: Visual Content */}
       <div className="hidden lg:flex w-1/2 bg-primary relative items-center justify-center p-20 overflow-hidden order-2">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary opacity-90"></div>
         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
         
         <div className="relative z-10 text-white space-y-12 max-w-lg">
-          <Link href="/" className="inline-flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-primary shadow-xl">
-              <Briefcase className="w-6 h-6" />
+          <Link href="/" className="inline-flex items-center gap-3 mb-12 group">
+            <div className="relative w-12 h-12 bg-white rounded-xl overflow-hidden shadow-xl p-1 transition-transform group-hover:scale-110">
+              {logo?.imageUrl && (
+                <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
+              )}
             </div>
-            <span className="text-2xl font-black font-headline">وظفني</span>
+            <span className="text-3xl font-black font-headline">وظفني</span>
           </Link>
           
           <div className="space-y-6">
@@ -54,9 +60,11 @@ export default function RegisterPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA] order-1">
         <div className="w-full max-w-xl space-y-10 animate-fade-in-up">
           <div className="space-y-4">
-            <Link href="/" className="lg:hidden flex items-center gap-2 mb-8">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
-                <Briefcase className="w-6 h-6" />
+            <Link href="/" className="lg:hidden flex items-center gap-2 mb-8 group">
+              <div className="relative w-10 h-10 bg-white rounded-xl overflow-hidden shadow-md p-1">
+                {logo?.imageUrl && (
+                  <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
+                )}
               </div>
               <span className="text-2xl font-bold font-headline">وظفني</span>
             </Link>
