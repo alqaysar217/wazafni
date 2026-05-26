@@ -144,17 +144,17 @@ export function Navbar() {
                   
                   {dashboardLinks.map((link) => (
                     <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold">
-                      <Link href={link.href} className="flex items-center justify-between w-full gap-3">
-                        <span className="flex-1 text-right">{link.label}</span>
+                      <Link href={link.href} className="flex items-center gap-3 w-full">
                         <span className="text-primary/60">{link.icon}</span>
+                        <span className="flex-1 text-right">{link.label}</span>
                       </Link>
                     </DropdownMenuItem>
                   ))}
                   
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex items-center justify-between gap-3">
-                    <span className="flex-1 text-right">تسجيل الخروج</span>
+                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex items-center gap-3">
                     <LogOut size={18} />
+                    <span className="flex-1 text-right">تسجيل الخروج</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
