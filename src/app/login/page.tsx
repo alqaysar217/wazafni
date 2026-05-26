@@ -107,7 +107,7 @@ export default function LoginPage() {
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       
       if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
-        message = "البيانات المدخلة غير صحيحة، يرجى التأكد من البريد وكلمة السر.";
+        message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       } else if (error.code === 'auth/user-not-found') {
         message = "هذا الحساب غير موجود في النظام.";
       } else if (error.code === 'auth/network-request-failed') {
@@ -150,7 +150,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-6 text-right">
             <div className="space-y-3">
-              <Label className="font-bold flex justify-end text-primary/70">البريد الإلكتروني</Label>
+              <Label className="font-bold flex justify-start text-primary/70">البريد الإلكتروني</Label>
               <div className="relative">
                 <Input name="email" type="email" required placeholder="example@mail.com" className="h-14 rounded-xl text-right pr-12" dir="ltr" />
                 <Mail className="absolute right-4 top-4 text-muted-foreground/60" size={20} />
@@ -160,7 +160,7 @@ export default function LoginPage() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Link href="#" className="text-xs font-bold text-secondary">نسيت كلمة المرور؟</Link>
-                <Label className="font-bold flex justify-end text-primary/70">كلمة المرور</Label>
+                <Label className="font-bold flex justify-start text-primary/70">كلمة المرور</Label>
               </div>
               <div className="relative">
                 <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl text-right pr-12" dir="ltr" />
