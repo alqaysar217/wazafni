@@ -15,7 +15,8 @@ import {
   Briefcase,
   Clock,
   DollarSign,
-  ChevronRight
+  ChevronRight,
+  ArrowUpRight
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
@@ -28,13 +29,14 @@ export default function Home() {
     {
       id: 1,
       title: "مطور برمجيات أول (React & Node.js)",
-      company: "شركة يمن تيك",
+      company: "شركة يمن تيك للحلول الرقمية",
       location: "صنعاء - ريموت",
       salary: "$1,500 - $2,500",
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 95,
-      logo: "https://picsum.photos/seed/tech1/60/60"
+      skills: ["React", "TypeScript", "Node.js"],
+      logo: "https://picsum.photos/seed/tech1/100/100"
     },
     {
       id: 2,
@@ -45,7 +47,53 @@ export default function Home() {
       type: "دوام كامل",
       posted: "منذ 4 ساعات",
       match: 88,
-      logo: "https://picsum.photos/seed/hsa/60/60"
+      skills: ["SEO", "Content Strategy", "Ads"],
+      logo: "https://picsum.photos/seed/hsa/100/100"
+    },
+    {
+      id: 3,
+      title: "مدير مشاريع إنشائية",
+      company: "شركة تهامة للهندسة والمقاولات",
+      location: "عدن - كريتر",
+      salary: "$2,000 - $3,500",
+      type: "عقد",
+      posted: "منذ أسبوع",
+      match: 72,
+      skills: ["PMP", "Project Mgmt", "Civil Eng"],
+      logo: "https://picsum.photos/seed/eng/100/100"
+    }
+  ];
+
+  const featuredCompanies = [
+    {
+      id: 1,
+      name: "مجموعة هائل سعيد أنعم",
+      category: "مجموعة شركات متنوعة",
+      location: "تعز، اليمن",
+      employees: "20,000+",
+      jobs: 15,
+      rating: 4.9,
+      logo: "https://picsum.photos/seed/hsa/150/150"
+    },
+    {
+      id: 2,
+      name: "بنك الكريمي الإسلامي",
+      category: "خدمات مالية وبنكية",
+      location: "صنعاء، اليمن",
+      employees: "2,500+",
+      jobs: 8,
+      rating: 4.7,
+      logo: "https://picsum.photos/seed/kuraimi/150/150"
+    },
+    {
+      id: 3,
+      name: "يمن تيك للحلول الرقمية",
+      category: "تقنية معلومات",
+      location: "ريموت / صنعاء",
+      employees: "50-100",
+      jobs: 4,
+      rating: 4.8,
+      logo: "https://picsum.photos/seed/ytech/150/150"
     }
   ];
 
@@ -177,37 +225,39 @@ export default function Home() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredJobs.map(job => (
-                <div key={job.id} className="bg-white p-6 rounded-3xl border flex flex-col md:flex-row gap-6 items-start hover:shadow-md transition-shadow">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden border bg-muted shrink-0 shadow-inner">
-                    <Image src={job.logo} alt={job.company} width={80} height={80} className="object-cover w-full h-full" />
-                  </div>
-                  
-                  <div className="flex-1 space-y-4">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div>
-                        <h3 className="text-2xl font-bold font-headline hover:text-primary transition-colors cursor-pointer">{job.title}</h3>
-                        <p className="text-muted-foreground font-medium flex items-center gap-2 mt-1">
-                          <Building2 size={16} /> {job.company}
-                        </p>
+                <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col">
+                  <div className="p-8 space-y-6 flex-1">
+                    <div className="flex justify-between items-start">
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-[#F8F7FA] shrink-0 shadow-inner group-hover:scale-110 transition-transform">
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-cover w-full h-full" />
                       </div>
-                      <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-100">
-                        <Sparkles size={14} className="animate-pulse" />
-                        <span className="text-sm font-bold">توافق {job.match}%</span>
+                      <div className="flex items-center gap-2 text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg text-xs font-black">
+                        <Sparkles size={12} /> توافق {job.match}%
                       </div>
                     </div>
-                    
-                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground font-medium">
-                      <div className="flex items-center gap-1"><MapPin size={16} /> {job.location}</div>
-                      <div className="flex items-center gap-1"><Briefcase size={16} /> {job.type}</div>
-                      <div className="flex items-center gap-1"><Clock size={16} /> {job.posted}</div>
-                      <div className="flex items-center gap-1 font-bold text-foreground"><DollarSign size={16} className="text-green-600" /> {job.salary}</div>
+
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-black text-primary leading-snug group-hover:text-secondary transition-colors line-clamp-2">{job.title}</h3>
+                      <div className="flex flex-col gap-2 pt-2">
+                        <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><Building2 size={16} className="text-primary/40" /> {job.company}</span>
+                        <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><MapPin size={16} className="text-primary/40" /> {job.location}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="shrink-0 self-stretch flex items-center">
-                    <Button className="rounded-xl px-10 bg-primary h-12 text-white">التفاصيل</Button>
+                  <div className="px-8 py-6 bg-[#F8F7FA] border-t border-border/50 space-y-4">
+                    <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
+                      <div className="flex items-center gap-1"><Briefcase size={14} /> {job.type}</div>
+                      <div className="flex items-center gap-1"><Clock size={14} /> {job.posted}</div>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="font-black text-primary text-lg">{job.salary}</div>
+                      <Button asChild className="rounded-xl px-6 bg-primary font-black shadow-lg shadow-primary/10 text-white">
+                        <Link href={`/jobs/${job.id}`}>التفاصيل</Link>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -215,10 +265,63 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 4: Success Partners */}
-        <section className="py-24 bg-white border-b">
+        {/* Section 4: Featured Companies */}
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-right">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-black font-headline text-primary">شركات يمنية رائدة</h2>
+                <p className="text-lg text-muted-foreground font-medium">تعاون مع أفضل المؤسسات التي تبحث عن كفاءات مثلك.</p>
+              </div>
+              <Button asChild variant="outline" className="rounded-xl border-primary text-primary font-bold px-8 h-12">
+                <Link href="/companies">اكتشف كل الشركات <ChevronRight size={18} className="rtl:rotate-180" /></Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {featuredCompanies.map(company => (
+                <div key={company.id} className="bg-white rounded-[40px] p-10 border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all group overflow-hidden relative">
+                  <div className="absolute top-6 left-6 flex items-center gap-1 px-3 py-1 bg-secondary/10 text-secondary rounded-full font-bold text-sm">
+                    <Star size={14} fill="currentColor" /> {company.rating}
+                  </div>
+                  
+                  <div className="flex flex-col items-center text-center space-y-6">
+                    <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#F8F7FA] shadow-inner mb-2">
+                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-cover" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-2xl font-black text-primary group-hover:text-secondary transition-colors">{company.name}</h3>
+                      <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{company.category}</span>
+                    </div>
+
+                    <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-border/50">
+                      <div className="space-y-1">
+                        <p className="text-xs font-bold text-muted-foreground uppercase">الموقع</p>
+                        <p className="font-bold text-primary flex items-center justify-center gap-1 text-xs"><MapPin size={12} /> {company.location.split('،')[0]}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs font-bold text-muted-foreground uppercase">الوظائف</p>
+                        <p className="font-bold text-secondary flex items-center justify-center gap-1 text-xs"><Briefcase size={12} /> {company.jobs} شاغرة</p>
+                      </div>
+                    </div>
+
+                    <div className="w-full pt-4">
+                      <Button asChild variant="outline" className="w-full h-14 rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black text-lg gap-2">
+                        <Link href={`/companies/${company.id}`}>عرض الملف <ArrowUpRight size={18} /></Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: Success Partners (Logos Only) */}
+        <section className="py-24 bg-[#F8F7FA] border-b">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-16">شركاء النجاح - شركات يمنية تثق بنا</p>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-16">شركاء النجاح - مؤسسات تثق بنا</p>
             <div className="flex flex-wrap justify-center items-center gap-16 lg:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
               {partners.map((partner, index) => (
                 <div key={index} className="relative w-48 h-20 group">
@@ -235,7 +338,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 5: Testimonials */}
+        {/* Section 6: Testimonials */}
         <section className="py-24 bg-primary text-white overflow-hidden relative">
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -268,7 +371,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 6: CTA */}
+        {/* Section 7: CTA */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
             <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
