@@ -11,14 +11,45 @@ import {
   TrendingUp, 
   Building2,
   Star,
-  Quote
+  Quote,
+  Briefcase,
+  Clock,
+  DollarSign,
+  ChevronRight
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   const companies = PlaceHolderImages.filter(img => img.id.startsWith('company-'));
   
+  const featuredJobs = [
+    {
+      id: 1,
+      title: "مطور برمجيات أول (React & Node.js)",
+      company: "شركة يمن تيك",
+      location: "صنعاء - ريموت",
+      salary: "$1,500 - $2,500",
+      type: "دوام كامل",
+      posted: "منذ يومين",
+      match: 95,
+      logo: "https://picsum.photos/seed/tech1/60/60"
+    },
+    {
+      id: 2,
+      title: "أخصائي تسويق رقمي",
+      company: "مجموعة هائل سعيد أنعم",
+      location: "تعز - المقر الرئيسي",
+      salary: "800k - 1.2M ريال",
+      type: "دوام كامل",
+      posted: "منذ 4 ساعات",
+      match: 88,
+      logo: "https://picsum.photos/seed/hsa/60/60"
+    }
+  ];
+
   const testimonials = [
     {
       name: "أحمد المقطري",
@@ -39,7 +70,7 @@ export default function Home() {
       <Navbar />
       
       <main>
-        {/* Hero Section */}
+        {/* Section 1: Hero Section */}
         <section className="relative min-h-[85vh] flex items-center py-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
             {heroImg?.imageUrl && (
@@ -94,51 +125,37 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Trusted By Section (Company Logos) */}
-        <section className="py-16 bg-white border-b">
-          <div className="container mx-auto px-4">
-            <p className="text-center text-sm font-bold text-muted-foreground uppercase tracking-widest mb-10">شركاء النجاح - شركات تثق بنا</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-60 grayscale hover:grayscale-0 transition-all">
-              {companies.map((company, index) => (
-                <div key={index} className="relative w-40 h-12">
-                  <Image src={company.imageUrl} alt={company.description} fill className="object-contain" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-24 bg-background">
+        {/* Section 2: Why Choose Us (لماذا تختارنا) */}
+        <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
               <h2 className="text-4xl font-black font-headline text-primary">لماذا تختار وظفني؟</h2>
-              <p className="text-lg text-muted-foreground font-medium">نجمع بين التكنولوجيا المتطورة والخبرة المحلية لتوفير أفضل تجربة توظيف.</p>
+              <p className="text-lg text-muted-foreground font-medium">نجمع بين التكنولوجيا المتطورة والخبرة المحلية لتوفير أفضل تجربة توظيف في اليمن.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
                 {
                   title: "مطابقة ذكية",
-                  desc: "نظام ذكاء اصطناعي يقوم بتحليل مهاراتك وربطها بالوظائف الأكثر توافقاً.",
+                  desc: "نظام ذكاء اصطناعي يقوم بتحليل مهاراتك وربطها بالوظائف الأكثر توافقاً مع طموحاتك.",
                   icon: <Sparkles className="w-10 h-10" />,
                   bg: "bg-blue-50 text-blue-600"
                 },
                 {
                   title: "تطوير السيرة الذاتية",
-                  desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية.",
+                  desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية وزيادة فرص قبولك.",
                   icon: <TrendingUp className="w-10 h-10" />,
                   bg: "bg-indigo-50 text-indigo-600"
                 },
                 {
-                  title: "فرص عالمية",
-                  desc: "نربطك بشركات يمنية ودولية تبحث عن خبراتك الفريدة.",
+                  title: "فرص حصرية",
+                  desc: "نربطك مباشرة بكبرى الشركات اليمنية والدولية التي تبحث عن خبراتك الفريدة.",
                   icon: <Building2 className="w-10 h-10" />,
                   bg: "bg-emerald-50 text-emerald-600"
                 }
               ].map((feature, i) => (
-                <div key={i} className="p-10 rounded-2xl border bg-white hover:shadow-xl transition-all duration-300 group">
-                  <div className={`w-20 h-20 rounded-xl flex items-center justify-center mb-8 ${feature.bg} group-hover:scale-110 transition-transform`}>
+                <div key={i} className="p-10 rounded-3xl border bg-[#F8F7FA] hover:bg-white hover:shadow-xl transition-all duration-300 group">
+                  <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-8 ${feature.bg} group-hover:scale-110 transition-transform shadow-sm`}>
                     {feature.icon}
                   </div>
                   <h4 className="text-2xl font-bold font-headline mb-4 text-primary">{feature.title}</h4>
@@ -149,13 +166,78 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
+        {/* Section 3: Latest Jobs (الوظائف الشاغرة) */}
+        <section className="py-24 bg-[#F8F7FA]">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-black font-headline text-primary">أحدث الوظائف الشاغرة</h2>
+                <p className="text-lg text-muted-foreground font-medium">اكتشف أحدث الفرص المتاحة اليوم في مختلف التخصصات.</p>
+              </div>
+              <Button asChild variant="outline" className="rounded-xl border-primary text-primary font-bold px-8 h-12">
+                <Link href="/jobs" className="flex items-center gap-2">عرض كل الوظائف <ChevronRight size={18} className="rtl:rotate-180" /></Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6">
+              {featuredJobs.map(job => (
+                <div key={job.id} className="bg-white p-6 rounded-3xl border flex flex-col md:flex-row gap-6 items-start hover:shadow-md transition-shadow">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden border bg-muted shrink-0 shadow-inner">
+                    <Image src={job.logo} alt={job.company} width={80} height={80} className="object-cover w-full h-full" />
+                  </div>
+                  
+                  <div className="flex-1 space-y-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <h3 className="text-2xl font-bold font-headline hover:text-primary transition-colors cursor-pointer">{job.title}</h3>
+                        <p className="text-muted-foreground font-medium flex items-center gap-2 mt-1">
+                          <Building2 size={16} /> {job.company}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-100">
+                        <Sparkles size={14} className="animate-pulse" />
+                        <span className="text-sm font-bold">توافق {job.match}%</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground font-medium">
+                      <div className="flex items-center gap-1"><MapPin size={16} /> {job.location}</div>
+                      <div className="flex items-center gap-1"><Briefcase size={16} /> {job.type}</div>
+                      <div className="flex items-center gap-1"><Clock size={16} /> {job.posted}</div>
+                      <div className="flex items-center gap-1 font-bold text-foreground"><DollarSign size={16} className="text-green-600" /> {job.salary}</div>
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 self-stretch flex items-center">
+                    <Button className="rounded-xl px-10 bg-primary h-12">التفاصيل</Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Our Partners (شركاء النجاح) */}
+        <section className="py-24 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <p className="text-center text-sm font-bold text-muted-foreground uppercase tracking-widest mb-12">شركاء النجاح - شركات تثق بنا</p>
+            <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+              {companies.map((company, index) => (
+                <div key={index} className="relative w-40 h-16">
+                  <Image src={company.imageUrl} alt={company.description} fill className="object-contain" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: Testimonials (آراء العملاء) */}
         <section className="py-24 bg-primary text-white overflow-hidden relative">
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
               <div className="lg:w-1/3 space-y-6 text-center lg:text-right">
                 <h2 className="text-4xl font-black font-headline">ماذا يقولون عنا؟</h2>
-                <p className="text-xl text-white/70 font-medium">قصص نجاح حقيقية بدأت من هنا.</p>
+                <p className="text-xl text-white/70 font-medium">قصص نجاح حقيقية بدأت مع منصة وظفني.</p>
                 <div className="flex justify-center lg:justify-start gap-2 text-secondary">
                   {[1, 2, 3, 4, 5].map(i => <Star key={i} fill="currentColor" size={20} />)}
                 </div>
@@ -167,7 +249,7 @@ export default function Home() {
                     <Quote className="absolute top-6 left-6 text-white/10 w-16 h-16" />
                     <p className="text-lg leading-relaxed font-medium relative z-10">{t.content}</p>
                     <div className="flex items-center gap-4 border-t border-white/10 pt-6">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary">
+                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary shrink-0">
                         {t.avatar && <Image src={t.avatar} alt={t.name} width={48} height={48} className="object-cover" />}
                       </div>
                       <div>
@@ -182,19 +264,22 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 bg-accent/30">
+        {/* Section 6: CTA (دعوة للعمل) */}
+        <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
-            <div className="bg-white rounded-3xl p-16 text-center shadow-xl border border-primary/5 space-y-8 max-w-5xl mx-auto">
+            <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
+              <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center text-primary mx-auto mb-6">
+                <Sparkles size={40} />
+              </div>
               <h2 className="text-4xl md:text-5xl font-black font-headline text-primary">جاهز للخطوة القادمة؟</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-                انضم الآن لآلاف المتخصصين وابدأ رحلتك المهنية مع أقوى منصة توظيف في اليمن.
+                انضم الآن لآلاف المتخصصين وابدأ رحلتك المهنية مع أقوى منصة توظيف ذكية في اليمن.
               </p>
               <div className="flex flex-wrap justify-center gap-5 pt-4">
-                <Button size="lg" className="rounded-lg h-16 px-12 bg-primary text-xl font-bold">
+                <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary text-xl font-bold shadow-lg shadow-primary/20">
                   سجل كباحث عن عمل
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-lg h-16 px-12 border-primary text-primary text-xl font-bold hover:bg-primary/5">
+                <Button size="lg" variant="outline" className="rounded-2xl h-16 px-12 border-primary text-primary text-xl font-bold hover:bg-primary/5">
                   سجل كصاحب عمل
                 </Button>
               </div>
