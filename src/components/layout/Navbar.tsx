@@ -13,7 +13,6 @@ import {
   Zap, 
   LogIn, 
   UserPlus,
-  User,
   LogOut,
   LayoutDashboard,
   Bell,
@@ -22,7 +21,11 @@ import {
   BrainCircuit,
   Settings,
   Info,
-  Phone
+  Phone,
+  Users,
+  BarChart3,
+  Star,
+  Handshake
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
@@ -41,16 +44,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from 'react';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useDoc } from '@/firebase';
 import { signOut } from 'firebase/auth';
+import { doc, getFirestore } from 'firebase/firestore';
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
   const [mounted, setMounted] = useState(false);
-  const { user, loading } = useUser();
+  const { user } = useUser();
   const auth = useAuth();
+  const db = getFirestore();
+  
+  // جلب بيانات المستخدم لمعرفة الدور (Role)
+  const userDocRef = user ? doc(db, 'users', user.uid) : null;
+  const { data: userData } = useDoc(userDocRef as any);
+  
+  // تحديد الدور بشكل افتراضي أو من قاعدة البيانات
+  const role = userData?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
 
   useEffect(() => {
     setMounted(true);
@@ -70,7 +82,7 @@ export function Navbar() {
     { href: '/contact', label: 'التواصل', icon: <Phone size={18} /> },
   ];
 
-  const dashboardLinks = [
+  const seekerLinks = [
     { label: "لوحة التحكم", icon: <LayoutDashboard size={18} />, href: "/seeker/dashboard" },
     { label: "وظائفي المتقدم لها", icon: <Briefcase size={18} />, href: "/seeker/applied-jobs" },
     { label: "السيرة الذاتية", icon: <FileText size={18} />, href: "/seeker/resume" },
@@ -78,6 +90,19 @@ export function Navbar() {
     { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={18} />, href: "/seeker/ai-tools" },
     { label: "الإعدادات", icon: <Settings size={18} />, href: "/seeker/settings" }
   ];
+
+  const adminLinks = [
+    { label: "الرئيسية", icon: <LayoutDashboard size={18} />, href: "/admin/dashboard" },
+    { label: "المستخدمين", icon: <Users size={18} />, href: "/admin/users" },
+    { label: "الوظائف", icon: <Briefcase size={18} />, href: "/admin/jobs" },
+    { label: "الإحصائيات", icon: <BarChart3 size={18} />, href: "/admin/stats" },
+    { label: "الشركات", icon: <Building2 size={18} />, href: "/admin/companies" },
+    { label: "الشركاء", icon: <Handshake size={18} />, href: "/admin/partners" },
+    { label: "آراء العملاء", icon: <Star size={18} />, href: "/admin/reviews" },
+    { label: "الإعدادات", icon: <Settings size={18} />, href: "/admin/settings" }
+  ];
+
+  const activeDashboardLinks = role === 'admin' ? adminLinks : seekerLinks;
 
   if (!mounted) return null;
 
@@ -138,8 +163,8 @@ export function Navbar() {
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-3 p-1 pr-3 rounded-full bg-primary/5 hover:bg-primary/10 transition-all border border-primary/5 group">
                     <div className="text-right hidden sm:block">
-                      <p className="text-xs font-black text-primary line-clamp-1">{user.displayName || user.email?.split('@')[0]}</p>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">لوحة التحكم</p>
+                      <p className="text-xs font-black text-primary line-clamp-1">{userData?.fullName || user.displayName || user.email?.split('@')[0]}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'مدير النظام' : 'لوحة التحكم'}</p>
                     </div>
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
                       <Image src={user.photoURL || `https://picsum.photos/seed/${user.uid}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
@@ -147,22 +172,22 @@ export function Navbar() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2" dir="rtl">
-                  <DropdownMenuLabel className="font-black text-primary px-3 py-3 text-right">حسابي</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-black text-primary px-4 py-3 text-right">حسابي</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   
-                  {dashboardLinks.map((link) => (
-                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold">
-                      <Link href={link.href} className="flex items-center gap-3 w-full">
-                        <span className="text-primary/60">{link.icon}</span>
+                  {activeDashboardLinks.map((link) => (
+                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold flex flex-row-reverse justify-end gap-3 text-right">
+                      <Link href={link.href} className="w-full flex flex-row-reverse justify-end items-center gap-3">
                         <span className="flex-1 text-right">{link.label}</span>
+                        <span className="text-primary/60">{link.icon}</span>
                       </Link>
                     </DropdownMenuItem>
                   ))}
                   
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex items-center gap-3">
-                    <LogOut size={18} />
+                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex flex-row-reverse justify-end gap-3 text-right">
                     <span className="flex-1 text-right">تسجيل الخروج</span>
+                    <LogOut size={18} />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -185,7 +210,7 @@ export function Navbar() {
                 <Menu className="w-7 h-7" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] p-0 flex flex-col [&>button]:hidden border-none shadow-2xl rounded-l-[40px]">
+            <SheetContent side="right" className="w-[300px] p-0 flex flex-col [&>button]:hidden border-none shadow-2xl rounded-l-[40px]" dir="rtl">
               <div className="p-8 border-b border-primary/5 flex items-center justify-between">
                 <SheetTitle className="text-right font-black text-2xl text-primary">القائمة</SheetTitle>
                 <Zap size={24} className="text-secondary" />
@@ -218,9 +243,9 @@ export function Navbar() {
                 {user && (
                   <>
                     <div className="mt-8 pt-8 border-t border-primary/5">
-                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4">لوحة التحكم</p>
+                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4 text-right">{role === 'admin' ? 'إدارة النظام' : 'لوحة التحكم'}</p>
                       <div className="flex flex-col gap-2">
-                        {dashboardLinks.map((link) => (
+                        {activeDashboardLinks.map((link) => (
                           <Link
                             key={link.href}
                             href={link.href}
