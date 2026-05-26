@@ -209,7 +209,7 @@ export function Navbar() {
               <Link href="/login" className="hidden lg:block text-[15px] font-bold text-primary hover:opacity-80 px-4">
                 تسجيل الدخول
               </Link>
-              <Button asChild className="rounded-xl px-8 bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/10 text-white transition-all active:scale-95">
+              <Button asChild className="hidden lg:flex rounded-xl px-8 bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/10 text-white transition-all active:scale-95">
                 <Link href="/register">انضم الآن</Link>
               </Button>
             </div>
@@ -266,6 +266,9 @@ export function Navbar() {
 
               {!user && (
                 <div className="p-8 bg-[#F8F7FA] border-t border-primary/5 space-y-4">
+                  <Button asChild variant="outline" className="w-full h-14 rounded-2xl text-lg font-black border-primary text-primary flex gap-3 shadow-sm mb-2">
+                    <Link href="/login"><LogIn size={20} /> تسجيل الدخول</Link>
+                  </Button>
                   <Button asChild className="w-full h-14 rounded-2xl text-lg font-black bg-primary text-white flex gap-3 shadow-xl shadow-primary/20">
                     <Link href="/register"><UserPlus size={20} /> انضم الآن</Link>
                   </Button>
