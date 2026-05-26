@@ -22,24 +22,29 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
       return;
     }
 
-    const unsubscribe = onSnapshot(
-      query,
-      (snapshot: QuerySnapshot<T>) => {
-        setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        setLoading(false);
-      },
-      async (serverError) => {
-        const permissionError = new FirestorePermissionError({
-          path: 'collection_query',
-          operation: 'list',
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        setError(serverError);
-        setLoading(false);
-      }
-    );
+    try {
+      const unsubscribe = onSnapshot(
+        query,
+        (snapshot: QuerySnapshot<T>) => {
+          setData(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as T)));
+          setLoading(false);
+        },
+        async (serverError) => {
+          const permissionError = new FirestorePermissionError({
+            path: 'collection_query',
+            operation: 'list',
+          });
+          errorEmitter.emit('permission-error', permissionError);
+          setError(serverError);
+          setLoading(false);
+        }
+      );
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    } catch (e: any) {
+      setError(e);
+      setLoading(false);
+    }
   }, [query]);
 
   return { data, loading, error };

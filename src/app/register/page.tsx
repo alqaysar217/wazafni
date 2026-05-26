@@ -9,14 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2, AlertTriangle } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
+import { isFirebaseConfigValid } from '@/firebase/config';
 
 export default function RegisterPage() {
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
@@ -26,22 +25,20 @@ export default function RegisterPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<'seeker' | 'employer'>('seeker');
-  const [firebaseReady, setFirebaseReady] = useState(false);
+  const [configValid, setConfigValid] = useState(true);
 
   useEffect(() => {
-    if (auth && db) {
-      setFirebaseReady(true);
-    }
-  }, [auth, db]);
+    setConfigValid(isFirebaseConfigValid());
+  }, []);
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    if (!auth || !db) {
+    if (!configValid) {
       toast({
         variant: "destructive",
-        title: "خطأ في الاتصال",
-        description: "خدمات Firebase غير جاهزة. تأكد من إعداد مفاتيح المشروع.",
+        title: "خطأ في الإعدادات",
+        description: "يجب تزويد التطبيق بمفاتيح Firebase الحقيقية للمتابعة.",
       });
       return;
     }
@@ -81,48 +78,32 @@ export default function RegisterPage() {
 
       const userDocRef = doc(db, 'users', user.uid);
       
-      setDoc(userDocRef, userData)
-        .then(() => {
-          toast({
-            title: "تم إنشاء الحساب بنجاح",
-            description: "مرحباً بك في منصة وظفني!",
-          });
-          router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
-        })
-        .catch(async (dbError) => {
-          const permissionError = new FirestorePermissionError({
-            path: userDocRef.path,
-            operation: 'create',
-            requestResourceData: userData,
-          });
-          errorEmitter.emit('permission-error', permissionError);
-          setLoading(false);
-        });
-    } catch (authError: any) {
-      let title = "فشل إنشاء الحساب";
-      let message = "حدث خطأ غير متوقع.";
+      await setDoc(userDocRef, userData);
+      
+      toast({
+        title: "تم إنشاء الحساب بنجاح",
+        description: "مرحباً بك في منصة وظفني الحقيقية!",
+      });
+      
+      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+    } catch (error: any) {
+      console.error("Register error:", error);
+      let message = "حدث خطأ أثناء إنشاء الحساب.";
 
-      // معالجة مفتاح الـ API غير الصالح
-      if (authError.code === 'auth/api-key-not-valid' || authError.message.includes('api-key-not-valid')) {
-        title = "مفتاح Firebase غير صالح";
-        message = "المفتاح الحالي (API Key) هو نص تجريبي. يرجى نسخ إعدادات مشروعك الحقيقية من Firebase Console ووضعها في ملف config.ts أو .env";
-      } else if (authError.code === 'auth/email-already-in-use') {
-        message = "البريد الإلكتروني مستخدم بالفعل.";
-      } else if (authError.code === 'auth/weak-password') {
-        message = "كلمة المرور ضعيفة جداً.";
-      } else if (authError.code === 'auth/invalid-email') {
-        message = "البريد الإلكتروني غير صحيح.";
-      } else if (authError.code === 'auth/operation-not-allowed') {
-        message = "يجب تفعيل 'Email/Password' في Firebase Console.";
-      } else if (authError.code === 'auth/network-request-failed') {
-        title = "خطأ في الشبكة";
-        message = "يرجى التحقق من اتصالك بالإنترنت وتفعيل الدومين في Authorized Domains.";
+      if (error.code === 'auth/email-already-in-use') {
+        message = "هذا البريد الإلكتروني مسجل مسبقاً.";
+      } else if (error.code === 'auth/weak-password') {
+        message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+      } else if (error.code === 'auth/operation-not-allowed') {
+        message = "طريقة التسجيل بالبريد معطلة في Firebase Console. يرجى تفعيلها.";
+      } else if (error.code === 'auth/network-request-failed') {
+        message = "فشل الاتصال بالخادم. تأكد من تفعيل النطاق الحالي في Authorized Domains.";
       }
       
       toast({
         variant: "destructive",
-        title: title,
-        description: `${message} (${authError.code})`,
+        title: "فشل إنشاء الحساب",
+        description: `${message} (${error.code})`,
       });
       setLoading(false);
     }
@@ -151,10 +132,10 @@ export default function RegisterPage() {
 
           <div className="space-y-6">
             {[
-              "مطابقة ذكية للوظائف",
-              "تحليل السيرة الذاتية مجاناً",
-              "تواصل مباشر مع كبرى الشركات",
-              "لوحة تحكم احترافية لإدارة طلباتك"
+              "ربط حقيقي بقاعدة بيانات سحابية",
+              "إدارة طلبات التوظيف لحظياً",
+              "تواصل آمن ومشفر",
+              "تحليلات ذكية لبياناتك"
             ].map((feature, i) => (
               <div key={i} className="flex items-center gap-4 text-white/90 font-bold justify-start">
                 <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center">
@@ -170,21 +151,19 @@ export default function RegisterPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-xl space-y-10 animate-fade-in-up">
           <div className="space-y-4 text-right">
-            <Link href="/" className="lg:hidden flex items-center gap-2 mb-8 group justify-end">
-              <span className="text-2xl font-bold font-headline text-primary">وظفني</span>
-              <div className="relative w-10 h-10 bg-white rounded-xl overflow-hidden shadow-md p-1 text-primary flex items-center justify-center">
-                {logo?.imageUrl && (
-                  <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
-                )}
-              </div>
-            </Link>
             <h1 className="text-4xl font-black font-headline text-primary">إنشاء حساب جديد</h1>
             <p className="text-muted-foreground">اختر نوع الحساب الذي يناسب احتياجاتك للمتابعة.</p>
           </div>
 
-          {!firebaseReady && (
-            <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
-              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال بقاعدة البيانات...
+          {!configValid && (
+            <div className="bg-amber-50 border border-amber-200 p-6 rounded-[25px] space-y-3 text-amber-900 text-sm">
+              <div className="flex items-center gap-2 font-black text-lg">
+                <AlertCircle size={24} /> تنبيه الربط التقني
+              </div>
+              <p className="font-medium leading-relaxed">
+                التطبيق يحتاج إلى مفاتيح الربط الخاصة بمشروعك على Firebase. 
+                يرجى نسخ الإعدادات من لوحة التحكم ووضعها في ملف .env تحت الأسماء المخصصة لها.
+              </p>
             </div>
           )}
 
@@ -201,41 +180,26 @@ export default function RegisterPage() {
             <TabsContent value="seeker">
               <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
                 <div className="space-y-2 md:col-span-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>الاسم الكامل</span>
-                    <User size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">الاسم الكامل</Label>
                   <Input name="fullName" required placeholder="أدخل اسمك الكامل" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>البريد الإلكتروني</span>
-                    <Mail size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">البريد الإلكتروني</Label>
                   <Input name="email" type="email" required placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>رقم الهاتف</span>
-                    <Phone size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">رقم الهاتف</Label>
                   <Input name="phone" placeholder="+967 7xx xxx xxx" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>كلمة المرور</span>
-                    <Lock size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">كلمة المرور</Label>
                   <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>تأكيد كلمة المرور</span>
-                    <Lock size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">تأكيد كلمة المرور</Label>
                   <Input name="confirmPassword" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button disabled={loading || !firebaseReady} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
+                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
                   {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كباحث عن عمل"}
                 </Button>
               </form>
@@ -244,41 +208,26 @@ export default function RegisterPage() {
             <TabsContent value="employer">
               <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
                 <div className="space-y-2 md:col-span-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>اسم الشركة / المؤسسة</span>
-                    <Building2 size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">اسم الشركة / المؤسسة</Label>
                   <Input name="fullName" required placeholder="أدخل اسم الشركة" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>البريد الإلكتروني للعمل</span>
-                    <Mail size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">البريد الإلكتروني للعمل</Label>
                   <Input name="email" type="email" required placeholder="hr@company.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>مقر الشركة الرئيسي</span>
-                    <MapPin size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">مقر الشركة الرئيسي</Label>
                   <Input name="location" placeholder="صنعاء، عدن، المكلا..." className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>كلمة المرور</span>
-                    <Lock size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">كلمة المرور</Label>
                   <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
-                  <Label className="font-bold flex items-center gap-2 justify-end">
-                    <span>تأكيد كلمة المرور</span>
-                    <Lock size={16} className="text-primary/60" />
-                  </Label>
+                  <Label className="font-bold">تأكيد كلمة المرور</Label>
                   <Input name="confirmPassword" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button disabled={loading || !firebaseReady} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
+                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
                   {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كصاحب عمل"}
                 </Button>
               </form>
