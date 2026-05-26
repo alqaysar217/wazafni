@@ -15,6 +15,8 @@ import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 export default function RegisterPage() {
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
@@ -37,35 +39,47 @@ export default function RegisterPage() {
     const phone = formData.get('phone') as string;
     const location = formData.get('location') as string;
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const userData = {
+          uid: user.uid,
+          fullName,
+          email,
+          role,
+          phone: phone || '',
+          location: location || '',
+          createdAt: serverTimestamp(),
+        };
 
-      await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        fullName,
-        email,
-        role,
-        phone: phone || '',
-        location: location || '',
-        createdAt: serverTimestamp(),
+        const userDocRef = doc(db, 'users', user.uid);
+        
+        setDoc(userDocRef, userData)
+          .then(() => {
+            toast({
+              title: "تم إنشاء الحساب بنجاح",
+              description: "مرحباً بك في منصة وظفني!",
+            });
+            router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+          })
+          .catch(async (dbError) => {
+            const permissionError = new FirestorePermissionError({
+              path: userDocRef.path,
+              operation: 'create',
+              requestResourceData: userData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            setLoading(false);
+          });
+      })
+      .catch((authError: any) => {
+        toast({
+          variant: "destructive",
+          title: "خطأ في إنشاء الحساب",
+          description: authError.message || "تأكد من تفعيل Email/Password في Firebase Console",
+        });
+        setLoading(false);
       });
-
-      toast({
-        title: "تم إنشاء الحساب بنجاح",
-        description: "مرحباً بك في منصة وظفني!",
-      });
-
-      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "خطأ في إنشاء الحساب",
-        description: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

@@ -32,29 +32,30 @@ export default function LoginPage() {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
 
-      // Get user role to redirect appropriately
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      const role = userDoc.exists() ? userDoc.data().role : 'seeker';
+        // Get user role to redirect appropriately
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        const role = userDoc.exists() ? userDoc.data().role : 'seeker';
 
-      toast({
-        title: "تم تسجيل الدخول",
-        description: "أهلاً بك مجدداً!",
+        toast({
+          title: "تم تسجيل الدخول",
+          description: "أهلاً بك مجدداً!",
+        });
+
+        router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+      })
+      .catch((error: any) => {
+        toast({
+          variant: "destructive",
+          title: "خطأ في تسجيل الدخول",
+          description: "البريد الإلكتروني أو كلمة المرور غير صحيحة، أو لم يتم تفعيل خدمة الدخول في Firebase.",
+        });
+        setLoading(false);
       });
-
-      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "خطأ في تسجيل الدخول",
-        description: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
