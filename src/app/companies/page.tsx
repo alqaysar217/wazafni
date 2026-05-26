@@ -69,13 +69,13 @@ export default function CompaniesPage() {
                 </div>
                 
                 <div className="flex flex-col items-center text-center space-y-6">
-                  {/* Logo Container with Glow Effect */}
+                  {/* Logo Container with Enhanced Glow and Shadow */}
                   <div className="relative group/logo">
-                    {/* Glow Background Layer */}
-                    <div className="absolute -inset-4 bg-secondary/40 blur-2xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
+                    {/* Glow Background Layer - More visible */}
+                    <div className="absolute -inset-6 bg-secondary/20 blur-3xl rounded-full scale-0 group-hover:scale-110 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
                     
-                    {/* Square Logo with 5px rounded corners */}
-                    <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white bg-white shadow-lg relative z-10 transition-all duration-500 group-hover:scale-105">
+                    {/* Square Logo with 5px rounded corners and Deep Shadow */}
+                    <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] group-hover:border-secondary/20">
                       <Image src={company.logo} alt={company.name} width={96} height={96} className="object-cover w-full h-full" />
                     </div>
                   </div>
