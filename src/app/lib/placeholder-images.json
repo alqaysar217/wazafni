@@ -14,70 +14,34 @@
       "imageHint": "corporate logo"
     },
     {
-      "id": "company-1",
-      "description": "Financial sector logo",
-      "imageUrl": "https://picsum.photos/seed/bank-logo/200/100",
-      "imageHint": "bank logo"
+      "id": "service-cv",
+      "description": "Modern resume builder interface",
+      "imageUrl": "https://picsum.photos/seed/cv-service/800/500",
+      "imageHint": "resume design"
     },
     {
-      "id": "company-2",
-      "description": "Tech industry logo",
-      "imageUrl": "https://picsum.photos/seed/tech-corp/200/100",
-      "imageHint": "technology logo"
+      "id": "service-ai",
+      "description": "AI matching visualization",
+      "imageUrl": "https://picsum.photos/seed/ai-match/800/500",
+      "imageHint": "artificial intelligence"
     },
     {
-      "id": "company-3",
-      "description": "Manufacturing group logo",
-      "imageUrl": "https://picsum.photos/seed/factory/200/100",
-      "imageHint": "industrial logo"
-    },
-    {
-      "id": "company-4",
-      "description": "Telecommunications company logo",
-      "imageUrl": "https://picsum.photos/seed/telco/200/100",
-      "imageHint": "telecom logo"
-    },
-    {
-      "id": "company-5",
-      "description": "Retail services logo",
-      "imageUrl": "https://picsum.photos/seed/retail/200/100",
-      "imageHint": "shopping logo"
-    },
-    {
-      "id": "company-6",
-      "description": "Food & Beverage logo",
-      "imageUrl": "https://picsum.photos/seed/foodco/200/100",
-      "imageHint": "food logo"
-    },
-    {
-      "id": "user-1",
-      "description": "Happy professional man",
-      "imageUrl": "https://picsum.photos/seed/u1-man/150/150",
-      "imageHint": "man portrait"
-    },
-    {
-      "id": "user-2",
-      "description": "Professional woman in office",
-      "imageUrl": "https://picsum.photos/seed/u2-woman/150/150",
-      "imageHint": "woman portrait"
-    },
-    {
-      "id": "user-3",
-      "description": "Young entrepreneur",
-      "imageUrl": "https://picsum.photos/seed/u3-young/150/150",
-      "imageHint": "portrait business"
+      "id": "service-business",
+      "description": "Corporate hiring solutions",
+      "imageUrl": "https://picsum.photos/seed/business-sol/800/500",
+      "imageHint": "business recruitment"
     },
     {
       "id": "about-vision",
-      "description": "Visionary business concept",
-      "imageUrl": "https://picsum.photos/seed/vision/800/600",
-      "imageHint": "innovation strategy"
+      "description": "Strategic vision concept",
+      "imageUrl": "https://picsum.photos/seed/vision/1200/800",
+      "imageHint": "strategic planning"
     },
     {
-      "id": "contact-support",
-      "description": "Customer support team",
-      "imageUrl": "https://picsum.photos/seed/support/1200/800",
-      "imageHint": "customer service"
+      "id": "contact-bg",
+      "description": "Support team workspace",
+      "imageUrl": "https://picsum.photos/seed/contact-office/1200/800",
+      "imageHint": "customer support"
     }
   ]
 }

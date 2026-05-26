@@ -14,7 +14,10 @@ import {
   DollarSign,
   Heart,
   Sparkles,
-  Building2
+  Building2,
+  Bookmark,
+  LayoutGrid,
+  List
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -29,18 +32,20 @@ export default function JobsPage() {
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 95,
-      logo: "https://picsum.photos/seed/tech1/60/60"
+      skills: ["React", "TypeScript", "Node.js"],
+      logo: "https://picsum.photos/seed/tech1/100/100"
     },
     {
       id: 2,
       title: "أخصائي تسويق رقمي",
       company: "مجموعة هائل سعيد أنعم",
       location: "تعز - المقر الرئيسي",
-      salary: "800,000 ريال - 1,200,000 ريال",
+      salary: "800k - 1.2M ريال",
       type: "دوام كامل",
       posted: "منذ 4 ساعات",
       match: 88,
-      logo: "https://picsum.photos/seed/hsa/60/60"
+      skills: ["SEO", "Content Strategy", "Ads"],
+      logo: "https://picsum.photos/seed/hsa/100/100"
     },
     {
       id: 3,
@@ -51,131 +56,140 @@ export default function JobsPage() {
       type: "عقد",
       posted: "منذ أسبوع",
       match: 72,
-      logo: "https://picsum.photos/seed/eng/60/60"
+      skills: ["PMP", "Project Mgmt", "Civil Eng"],
+      logo: "https://picsum.photos/seed/eng/100/100"
     }
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F7FA]">
+    <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-4 py-12 space-y-12">
-        <header className="space-y-6">
-          <h1 className="text-4xl font-black font-headline text-primary">استكشف الفرص المتاحة</h1>
-          <div className="bg-white p-3 flex flex-col md:flex-row gap-4 shadow-xl rounded-3xl border-none">
-            <div className="flex-1 flex items-center px-4 gap-3 bg-muted/30 rounded-2xl h-14">
-              <Search className="text-primary" size={20} />
-              <Input placeholder="المسمى الوظيفي..." className="border-none bg-transparent shadow-none focus-visible:ring-0" />
+      <main className="flex-1 container mx-auto px-4 py-12">
+        {/* Search Header */}
+        <div className="bg-primary p-12 lg:p-16 rounded-[40px] shadow-2xl mb-12 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+          <div className="relative z-10 space-y-8">
+            <h1 className="text-4xl lg:text-5xl font-black text-white text-center">ابحث عن فرصة أحلامك</h1>
+            <div className="bg-white p-3 flex flex-col lg:flex-row gap-4 shadow-2xl rounded-3xl border-none max-w-5xl mx-auto">
+              <div className="flex-1 flex items-center px-4 gap-3 bg-muted/30 rounded-2xl h-16">
+                <Search className="text-primary/40" size={24} />
+                <Input placeholder="المسمى الوظيفي..." className="border-none bg-transparent shadow-none focus-visible:ring-0 text-lg font-bold" />
+              </div>
+              <div className="flex-1 flex items-center px-4 gap-3 bg-muted/30 rounded-2xl h-16">
+                <MapPin className="text-primary/40" size={24} />
+                <Input placeholder="المدينة أو المنطقة..." className="border-none bg-transparent shadow-none focus-visible:ring-0 text-lg font-bold" />
+              </div>
+              <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary font-black text-xl shadow-lg shadow-primary/20">بحث</Button>
             </div>
-            <div className="flex-1 flex items-center px-4 gap-3 bg-muted/30 rounded-2xl h-14">
-              <MapPin className="text-primary" size={20} />
-              <Input placeholder="المدينة أو المنطقة..." className="border-none bg-transparent shadow-none focus-visible:ring-0" />
-            </div>
-            <Button size="lg" className="rounded-2xl h-14 px-10 bg-primary font-bold">ابحث</Button>
           </div>
-        </header>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Sidebar Filters */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Enhanced Sidebar Filters */}
           <aside className="lg:col-span-3 space-y-8">
-            <div className="bg-white p-8 rounded-[32px] border shadow-sm space-y-8">
-              <div className="flex items-center justify-between border-b pb-4">
-                <h3 className="font-bold flex items-center gap-2"><Filter size={18} /> التصفية</h3>
-                <button className="text-xs text-primary font-bold">مسح الكل</button>
+            <div className="bg-white p-8 rounded-[40px] border border-border/50 shadow-sm space-y-10">
+              <div className="flex items-center justify-between border-b border-border/50 pb-6">
+                <h3 className="text-xl font-black flex items-center gap-2"><Filter size={20} /> الفلاتر</h3>
+                <button className="text-sm text-secondary font-black hover:underline transition-all">مسح</button>
               </div>
               
-              <div className="space-y-4">
-                <h4 className="font-bold text-sm uppercase text-muted-foreground tracking-wider">نوع الدوام</h4>
-                <div className="space-y-3">
+              <div className="space-y-6">
+                <h4 className="font-black text-xs uppercase text-muted-foreground tracking-widest">نوع العمل</h4>
+                <div className="space-y-4">
                   {["دوام كامل", "دوام جزئي", "عمل حر", "تدريب"].map(type => (
-                    <label key={type} className="flex items-center gap-3 cursor-pointer group">
-                      <div className="w-5 h-5 rounded border border-border group-hover:border-primary transition-colors"></div>
-                      <span className="text-sm font-medium">{type}</span>
+                    <label key={type} className="flex items-center gap-3 cursor-pointer group hover:text-primary transition-colors">
+                      <div className="w-6 h-6 rounded-lg border-2 border-border group-hover:border-primary transition-all flex items-center justify-center">
+                        <div className="w-3 h-3 bg-primary rounded-sm opacity-0 group-aria-checked:opacity-100"></div>
+                      </div>
+                      <span className="text-md font-bold">{type}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h4 className="font-bold text-sm uppercase text-muted-foreground tracking-wider">نطاق الراتب</h4>
-                <div className="pt-2">
-                  <div className="h-2 bg-muted rounded-full relative">
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-2 border-white shadow-md"></div>
-                    <div className="absolute right-[40%] top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full border-2 border-white shadow-md"></div>
-                    <div className="absolute right-0 left-[40%] h-full bg-primary/40 rounded-full"></div>
+              <div className="space-y-6">
+                <h4 className="font-black text-xs uppercase text-muted-foreground tracking-widest">نطاق الراتب</h4>
+                <div className="pt-4 space-y-4">
+                  <div className="h-3 bg-muted rounded-full relative">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-xl cursor-pointer"></div>
+                    <div className="absolute right-[50%] top-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-xl cursor-pointer"></div>
+                    <div className="absolute right-0 left-[50%] h-full bg-secondary rounded-full"></div>
                   </div>
-                  <div className="flex justify-between mt-4 text-xs font-bold text-muted-foreground">
-                    <span>$10,000</span>
+                  <div className="flex justify-between text-xs font-black text-muted-foreground uppercase">
+                    <span>$10,000+</span>
                     <span>$500</span>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="rounded-[32px] bg-primary/5 p-8 border border-primary/10 space-y-4">
-              <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                <Sparkles />
-              </div>
-              <h4 className="text-lg font-bold font-headline">فعل التنبيهات الذكية</h4>
-              <p className="text-sm text-muted-foreground font-medium">سنقوم بإرسال تنبيه لك عندما تتوفر وظائف تناسب مهاراتك باستخدام الذكاء الاصطناعي.</p>
-              <Button variant="outline" className="w-full rounded-xl border-primary text-primary hover:bg-primary hover:text-white font-bold">تفعيل التنبيهات</Button>
+              <Button className="w-full h-14 rounded-2xl bg-primary/5 text-primary hover:bg-primary hover:text-white font-black transition-all">تطبيق الفلاتر</Button>
             </div>
           </aside>
 
-          {/* Job Listings */}
-          <div className="lg:col-span-9 space-y-6">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-muted-foreground font-medium">تم العثور على <span className="text-foreground font-bold">1,248 وظيفة</span></p>
-              <div className="flex items-center gap-2 text-sm font-bold">
-                <span>ترتيب حسب:</span>
-                <button className="flex items-center gap-1 text-primary">الأحدث <ChevronDown size={14} /></button>
+          {/* World-Class Job Listings */}
+          <div className="lg:col-span-9 space-y-8">
+            <div className="flex items-center justify-between bg-white p-6 rounded-[30px] border border-border/50">
+              <p className="text-muted-foreground font-bold">وجدنا <span className="text-primary font-black text-lg">1,248</span> وظيفة متاحة</p>
+              <div className="flex items-center gap-4">
+                <div className="flex bg-muted p-1 rounded-xl">
+                  <button className="p-2 bg-white rounded-lg shadow-sm text-primary"><List size={18} /></button>
+                  <button className="p-2 text-muted-foreground"><LayoutGrid size={18} /></button>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-black text-primary bg-primary/5 px-4 py-2 rounded-xl">
+                  <span>الأحدث</span>
+                  <ChevronDown size={14} />
+                </div>
               </div>
             </div>
 
             {jobs.map(job => (
-              <div key={job.id} className="bg-white p-8 rounded-[32px] border flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all duration-300">
-                <div className="w-20 h-20 rounded-2xl overflow-hidden border bg-muted shrink-0 shadow-inner">
-                  <Image src={job.logo} alt={job.company} width={80} height={80} className="object-cover w-full h-full" />
+              <div key={job.id} className="bg-white p-8 lg:p-10 rounded-[40px] border border-border/50 flex flex-col md:flex-row gap-10 items-start hover:shadow-[0_20px_60px_-15px_rgba(15,23,42,0.1)] transition-all duration-500 group relative">
+                
+                <div className="w-24 h-24 rounded-3xl overflow-hidden border border-border/50 bg-[#F8F7FA] shrink-0 shadow-inner group-hover:scale-105 transition-transform">
+                  <Image src={job.logo} alt={job.company} width={96} height={96} className="object-cover w-full h-full" />
                 </div>
                 
-                <div className="flex-1 space-y-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex-1 space-y-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div>
-                      <h3 className="text-2xl font-bold font-headline hover:text-primary transition-colors cursor-pointer">{job.title}</h3>
-                      <p className="text-muted-foreground font-medium flex items-center gap-2 mt-1">
-                        <Building2 size={16} /> {job.company}
-                      </p>
+                      <h3 className="text-3xl font-black text-primary hover:text-secondary transition-colors cursor-pointer mb-2 leading-tight">{job.title}</h3>
+                      <div className="flex items-center gap-4 text-muted-foreground font-bold">
+                        <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg text-sm"><Building2 size={16} /> {job.company}</span>
+                        <span className="flex items-center gap-2 bg-muted/50 px-3 py-1 rounded-lg text-sm"><MapPin size={16} /> {job.location}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-100">
-                      <Sparkles size={14} className="animate-pulse" />
-                      <span className="text-sm font-bold">توافق {job.match}%</span>
+                    <div className="flex items-center gap-2 bg-green-50 text-green-700 px-5 py-2.5 rounded-2xl border border-green-100 shadow-sm">
+                      <Sparkles size={16} className="animate-pulse" />
+                      <span className="text-md font-black">توافق {job.match}%</span>
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground font-medium">
-                    <div className="flex items-center gap-1"><MapPin size={16} /> {job.location}</div>
-                    <div className="flex items-center gap-1"><Briefcase size={16} /> {job.type}</div>
-                    <div className="flex items-center gap-1"><Clock size={16} /> {job.posted}</div>
-                    <div className="flex items-center gap-1 font-bold text-foreground"><DollarSign size={16} className="text-green-600" /> {job.salary}</div>
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground font-bold border-t border-border/50 pt-6">
+                    <div className="flex items-center gap-2"><Briefcase size={18} className="text-primary" /> {job.type}</div>
+                    <div className="flex items-center gap-2"><Clock size={18} className="text-primary" /> {job.posted}</div>
+                    <div className="flex items-center gap-2 text-foreground font-black bg-[#F8F7FA] px-4 py-1.5 rounded-full"><DollarSign size={18} className="text-green-600" /> {job.salary}</div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {["React", "TypeScript", "Node.js", "GraphQL"].map(skill => (
-                      <Badge key={skill} variant="secondary" className="rounded-lg px-3 py-1 bg-primary/5 text-primary border-none font-bold">{skill}</Badge>
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    {job.skills.map(skill => (
+                      <Badge key={skill} variant="secondary" className="rounded-xl px-4 py-2 bg-primary/5 text-primary border-none font-black text-xs uppercase tracking-wider">{skill}</Badge>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex md:flex-col gap-3 shrink-0 self-stretch justify-center">
-                  <Button className="rounded-xl px-8 bg-primary h-12 font-bold shadow-lg shadow-primary/20">التقدم الآن</Button>
-                  <Button variant="outline" size="icon" className="rounded-xl border-border h-12 w-12 hover:bg-red-50 hover:text-red-500 hover:border-red-200">
-                    <Heart size={20} />
+                <div className="flex md:flex-col gap-4 shrink-0 self-stretch justify-center pt-6 lg:pt-0 lg:border-r lg:pr-10 border-border/50">
+                  <Button className="rounded-2xl px-10 bg-primary h-16 text-lg font-black shadow-xl shadow-primary/20 hover:scale-105 transition-all">التقدم للوظيفة</Button>
+                  <Button variant="outline" size="icon" className="rounded-2xl border-2 border-border h-16 w-16 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all">
+                    <Bookmark size={24} />
                   </Button>
                 </div>
               </div>
             ))}
             
-            <Button variant="ghost" className="w-full py-8 text-primary font-bold text-lg hover:bg-primary/5 rounded-[32px] border-2 border-dashed border-primary/20">مشاهدة المزيد من الوظائف</Button>
+            <Button variant="ghost" className="w-full py-10 text-primary font-black text-xl hover:bg-primary/5 rounded-[40px] border-4 border-dashed border-primary/10 transition-all">
+              اكتشف المزيد من الفرص المهنية
+            </Button>
           </div>
         </div>
       </main>
