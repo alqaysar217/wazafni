@@ -53,15 +53,13 @@ export function Navbar() {
   const router = useRouter();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
   const [mounted, setMounted] = useState(false);
-  const { user } = useUser();
+  const { user, loading: authLoading } = useUser();
   const auth = useAuth();
   const db = getFirestore();
   
-  // جلب بيانات المستخدم لمعرفة الدور (Role)
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef as any);
   
-  // تحديد الدور بشكل افتراضي أو من قاعدة البيانات
   const role = userData?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
 
   useEffect(() => {
@@ -92,7 +90,7 @@ export function Navbar() {
   ];
 
   const adminLinks = [
-    { label: "الرئيسية", icon: <LayoutDashboard size={18} />, href: "/admin/dashboard" },
+    { label: "لوحة التحكم", icon: <LayoutDashboard size={18} />, href: "/admin/dashboard" },
     { label: "المستخدمين", icon: <Users size={18} />, href: "/admin/users" },
     { label: "الوظائف", icon: <Briefcase size={18} />, href: "/admin/jobs" },
     { label: "الإحصائيات", icon: <BarChart3 size={18} />, href: "/admin/stats" },
@@ -113,13 +111,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-inner bg-primary/5 flex items-center justify-center p-1">
               {logo?.imageUrl ? (
-                <Image 
-                  src={logo.imageUrl} 
-                  alt="Wazafni Logo" 
-                  fill 
-                  className="object-contain p-1"
-                  priority
-                />
+                <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain p-1" priority />
               ) : (
                 <span className="text-primary font-black">W</span>
               )}
@@ -138,12 +130,10 @@ export function Navbar() {
                     "flex items-center gap-2 relative py-1 transition-all duration-300 hover:text-primary",
                     isActive 
                       ? "text-primary after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[2px] after:bg-secondary after:rounded-full" 
-                      : "text-muted-foreground hover:translate-y-[-1px]"
+                      : "text-muted-foreground"
                   )}
                 >
-                  <span className={cn(isActive ? "text-secondary" : "text-primary/40")}>
-                    {link.icon}
-                  </span>
+                  <span className={cn(isActive ? "text-secondary" : "text-primary/40")}>{link.icon}</span>
                   {link.label}
                 </Link>
               );
@@ -154,56 +144,55 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-primary relative">
+              <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground relative">
                 <Bell size={22} />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
               </Button>
               
-              <DropdownMenu>
+              <DropdownMenu dir="rtl">
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-3 p-1 pr-3 rounded-full bg-primary/5 hover:bg-primary/10 transition-all border border-primary/5 group">
+                  <button className="flex items-center gap-3 p-1 pr-3 rounded-full bg-primary/5 hover:bg-primary/10 transition-all border border-primary/5">
                     <div className="text-right hidden sm:block">
                       <p className="text-xs font-black text-primary line-clamp-1">{userData?.fullName || user.displayName || user.email?.split('@')[0]}</p>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'مدير النظام' : 'لوحة التحكم'}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'المدير العام' : 'حساب شخصي'}</p>
                     </div>
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white flex items-center justify-center">
                       <Image src={user.photoURL || `https://picsum.photos/seed/${user.uid}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
                     </div>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2" dir="rtl">
-                  <DropdownMenuLabel className="font-black text-primary px-4 py-3 text-right">حسابي</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-black text-primary px-4 py-3 text-right">لوحة التحكم</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   
                   {activeDashboardLinks.map((link) => (
-                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold flex flex-row-reverse justify-end gap-3 text-right">
-                      <Link href={link.href} className="w-full flex flex-row-reverse justify-end items-center gap-3">
-                        <span className="flex-1 text-right">{link.label}</span>
+                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold flex flex-row items-center gap-3 text-right">
+                      <Link href={link.href} className="w-full flex items-center gap-3">
                         <span className="text-primary/60">{link.icon}</span>
+                        <span className="flex-1">{link.label}</span>
                       </Link>
                     </DropdownMenuItem>
                   ))}
                   
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex flex-row-reverse justify-end gap-3 text-right">
-                    <span className="flex-1 text-right">تسجيل الخروج</span>
+                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex items-center gap-3 text-right">
                     <LogOut size={18} />
+                    <span className="flex-1">تسجيل الخروج</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           ) : (
-            <>
+            <div className="flex items-center gap-3">
               <Link href="/login" className="hidden lg:block text-[15px] font-bold text-primary hover:opacity-80 px-4">
                 تسجيل الدخول
               </Link>
-              <Button asChild className="hidden lg:flex rounded-xl px-8 bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/10 text-white transition-all active:scale-95">
+              <Button asChild className="rounded-xl px-8 bg-primary hover:bg-primary/90 font-black shadow-lg shadow-primary/10 text-white transition-all active:scale-95">
                 <Link href="/register">انضم الآن</Link>
               </Button>
-            </>
+            </div>
           )}
 
-          {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden text-primary rounded-xl">
@@ -226,14 +215,10 @@ export function Navbar() {
                         href={link.href}
                         className={cn(
                           "flex items-center gap-4 p-4 rounded-2xl font-black transition-all text-lg",
-                          isActive 
-                            ? "bg-primary text-white shadow-xl shadow-primary/20" 
-                            : "text-muted-foreground hover:bg-primary/5"
+                          isActive ? "bg-primary text-white shadow-xl shadow-primary/20" : "text-muted-foreground hover:bg-primary/5"
                         )}
                       >
-                        <span className={cn(isActive ? "text-secondary" : "text-primary/40")}>
-                          {link.icon}
-                        </span>
+                        <span className={cn(isActive ? "text-secondary" : "text-primary/40")}>{link.icon}</span>
                         {link.label}
                       </Link>
                     );
@@ -241,46 +226,24 @@ export function Navbar() {
                 </div>
 
                 {user && (
-                  <>
-                    <div className="mt-8 pt-8 border-t border-primary/5">
-                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4 text-right">{role === 'admin' ? 'إدارة النظام' : 'لوحة التحكم'}</p>
-                      <div className="flex flex-col gap-2">
-                        {activeDashboardLinks.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            className="flex items-center gap-4 p-4 rounded-2xl font-black transition-all text-primary/80 hover:bg-primary/5"
-                          >
-                            <span className="text-primary/40">{link.icon}</span>
-                            {link.label}
-                          </Link>
-                        ))}
-                      </div>
+                  <div className="mt-8 pt-8 border-t border-primary/5">
+                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4 text-right">{role === 'admin' ? 'إدارة النظام' : 'لوحة التحكم'}</p>
+                    <div className="flex flex-col gap-2">
+                      {activeDashboardLinks.map((link) => (
+                        <Link key={link.href} href={link.href} className="flex items-center gap-4 p-4 rounded-2xl font-black transition-all text-primary/80 hover:bg-primary/5">
+                          <span className="text-primary/40">{link.icon}</span>
+                          {link.label}
+                        </Link>
+                      ))}
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
 
-              {!user ? (
+              {!user && (
                 <div className="p-8 bg-[#F8F7FA] border-t border-primary/5 space-y-4">
-                  <Button asChild variant="outline" className="w-full h-14 rounded-2xl text-lg font-black border-primary text-primary hover:bg-primary hover:text-white flex gap-3 shadow-sm transition-all">
-                    <Link href="/login">
-                      <LogIn size={20} />
-                      تسجيل الدخول
-                    </Link>
-                  </Button>
-                  <Button asChild className="w-full h-14 rounded-2xl text-lg font-black bg-primary text-white flex gap-3 shadow-xl shadow-primary/20 transition-all">
-                    <Link href="/register">
-                      <UserPlus size={20} />
-                      انضم الآن
-                    </Link>
-                  </Button>
-                </div>
-              ) : (
-                <div className="p-8 bg-[#F8F7FA] border-t border-primary/5">
-                  <Button onClick={handleLogout} variant="ghost" className="w-full h-14 rounded-2xl text-lg font-black text-red-500 hover:bg-red-50 flex gap-3 transition-all">
-                    <LogOut size={20} />
-                    تسجيل الخروج
+                  <Button asChild className="w-full h-14 rounded-2xl text-lg font-black bg-primary text-white flex gap-3 shadow-xl shadow-primary/20">
+                    <Link href="/register"><UserPlus size={20} /> انضم الآن</Link>
                   </Button>
                 </div>
               )}
