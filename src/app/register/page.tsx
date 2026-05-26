@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2, AlertTriangle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -40,7 +41,7 @@ export default function RegisterPage() {
       toast({
         variant: "destructive",
         title: "خطأ في الاتصال",
-        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى تحديث الصفحة.",
+        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى التأكد من إعداد مفاتيح API في ملف .env",
       });
       return;
     }
@@ -98,16 +99,25 @@ export default function RegisterPage() {
           setLoading(false);
         });
     } catch (authError: any) {
+      let title = "فشل إنشاء الحساب";
       let message = "حدث خطأ غير متوقع.";
-      if (authError.code === 'auth/email-already-in-use') message = "البريد الإلكتروني مستخدم بالفعل.";
-      else if (authError.code === 'auth/weak-password') message = "كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل).";
-      else if (authError.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
-      else if (authError.code === 'auth/operation-not-allowed') message = "يجب تفعيل 'Email/Password' في Firebase Console.";
-      else if (authError.code === 'auth/network-request-failed') message = "فشل في الاتصال بالشبكة. يرجى التحقق من اتصالك.";
+
+      if (authError.code === 'auth/email-already-in-use') {
+        message = "البريد الإلكتروني مستخدم بالفعل.";
+      } else if (authError.code === 'auth/weak-password') {
+        message = "كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل).";
+      } else if (authError.code === 'auth/invalid-email') {
+        message = "البريد الإلكتروني غير صحيح.";
+      } else if (authError.code === 'auth/operation-not-allowed') {
+        message = "يجب تفعيل 'Email/Password' في Firebase Console.";
+      } else if (authError.code === 'auth/network-request-failed') {
+        title = "خطأ في الاتصال بالشبكة";
+        message = "يرجى التأكد من صحة إعدادات Firebase (API Key) في ملف config وتفعيل الدومين في الـ Console.";
+      }
       
       toast({
         variant: "destructive",
-        title: "فشل إنشاء الحساب",
+        title: title,
         description: `${message} (${authError.code})`,
       });
       setLoading(false);

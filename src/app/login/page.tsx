@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2 } from 'lucide-react';
+import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2, AlertTriangle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -36,7 +37,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "خطأ في الاتصال",
-        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى تحديث الصفحة.",
+        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى مراجعة إعدادات المشروع.",
       });
       return;
     }
@@ -61,15 +62,23 @@ export default function LoginPage() {
 
       router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
     } catch (error: any) {
+      let title = "خطأ في تسجيل الدخول";
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-      if (error.code === 'auth/user-not-found') message = "المستخدم غير موجود.";
-      else if (error.code === 'auth/wrong-password') message = "كلمة المرور غير صحيحة.";
-      else if (error.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
-      else if (error.code === 'auth/operation-not-allowed') message = "يجب تفعيل 'Email/Password' في Firebase Console.";
+
+      if (error.code === 'auth/user-not-found') {
+        message = "المستخدم غير موجود.";
+      } else if (error.code === 'auth/wrong-password') {
+        message = "كلمة المرور غير صحيحة.";
+      } else if (error.code === 'auth/invalid-email') {
+        message = "البريد الإلكتروني غير صحيح.";
+      } else if (error.code === 'auth/network-request-failed') {
+        title = "خطأ في الشبكة";
+        message = "تعذر الاتصال بخوادم Firebase. تأكد من تفعيل مفاتيح API وإضافة الدومين في الـ Console.";
+      }
       
       toast({
         variant: "destructive",
-        title: "خطأ في تسجيل الدخول",
+        title: title,
         description: `${message} (${error.code})`,
       });
       setLoading(false);
@@ -92,7 +101,7 @@ export default function LoginPage() {
             <span className="text-3xl font-black font-headline text-white">وظفني</span>
           </Link>
           <h2 className="text-5xl font-black font-headline leading-tight text-white">عد إلينا لنكمل <br /> قصة نجاحك.</h2>
-          <p className="text-xl text-white/80 leading-relaxed font-light">سجل دخولك لتكتشف مئات الوظائف الجديدة المتاحة اليوم في أفضل الشركات اليمنية.</p>
+          <p className="text-xl text-white/80 leading-relaxed font-medium">سجل دخولك لتكتشف مئات الوظائف الجديدة المتاحة اليوم في أفضل الشركات اليمنية.</p>
           
           <div className="pt-12 grid grid-cols-2 gap-8">
             <div className="space-y-2">
