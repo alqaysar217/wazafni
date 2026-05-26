@@ -10,14 +10,16 @@ import {
   Briefcase, 
   Building2, 
   Zap, 
-  Info, 
-  Phone, 
   LogIn, 
   UserPlus,
   User,
   LogOut,
   LayoutDashboard,
-  Bell
+  Bell,
+  FileText,
+  MessageSquare,
+  BrainCircuit,
+  Settings
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
@@ -61,6 +63,15 @@ export function Navbar() {
     { href: '/jobs', label: 'الوظائف', icon: <Briefcase size={20} /> },
     { href: '/companies', label: 'الشركات', icon: <Building2 size={20} /> },
     { href: '/services', label: 'خدماتنا', icon: <Zap size={20} /> },
+  ];
+
+  const dashboardLinks = [
+    { label: "لوحة التحكم", icon: <LayoutDashboard size={18} />, href: "/seeker/dashboard" },
+    { label: "وظائفي المتقدم لها", icon: <Briefcase size={18} />, href: "/seeker/applied-jobs" },
+    { label: "السيرة الذاتية", icon: <FileText size={18} />, href: "/seeker/resume" },
+    { label: "الرسائل", icon: <MessageSquare size={18} />, href: "/seeker/messages" },
+    { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={18} />, href: "/seeker/ai-tools" },
+    { label: "الإعدادات", icon: <Settings size={18} />, href: "/seeker/settings" }
   ];
 
   if (!mounted) return null;
@@ -128,14 +139,18 @@ export function Navbar() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2">
-                  <DropdownMenuLabel className="font-black text-primary px-3 py-3">حسابي</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-black text-primary px-3 py-3 text-center">حسابي</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold gap-3">
-                    <Link href="/seeker/dashboard"><LayoutDashboard size={18} className="text-primary/60" /> لوحة التحكم</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold gap-3">
-                    <Link href="/seeker/resume"><User size={18} className="text-primary/60" /> ملفي الشخصي</Link>
-                  </DropdownMenuItem>
+                  
+                  {dashboardLinks.map((link) => (
+                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold gap-3">
+                      <Link href={link.href}>
+                        <span className="text-primary/60">{link.icon}</span>
+                        {link.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                  
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold gap-3">
                     <LogOut size={18} /> تسجيل الخروج
@@ -190,9 +205,29 @@ export function Navbar() {
                     );
                   })}
                 </div>
+
+                {user && (
+                  <>
+                    <div className="mt-8 pt-8 border-t border-primary/5">
+                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4">لوحة التحكم</p>
+                      <div className="flex flex-col gap-2">
+                        {dashboardLinks.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            className="flex items-center gap-4 p-4 rounded-2xl font-black transition-all text-primary/80 hover:bg-primary/5"
+                          >
+                            <span className="text-primary/40">{link.icon}</span>
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {!user && (
+              {!user ? (
                 <div className="p-8 bg-[#F8F7FA] border-t border-primary/5 space-y-4">
                   <Button asChild variant="outline" className="w-full h-14 rounded-2xl text-lg font-black border-primary text-primary hover:bg-primary hover:text-white flex gap-3 shadow-sm transition-all">
                     <Link href="/login">
@@ -205,6 +240,13 @@ export function Navbar() {
                       <UserPlus size={20} />
                       انضم الآن
                     </Link>
+                  </Button>
+                </div>
+              ) : (
+                <div className="p-8 bg-[#F8F7FA] border-t border-primary/5">
+                  <Button onClick={handleLogout} variant="ghost" className="w-full h-14 rounded-2xl text-lg font-black text-red-500 hover:bg-red-50 flex gap-3 transition-all">
+                    <LogOut size={20} />
+                    تسجيل الخروج
                   </Button>
                 </div>
               )}
