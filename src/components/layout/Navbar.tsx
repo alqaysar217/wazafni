@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -87,10 +86,10 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="hidden sm:block text-[15px] font-bold text-primary hover:opacity-80 px-4">
+          <Link href="/login" className="hidden lg:block text-[15px] font-bold text-primary hover:opacity-80 px-4">
             تسجيل الدخول
           </Link>
-          <Button asChild className="rounded-lg px-8 bg-primary hover:bg-primary/90 font-bold shadow-md text-white">
+          <Button asChild className="hidden lg:flex rounded-lg px-8 bg-primary hover:bg-primary/90 font-bold shadow-md text-white">
             <Link href="/register">انضم الآن</Link>
           </Button>
 
