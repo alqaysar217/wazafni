@@ -138,22 +138,23 @@ export function Navbar() {
                     </div>
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2">
-                  <DropdownMenuLabel className="font-black text-primary px-3 py-3 text-center">حسابي</DropdownMenuLabel>
+                <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2" dir="rtl">
+                  <DropdownMenuLabel className="font-black text-primary px-3 py-3 text-right">حسابي</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   
                   {dashboardLinks.map((link) => (
-                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold gap-3">
-                      <Link href={link.href}>
+                    <DropdownMenuItem key={link.href} asChild className="rounded-xl p-3 focus:bg-primary/5 cursor-pointer font-bold">
+                      <Link href={link.href} className="flex items-center justify-between w-full gap-3">
+                        <span className="flex-1 text-right">{link.label}</span>
                         <span className="text-primary/60">{link.icon}</span>
-                        {link.label}
                       </Link>
                     </DropdownMenuItem>
                   ))}
                   
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold gap-3">
-                    <LogOut size={18} /> تسجيل الخروج
+                  <DropdownMenuItem onClick={handleLogout} className="rounded-xl p-3 focus:bg-red-50 text-red-600 cursor-pointer font-bold flex items-center justify-between gap-3">
+                    <span className="flex-1 text-right">تسجيل الخروج</span>
+                    <LogOut size={18} />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
