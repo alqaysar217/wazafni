@@ -60,7 +60,7 @@ export default function JobsPage() {
       posted: "منذ أسبوع",
       match: 72,
       skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: getPlaceholder('job-eng')
+      logo: getPlaceholder('company-1')
     },
     {
       id: 4,
@@ -72,7 +72,7 @@ export default function JobsPage() {
       posted: "منذ 3 أيام",
       match: 91,
       skills: ["Figma", "UI Design", "UX Research"],
-      logo: getPlaceholder('job-design')
+      logo: getPlaceholder('company-ytech-logo')
     },
     {
       id: 5,
@@ -84,7 +84,7 @@ export default function JobsPage() {
       posted: "منذ يومين",
       match: 65,
       skills: ["Accounting", "Excel", "ERP"],
-      logo: getPlaceholder('job-finance')
+      logo: getPlaceholder('company-kuraimi-logo')
     },
     {
       id: 6,
@@ -96,7 +96,7 @@ export default function JobsPage() {
       posted: "منذ 6 ساعات",
       match: 82,
       skills: ["CCNA", "Security", "Networking"],
-      logo: getPlaceholder('job-tech')
+      logo: getPlaceholder('company-1')
     }
   ];
 
@@ -164,17 +164,14 @@ export default function JobsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {jobs.map(job => (
-              <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col">
+              <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col h-full">
                 <div className="p-8 space-y-6 flex-1">
                   <div className="flex justify-between items-start">
-                    {/* Logo Container with Glow/Shadow Effect */}
                     <div className="relative group/logo">
-                      {/* Glow Layer */}
                       <div className="absolute -inset-2 bg-secondary/30 blur-xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
                       
-                      {/* Logo Box */}
-                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-md relative z-10 transition-all duration-500 group-hover:shadow-xl group-hover:border-secondary/20">
-                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-cover w-full h-full" />
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-md relative z-10 transition-all duration-500 group-hover:shadow-xl group-hover:border-secondary/20 flex items-center justify-center p-2">
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
                       </div>
                     </div>
                     
@@ -187,7 +184,7 @@ export default function JobsPage() {
                     <div className="flex items-center gap-2 text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg text-xs font-black">
                       <Sparkles size={12} /> توافق {job.match}%
                     </div>
-                    <h3 className="text-xl font-black text-primary leading-snug group-hover:text-secondary transition-colors line-clamp-2">{job.title}</h3>
+                    <h3 className="text-xl font-black text-primary leading-snug group-hover:text-secondary transition-colors line-clamp-2 h-[3.5rem]">{job.title}</h3>
                     <div className="flex flex-col gap-2 pt-2">
                       <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><Building2 size={16} className="text-primary/40" /> {job.company}</span>
                       <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><MapPin size={16} className="text-primary/40" /> {job.location}</span>

@@ -82,31 +82,31 @@
     {
       "id": "job-tech",
       "description": "Technology job placeholder",
-      "imageUrl": "/job",
+      "imageUrl": "/job-1.png",
       "imageHint": "software developer"
     },
     {
       "id": "job-marketing",
       "description": "Marketing job placeholder",
-      "imageUrl": "https://picsum.photos/seed/mkt-job/200/200",
+      "imageUrl": "/job-2.png",
       "imageHint": "digital marketing"
     },
     {
       "id": "job-eng",
       "description": "Engineering job placeholder",
-      "imageUrl": "https://picsum.photos/seed/eng-job/200/200",
+      "imageUrl": "/job-3.png",
       "imageHint": "civil engineer"
     },
     {
       "id": "job-finance",
       "description": "Finance job placeholder",
-      "imageUrl": "https://picsum.photos/seed/fin-job/200/200",
+      "imageUrl": "/job-4.png",
       "imageHint": "accounting finance"
     },
     {
       "id": "job-design",
       "description": "Design job placeholder",
-      "imageUrl": "https://picsum.photos/seed/uiux-job/200/200",
+      "imageUrl": "/job-5.png",
       "imageHint": "ux design"
     }
   ]

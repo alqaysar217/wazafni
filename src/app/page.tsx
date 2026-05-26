@@ -62,7 +62,7 @@ export default function Home() {
       posted: "منذ أسبوع",
       match: 72,
       skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: getPlaceholder('job-eng')
+      logo: getPlaceholder('company-1')
     }
   ];
 
@@ -229,11 +229,11 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredJobs.map(job => (
-                <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col">
+                <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col h-full">
                   <div className="p-8 space-y-6 flex-1">
                     <div className="flex justify-between items-start">
-                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-[#F8F7FA] shrink-0 shadow-inner group-hover:scale-110 transition-transform">
-                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-cover w-full h-full" />
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center p-2">
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
                       </div>
                       <div className="flex items-center gap-2 text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg text-xs font-black">
                         <Sparkles size={12} /> توافق {job.match}%
@@ -241,7 +241,7 @@ export default function Home() {
                     </div>
 
                     <div className="space-y-2">
-                      <h3 className="text-xl font-black text-primary leading-snug group-hover:text-secondary transition-colors line-clamp-2">{job.title}</h3>
+                      <h3 className="text-xl font-black text-primary leading-snug group-hover:text-secondary transition-colors line-clamp-2 h-[3.5rem]">{job.title}</h3>
                       <div className="flex flex-col gap-2 pt-2">
                         <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><Building2 size={16} className="text-primary/40" /> {job.company}</span>
                         <span className="flex items-center gap-2 text-muted-foreground font-bold text-sm"><MapPin size={16} className="text-primary/40" /> {job.location}</span>
@@ -288,12 +288,12 @@ export default function Home() {
                   </div>
                   
                   <div className="flex flex-col items-center text-center space-y-6">
-                    <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#F8F7FA] shadow-inner mb-2">
-                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-cover" />
+                    <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#F8F7FA] shadow-inner mb-2 flex items-center justify-center p-3 bg-white">
+                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-contain" />
                     </div>
                     
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-black text-primary group-hover:text-secondary transition-colors">{company.name}</h3>
+                      <h3 className="text-2xl font-black text-primary group-hover:text-secondary transition-colors leading-tight h-[3.5rem] flex items-center justify-center">{company.name}</h3>
                       <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{company.category}</span>
                     </div>
 
