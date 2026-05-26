@@ -63,17 +63,21 @@ export default function LoginPage() {
       router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
     } catch (error: any) {
       console.error("Login error:", error);
+      let title = "خطأ في تسجيل الدخول";
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
 
-      if (error.code === 'auth/network-request-failed') {
-        message = "فشل في الاتصال. يرجى إضافة الدومين الحالي في Authorized Domains داخل Firebase Console.";
+      if (error.code === 'auth/api-key-not-valid' || error.message.includes('api-key-not-valid')) {
+        title = "مفتاح Firebase غير صالح";
+        message = "يرجى وضع مفتاح الـ API الحقيقي في ملف config.ts بدلاً من النص التجريبي.";
+      } else if (error.code === 'auth/network-request-failed') {
+        message = "فشل في الاتصال. يرجى التأكد من تفعيل الدومين في الـ Console.";
       } else if (error.code === 'auth/too-many-requests') {
         message = "تم حظر المحاولات مؤقتاً لكثرة المحاولات الخاطئة.";
       }
       
       toast({
         variant: "destructive",
-        title: "خطأ في تسجيل الدخول",
+        title: title,
         description: `${message} (${error.code})`,
       });
       setLoading(false);

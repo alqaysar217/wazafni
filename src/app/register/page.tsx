@@ -41,7 +41,7 @@ export default function RegisterPage() {
       toast({
         variant: "destructive",
         title: "خطأ في الاتصال",
-        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى التأكد من إعداد مفاتيح API في ملف .env",
+        description: "خدمات Firebase غير جاهزة. تأكد من إعداد مفاتيح المشروع.",
       });
       return;
     }
@@ -102,17 +102,21 @@ export default function RegisterPage() {
       let title = "فشل إنشاء الحساب";
       let message = "حدث خطأ غير متوقع.";
 
-      if (authError.code === 'auth/email-already-in-use') {
+      // معالجة مفتاح الـ API غير الصالح
+      if (authError.code === 'auth/api-key-not-valid' || authError.message.includes('api-key-not-valid')) {
+        title = "مفتاح Firebase غير صالح";
+        message = "المفتاح الحالي (API Key) هو نص تجريبي. يرجى نسخ إعدادات مشروعك الحقيقية من Firebase Console ووضعها في ملف config.ts أو .env";
+      } else if (authError.code === 'auth/email-already-in-use') {
         message = "البريد الإلكتروني مستخدم بالفعل.";
       } else if (authError.code === 'auth/weak-password') {
-        message = "كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل).";
+        message = "كلمة المرور ضعيفة جداً.";
       } else if (authError.code === 'auth/invalid-email') {
         message = "البريد الإلكتروني غير صحيح.";
       } else if (authError.code === 'auth/operation-not-allowed') {
         message = "يجب تفعيل 'Email/Password' في Firebase Console.";
       } else if (authError.code === 'auth/network-request-failed') {
-        title = "خطأ في الاتصال بالشبكة";
-        message = "يرجى التأكد من صحة إعدادات Firebase (API Key) في ملف config وتفعيل الدومين في الـ Console.";
+        title = "خطأ في الشبكة";
+        message = "يرجى التحقق من اتصالك بالإنترنت وتفعيل الدومين في Authorized Domains.";
       }
       
       toast({
@@ -161,8 +165,6 @@ export default function RegisterPage() {
             ))}
           </div>
         </div>
-        
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
@@ -182,7 +184,7 @@ export default function RegisterPage() {
 
           {!firebaseReady && (
             <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
-              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال...
+              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال بقاعدة البيانات...
             </div>
           )}
 
