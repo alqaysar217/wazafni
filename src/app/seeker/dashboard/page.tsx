@@ -6,18 +6,15 @@ import {
   Briefcase, 
   FileText, 
   MessageSquare, 
-  Bell, 
   Settings, 
   Sparkles, 
   ChevronRight,
-  TrendingUp,
   Clock,
   Eye,
   CheckCircle2,
   BrainCircuit,
   Building2,
   MapPin,
-  Search,
   Zap,
   Star,
   ArrowUpRight
@@ -29,6 +26,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
+import { cn } from '@/lib/utils';
 
 export default function SeekerDashboard() {
   const { user } = useUser();
