@@ -25,7 +25,10 @@ export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-') && img.id.endsWith('-logo'));
   
-  const getPlaceholder = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || "";
+  const getPlaceholder = (id: string) => {
+    const img = PlaceHolderImages.find(img => img.id === id);
+    return img?.imageUrl || "https://picsum.photos/seed/default/200/200";
+  };
 
   const featuredJobs = [
     {
@@ -233,7 +236,7 @@ export default function Home() {
                   <div className="p-8 space-y-6 flex-1">
                     <div className="flex justify-between items-start">
                       <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center p-2">
-                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
+                        {job.logo && <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />}
                       </div>
                       <div className="flex items-center gap-2 text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg text-xs font-black">
                         <Sparkles size={12} /> توافق {job.match}%
@@ -289,7 +292,7 @@ export default function Home() {
                   
                   <div className="flex flex-col items-center text-center space-y-6">
                     <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#F8F7FA] shadow-inner mb-2 flex items-center justify-center p-3 bg-white">
-                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-contain" />
+                      {company.logo && <Image src={company.logo} alt={company.name} width={96} height={96} className="object-contain" />}
                     </div>
                     
                     <div className="space-y-2">

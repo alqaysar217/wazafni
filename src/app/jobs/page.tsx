@@ -23,7 +23,10 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function JobsPage() {
-  const getPlaceholder = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || "";
+  const getPlaceholder = (id: string) => {
+    const img = PlaceHolderImages.find(img => img.id === id);
+    return img?.imageUrl || "https://picsum.photos/seed/default/200/200";
+  };
 
   const jobs = [
     {
@@ -96,7 +99,7 @@ export default function JobsPage() {
       posted: "منذ 6 ساعات",
       match: 82,
       skills: ["CCNA", "Security", "Networking"],
-      logo: getPlaceholder('company-1')
+      logo: getPlaceholder('company-2')
     }
   ];
 
@@ -171,7 +174,7 @@ export default function JobsPage() {
                       <div className="absolute -inset-2 bg-secondary/30 blur-xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
                       
                       <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-md relative z-10 transition-all duration-500 group-hover:shadow-xl group-hover:border-secondary/20 flex items-center justify-center p-2">
-                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
+                        {job.logo && <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />}
                       </div>
                     </div>
                     
