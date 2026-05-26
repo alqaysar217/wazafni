@@ -78,7 +78,11 @@ export default function ServiceDetailsPage() {
             {/* Left: Visualization & Process */}
             <div className="space-y-12 order-2 lg:order-1">
               <div className="relative h-[500px] w-full rounded-[60px] overflow-hidden shadow-2xl border-8 border-white">
-                <Image src={currentService.image || ''} alt={currentService.title} fill className="object-cover" />
+                {currentService.image ? (
+                  <Image src={currentService.image} alt={currentService.title} fill className="object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">لا توجد صورة</div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
               </div>
 
