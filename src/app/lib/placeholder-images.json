@@ -16,19 +16,19 @@
     {
       "id": "company-hsa",
       "description": "HSA Group Logo Placeholder",
-      "imageUrl": "https://picsum.photos/seed/hsa-logo/200/80",
+      "imageUrl": "/logo-1.png",
       "imageHint": "manufacturing logo"
     },
     {
       "id": "company-kuraimi",
       "description": "Al-Kuraimi Bank Logo Placeholder",
-      "imageUrl": "https://picsum.photos/seed/kuraimi-logo/200/80",
+      "imageUrl": "/logo-2.png",
       "imageHint": "banking logo"
     },
     {
       "id": "company-yemenmobile",
       "description": "Yemen Mobile Logo Placeholder",
-      "imageUrl": "https://picsum.photos/seed/ym-logo/200/80",
+      "imageUrl": "/logo-3.png",
       "imageHint": "telecom logo"
     },
     {

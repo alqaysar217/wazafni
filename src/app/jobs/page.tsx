@@ -163,9 +163,17 @@ export default function JobsPage() {
               <div key={job.id} className="bg-white rounded-[40px] border border-border/50 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group overflow-hidden flex flex-col">
                 <div className="p-8 space-y-6 flex-1">
                   <div className="flex justify-between items-start">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-[#F8F7FA] shrink-0 shadow-inner group-hover:scale-110 transition-transform">
-                      <Image src={job.logo} alt={job.company} width={64} height={64} className="object-cover w-full h-full" />
+                    {/* Logo Container with Glow/Shadow Effect */}
+                    <div className="relative group/logo">
+                      {/* Glow Layer */}
+                      <div className="absolute -inset-2 bg-secondary/30 blur-xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
+                      
+                      {/* Logo Box */}
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-md relative z-10 transition-all duration-500 group-hover:shadow-xl group-hover:border-secondary/20">
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-cover w-full h-full" />
+                      </div>
                     </div>
+                    
                     <Button variant="ghost" size="icon" className="rounded-xl hover:bg-red-50 hover:text-red-500 transition-colors">
                       <Bookmark size={22} />
                     </Button>
