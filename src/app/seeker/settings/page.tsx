@@ -39,9 +39,9 @@ export default function SettingsPage() {
       <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
         <main className="space-y-12">
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-3">
+            <div className="space-y-3 text-right">
               <h1 className="text-5xl font-black font-headline text-primary tracking-tighter">إعدادات الحساب</h1>
-              <p className="text-xl text-muted-foreground font-medium">تحكم في ملفك الشخصي، الأمان، وتفضيلات الإشعارات الخاصة بك.</p>
+              <p className="text-xl text-muted-foreground font-medium">إدارة المعلومات الشخصية، الأمان وتفضيلات التواصل.</p>
             </div>
             <Button onClick={handleLogout} variant="outline" className="h-14 px-8 rounded-2xl border-red-100 text-red-500 hover:bg-red-50 hover:text-red-600 font-black gap-3 transition-all">
               <LogOut size={22} /> تسجيل الخروج
@@ -62,8 +62,8 @@ export default function SettingsPage() {
             </TabsList>
 
             <TabsContent value="profile" className="space-y-10 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <Card className="rounded-[50px] border-none shadow-sm p-12 bg-white">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-right">
                   <div className="space-y-5">
                     <Label className="font-black text-primary text-md mr-2">الاسم بالكامل</Label>
                     <Input defaultValue={user?.displayName || "أحمد محمد المقطري"} className="h-16 rounded-3xl bg-muted/20 border-none font-bold px-8 text-lg focus-visible:ring-primary/10" />
@@ -82,17 +82,17 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="mt-12 pt-10 border-t border-primary/5 flex justify-end">
-                  <Button className="h-16 px-16 rounded-3xl bg-primary text-xl font-black gap-4 shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
-                    <Save size={24} /> حفظ كافة التغييرات
+                  <Button className="h-16 px-16 rounded-3xl bg-primary text-xl font-black gap-4 shadow-md transition-transform hover:translate-y-[-2px]">
+                    <Save size={24} /> حفظ التغييرات
                   </Button>
                 </div>
               </Card>
             </TabsContent>
 
             <TabsContent value="security" className="space-y-10 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white space-y-12">
-                <div className="space-y-8">
-                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline">
+              <Card className="rounded-[50px] border-none shadow-sm p-12 bg-white space-y-12">
+                <div className="space-y-8 text-right">
+                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline tracking-tight justify-start">
                     <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary"><Lock size={20} /></div>
                     تغيير كلمة المرور
                   </h3>
@@ -106,18 +106,18 @@ export default function SettingsPage() {
                       <Input type="password" placeholder="••••••••" className="h-16 rounded-3xl bg-muted/20 border-none px-8 text-lg" />
                     </div>
                   </div>
-                  <Button size="lg" className="h-14 px-10 rounded-2xl bg-primary font-black shadow-lg shadow-primary/10">تحديث كلمة المرور</Button>
+                  <Button size="lg" className="h-14 px-10 rounded-2xl bg-primary font-black shadow-sm transition-transform hover:translate-y-[-2px]">تحديث كلمة المرور</Button>
                 </div>
 
-                <div className="pt-12 border-t border-primary/5 space-y-8">
-                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline">
+                <div className="pt-12 border-t border-primary/5 space-y-8 text-right">
+                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline tracking-tight justify-start">
                     <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary"><Globe size={20} /></div>
                     المصادقة الثنائية (2FA)
                   </h3>
                   <div className="flex items-center justify-between p-10 bg-muted/10 rounded-[40px] border border-dashed border-primary/20 group hover:bg-muted/20 transition-all">
                     <div className="space-y-2">
                       <p className="font-black text-xl text-primary">إرسال كود التحقق عبر البريد</p>
-                      <p className="text-md text-muted-foreground font-medium">سيطلب منك النظام كود تحقق عند كل عملية دخول جديدة من جهاز مختلف.</p>
+                      <p className="text-md text-muted-foreground font-medium">سيطلب منك النظام كود تحقق إضافي عند الدخول من جهاز جديد.</p>
                     </div>
                     <Switch className="scale-125" />
                   </div>
@@ -126,13 +126,13 @@ export default function SettingsPage() {
             </TabsContent>
 
             <TabsContent value="notifications" className="space-y-10 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white space-y-10">
-                <div className="space-y-12">
+              <Card className="rounded-[50px] border-none shadow-sm p-12 bg-white space-y-10">
+                <div className="space-y-12 text-right">
                   {[
-                    { title: "تنبيهات الوظائف الجديدة", desc: "أرسل لي بريداً فورياً عند نشر وظائف تتناسب مع مهاراتي وخبراتي.", icon: <Briefcase /> },
-                    { title: "رسائل الشركات", desc: "تلقي إشعار فوري عند استلام رسالة جديدة أو دعوة مقابلة من صاحب عمل.", icon: <MessageSquare /> },
-                    { title: "حالة طلبات التوظيف", desc: "تنبيهات عند تغيير حالة طلب التوظيف (مراجعة، مقابلة، قبول).", icon: <Eye /> },
-                    { title: "أخبار ونشرات مهنية", desc: "أهم الأخبار والنصائح الوظيفية الحصرية في سوق العمل اليمني.", icon: <Globe /> }
+                    { title: "تنبيهات الوظائف الجديدة", desc: "استلام إشعارات فورية عند نشر وظائف تتوافق مع مهاراتك.", icon: <Briefcase /> },
+                    { title: "رسائل الشركات", desc: "تلقي تنبيه عند استلام رسالة جديدة أو دعوة مقابلة.", icon: <MessageSquare /> },
+                    { title: "حالة طلبات التوظيف", desc: "متابعة تحديثات الحالة لطلباتك المقدمة.", icon: <Eye /> },
+                    { title: "أخبار مهنية", desc: "الحصول على نصائح حصرية لتعزيز مسارك المهني في اليمن.", icon: <Globe /> }
                   ].map((pref, i) => (
                     <div key={i} className="flex items-center justify-between group p-6 hover:bg-muted/10 rounded-[35px] transition-all">
                       <div className="flex items-center gap-8">

@@ -43,14 +43,14 @@ export default function SeekerDashboard() {
           <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-secondary mb-2">
-                <Sparkles size={20} className="animate-pulse" />
-                <span className="text-sm font-black uppercase tracking-widest text-primary">لوحة التحكم الذكية</span>
+                <Sparkles size={20} />
+                <span className="text-xs font-black uppercase tracking-widest text-primary/60">لوحة التحكم الذكية</span>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-black font-headline text-primary tracking-tighter">أهلاً بك، {user?.displayName?.split(' ')[0] || "أحمد"} 👋</h1>
-              <p className="text-lg text-muted-foreground font-medium">لديك اليوم 4 فرص وظيفية جديدة تناسب ملفك الشخصي.</p>
+              <h1 className="text-4xl lg:text-5xl font-black font-headline text-primary tracking-tighter">مرحباً بك، {user?.displayName?.split(' ')[0] || "أحمد"}</h1>
+              <p className="text-lg text-muted-foreground font-medium">لديك اليوم 4 فرص وظيفية جديدة تناسب معايير خبرتك.</p>
             </div>
             <div className="flex items-center gap-3">
-              <Button size="lg" className="rounded-2xl px-8 bg-primary font-black shadow-xl shadow-primary/10 text-white gap-3 h-14 transition-all hover:scale-105 active:scale-95">
+              <Button size="lg" className="rounded-2xl px-8 bg-primary font-black shadow-xl shadow-primary/10 text-white gap-3 h-14 transition-all hover:translate-y-[-2px]">
                 نشر ملفي الشخصي <ArrowUpRight size={20} />
               </Button>
             </div>
@@ -59,14 +59,14 @@ export default function SeekerDashboard() {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, i) => (
-              <Card key={i} className="rounded-[35px] border-none shadow-sm hover:shadow-xl transition-all duration-500 group overflow-hidden bg-white">
+              <Card key={i} className="rounded-[35px] border-none shadow-sm hover:shadow-md transition-all duration-300 bg-white">
                 <CardContent className="p-8 space-y-6">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${stat.bg} ${stat.color}`}>
                     {stat.icon}
                   </div>
                   <div>
-                    <p className="text-4xl font-black text-primary tracking-tighter group-hover:text-secondary transition-colors">{stat.value}</p>
-                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
+                    <p className="text-4xl font-black text-primary tracking-tighter">{stat.value}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -78,10 +78,10 @@ export default function SeekerDashboard() {
             <div className="xl:col-span-2 space-y-8">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-black font-headline flex items-center gap-3 text-primary tracking-tight">
-                  <div className="w-2 h-8 bg-secondary rounded-full"></div>
+                  <div className="w-1.5 h-8 bg-secondary rounded-full"></div>
                   وظائف مقترحة لك
                 </h2>
-                <Link href="/jobs" className="text-sm font-black text-secondary hover:underline underline-offset-8 flex items-center gap-2">عرض الكل <ChevronRight size={16} /></Link>
+                <Link href="/jobs" className="text-sm font-black text-secondary hover:underline underline-offset-8 flex items-center gap-2 transition-all">عرض الكل <ChevronRight size={16} /></Link>
               </div>
               
               <div className="space-y-6">
@@ -89,14 +89,14 @@ export default function SeekerDashboard() {
                   { title: "مهندس واجهات أمامية (React)", company: "بنك الكريمي الإسلامي", location: "صنعاء", type: "دوام كامل", match: 98, logo: "/logo-2.png" },
                   { title: "مدير تقني CTO", company: "شركة وصل للتقنية", location: "عدن - ريموت", type: "عقد", match: 92, logo: "/logo-3.png" }
                 ].map((job, i) => (
-                  <div key={i} className="bg-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 rounded-[40px] border border-primary/5 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
+                  <div key={i} className="bg-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 rounded-[40px] border border-primary/5 shadow-sm hover:shadow-xl transition-all duration-500 group relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16 group-hover:scale-125 transition-transform duration-700"></div>
                     <div className="flex items-center gap-8 relative z-10 w-full">
-                      <div className="w-20 h-20 rounded-3xl bg-primary/5 overflow-hidden shrink-0 border-4 border-white shadow-lg flex items-center justify-center p-3 group-hover:rotate-6 transition-transform">
+                      <div className="w-20 h-20 rounded-3xl bg-primary/5 overflow-hidden shrink-0 border border-primary/5 shadow-sm flex items-center justify-center p-3 transition-transform group-hover:translate-y-[-5px]">
                         <Image src={job.logo} alt="Logo" width={64} height={64} className="object-contain" />
                       </div>
-                      <div className="space-y-3 flex-1">
-                        <div className="flex items-center gap-3">
+                      <div className="space-y-3 flex-1 text-right">
+                        <div className="flex items-center gap-3 justify-start">
                           <Badge className="bg-green-500/10 text-green-600 border-none rounded-full px-3 py-1 font-black text-[10px] uppercase tracking-wider">
                             <Sparkles size={10} className="inline-block mr-1" /> توافق {job.match}%
                           </Badge>
@@ -109,7 +109,7 @@ export default function SeekerDashboard() {
                         </div>
                       </div>
                     </div>
-                    <Button variant="outline" size="lg" className="rounded-2xl px-10 border-2 border-primary/10 text-primary font-black group-hover:bg-primary group-hover:text-white transition-all h-14 relative z-10 w-full md:w-auto">
+                    <Button variant="outline" size="lg" className="rounded-2xl px-10 border-2 border-primary/10 text-primary font-black hover:bg-primary hover:text-white transition-all h-14 relative z-10 w-full md:w-auto">
                       التفاصيل
                     </Button>
                   </div>
@@ -119,25 +119,24 @@ export default function SeekerDashboard() {
 
             {/* Application Timeline & Analytics */}
             <div className="space-y-10">
-              <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm space-y-8 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12"></div>
+              <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm space-y-8 relative overflow-hidden">
                 <h3 className="font-black text-xl border-b border-primary/5 pb-4 text-primary tracking-tight">تحليل السيرة الذاتية</h3>
                 <div className="space-y-8 relative z-10">
                   <div className="space-y-3">
-                    <div className="flex justify-between text-sm font-black uppercase tracking-widest text-primary">
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-primary/60">
                       <span>جودة المحتوى</span>
                       <span className="text-secondary">85%</span>
                     </div>
-                    <Progress value={85} className="h-3 rounded-full bg-primary/5" />
+                    <Progress value={85} className="h-2 rounded-full bg-primary/5" />
                   </div>
                   <div className="space-y-3">
-                    <div className="flex justify-between text-sm font-black uppercase tracking-widest text-primary">
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-primary/60">
                       <span>توافق الـ ATS</span>
                       <span className="text-emerald-500">92%</span>
                     </div>
-                    <Progress value={92} className="h-3 rounded-full bg-primary/5" />
+                    <Progress value={92} className="h-2 rounded-full bg-primary/5" />
                   </div>
-                  <Button asChild variant="outline" className="w-full rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black h-16 transition-all shadow-xl shadow-primary/5">
+                  <Button asChild variant="outline" className="w-full rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black h-16 transition-all">
                     <Link href="/seeker/ai-tools" className="gap-3">
                       <BrainCircuit size={20} /> حسن ملفك الآن
                     </Link>
@@ -153,13 +152,13 @@ export default function SeekerDashboard() {
                     { label: "تمت مشاهدة ملفك من شركة تليمن", time: "يوم أمس", status: "info" },
                     { label: "تم تحديث السيرة الذاتية", time: "منذ 3 أيام", status: "muted" }
                   ].map((activity, i) => (
-                    <div key={i} className="relative pr-10 space-y-2 group">
+                    <div key={i} className="relative pr-10 space-y-1 group">
                       <div className={cn(
-                        "absolute right-0 top-1 w-5 h-5 rounded-full border-4 border-white shadow-md transition-all group-hover:scale-125 z-10",
+                        "absolute right-0 top-1 w-5 h-5 rounded-full border-4 border-white shadow-sm transition-all group-hover:scale-110 z-10",
                         activity.status === 'success' ? 'bg-emerald-500' : activity.status === 'info' ? 'bg-secondary' : 'bg-primary/20'
                       )}></div>
                       <p className="text-[15px] font-black leading-tight text-primary group-hover:text-secondary transition-colors">{activity.label}</p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-2 font-bold uppercase tracking-wider"><Clock size={12} className="text-primary/20" /> {activity.time}</p>
+                      <p className="text-[10px] text-muted-foreground flex items-center gap-2 font-bold uppercase tracking-wider"><Clock size={10} className="text-primary/20" /> {activity.time}</p>
                     </div>
                   ))}
                 </div>
@@ -167,7 +166,6 @@ export default function SeekerDashboard() {
             </div>
           </div>
 
-          {/* Moved Premium Banner here */}
           <div className="rounded-[40px] bg-primary p-12 text-white relative overflow-hidden group shadow-2xl shadow-primary/20">
             <Zap className="absolute -top-10 -left-10 w-64 h-64 text-white/5 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
