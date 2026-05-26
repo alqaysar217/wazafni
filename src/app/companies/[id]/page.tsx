@@ -18,7 +18,9 @@ import {
   Linkedin,
   Twitter,
   ExternalLink,
-  ArrowUpRight
+  ArrowUpRight,
+  Share2,
+  DollarSign
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
