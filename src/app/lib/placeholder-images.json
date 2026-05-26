@@ -14,34 +14,40 @@
       "imageHint": "corporate logo"
     },
     {
-      "id": "company-hsa",
-      "description": "HSA Group Logo Placeholder",
-      "imageUrl": "/logo-1.png",
-      "imageHint": "manufacturing logo"
+      "id": "company-hsa-logo",
+      "description": "HSA Group Logo",
+      "imageUrl": "https://picsum.photos/seed/hsa/200/200",
+      "imageHint": "corporate logo"
     },
     {
-      "id": "company-kuraimi",
-      "description": "Al-Kuraimi Bank Logo Placeholder",
-      "imageUrl": "/logo-2.png",
-      "imageHint": "banking logo"
+      "id": "company-hsa-cover",
+      "description": "HSA Group Office Cover",
+      "imageUrl": "https://picsum.photos/seed/corp/1920/600",
+      "imageHint": "modern office"
     },
     {
-      "id": "company-yemenmobile",
-      "description": "Yemen Mobile Logo Placeholder",
-      "imageUrl": "/logo-3.png",
-      "imageHint": "telecom logo"
+      "id": "company-kuraimi-logo",
+      "description": "Al-Kuraimi Bank Logo",
+      "imageUrl": "https://picsum.photos/seed/kuraimi/200/200",
+      "imageHint": "bank logo"
     },
     {
-      "id": "company-cacbank",
-      "description": "CAC Bank Logo Placeholder",
-      "imageUrl": "https://picsum.photos/seed/cac-logo/200/80",
-      "imageHint": "finance logo"
+      "id": "company-kuraimi-cover",
+      "description": "Al-Kuraimi Bank Cover",
+      "imageUrl": "https://picsum.photos/seed/bank-cover/1920/600",
+      "imageHint": "bank building"
     },
     {
-      "id": "company-tadhamon",
-      "description": "Tadhamon Bank Logo Placeholder",
-      "imageUrl": "https://picsum.photos/seed/tadhamon-logo/200/80",
-      "imageHint": "corporate brand"
+      "id": "company-ytech-logo",
+      "description": "Yemen Tech Logo",
+      "imageUrl": "https://picsum.photos/seed/ytech/200/200",
+      "imageHint": "tech logo"
+    },
+    {
+      "id": "company-ytech-cover",
+      "description": "Yemen Tech Cover",
+      "imageUrl": "https://picsum.photos/seed/tech-cover/1920/600",
+      "imageHint": "data center"
     },
     {
       "id": "service-cv",

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Navbar } from '@/components/layout/Navbar';
@@ -17,17 +18,19 @@ import {
   Linkedin,
   Twitter,
   ExternalLink,
-  ArrowUpRight,
   Share2,
   DollarSign
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function CompanyProfilePage() {
   const params = useParams();
   const id = params.id as string;
+
+  const getImg = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
 
   // بيانات الشركات المختلفة
   const companiesData: Record<string, any> = {
@@ -43,8 +46,8 @@ export default function CompanyProfilePage() {
       reviews: 1240,
       about: "تُعد مجموعة هائل سعيد أنعم وشركاه أكبر تكتل تجاري وصناعي في اليمن، ولديها عمليات واسعة في الشرق الأوسط وأفريقيا وجنوب شرق آسيا. منذ تأسيسها في عام 1938، التزمت المجموعة بتقديم منتجات وخدمات عالية الجودة والمساهمة في التنمية الاقتصادية والاجتماعية.",
       values: ["النزاهة والشفافية", "الجودة والتميز", "المسؤولية الاجتماعية", "الابتكار المستمر"],
-      logo: "https://picsum.photos/seed/hsa/200/200",
-      cover: "https://picsum.photos/seed/corp/1920/600",
+      logo: getImg("company-hsa-logo"),
+      cover: getImg("company-hsa-cover"),
       openJobs: [
         { id: 2, title: "أخصائي تسويق رقمي", type: "دوام كامل", salary: "12,000 - 18,000 ر.س" },
         { id: 10, title: "مدير علاقات عامة", type: "دوام كامل", salary: "قابل للتفاوض" }
@@ -62,8 +65,8 @@ export default function CompanyProfilePage() {
       reviews: 850,
       about: "بنك الكريمي الإسلامي للتمويل الأصغر هو رائد الخدمات المالية في اليمن. نسعى لتقديم خدمات مالية متميزة لكل يمني في أي مكان، مع التركيز على الابتكار التقني والشمول المالي لدعم الاقتصاد الوطني.",
       values: ["الشمول المالي", "الابتكار الرقمي", "الثقة والأمان", "خدمة المجتمع"],
-      logo: "https://picsum.photos/seed/kuraimi/200/200",
-      cover: "https://picsum.photos/seed/bank-cover/1920/600",
+      logo: getImg("company-kuraimi-logo"),
+      cover: getImg("company-kuraimi-cover"),
       openJobs: [
         { id: 11, title: "محلل بيانات مالية", type: "دوام كامل", salary: "8,000 - 12,000 ر.س" },
         { id: 12, title: "مطوّر تطبيقات بنكية", type: "دوام كامل", salary: "15,000 - 22,000 ر.س" }
@@ -81,8 +84,8 @@ export default function CompanyProfilePage() {
       reviews: 120,
       about: "يمن تيك هي شركة برمجيات صاعدة تهدف إلى تحويل المشهد الرقمي في اليمن. نحن متخصصون في بناء الحلول السحابية المتقدمة، وتطبيقات الهاتف المحمول، وأنظمة إدارة المؤسسات للشركات الطموحة.",
       values: ["العمل بروح الفريق", "الإبداع التقني", "المرونة والسرعة", "التعلم المستمر"],
-      logo: "https://picsum.photos/seed/ytech/200/200",
-      cover: "https://picsum.photos/seed/tech-cover/1920/600",
+      logo: getImg("company-ytech-logo"),
+      cover: getImg("company-ytech-cover"),
       openJobs: [
         { id: 1, title: "مطور برمجيات أول (React & Node.js)", type: "دوام كامل", salary: "5,600 - 9,400 ر.س" },
         { id: 4, title: "مصمم تجربة مستخدم UI/UX", type: "دوام كامل", salary: "4,500 - 6,800 ر.س" }
