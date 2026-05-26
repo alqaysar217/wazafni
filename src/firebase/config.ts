@@ -1,14 +1,20 @@
-// إعدادات تجريبية آمنة لمنع الانهيار
+/**
+ * @fileOverview Firebase configuration using real project credentials.
+ */
+
 export const firebaseConfig = {
-  apiKey: "AIzaSyDummyKeyForStudio000000000000000000",
-  authDomain: "wazafni-demo.firebaseapp.com",
-  projectId: "wazafni-demo",
-  storageBucket: "wazafni-demo.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:0000000000000000"
+  apiKey: "AIzaSyBggr23kXxBfZj0jspEgvC6_aUzi4R7XYA",
+  authDomain: "studio-8977815245-51adb.firebaseapp.com",
+  projectId: "studio-8977815245-51adb",
+  storageBucket: "studio-8977815245-51adb.firebasestorage.app",
+  messagingSenderId: "202247792643",
+  appId: "1:202247792643:web:85b0598faa8107a3944636"
 };
 
-// دائماً نعيد TRUE في وضع الاستعراض للسماح بالدخول
+/**
+ * Validates if the Firebase configuration is set.
+ * Returns true since we now have real values.
+ */
 export const isFirebaseConfigValid = () => {
-  return true;
+  return !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "AIzaSyDummyKeyForStudio000000000000000000";
 };
