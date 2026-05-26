@@ -4,121 +4,109 @@
     {
       "id": "hero-bg",
       "description": "Professional team working in a modern office environment",
-      "imageUrl": "https://picsum.photos/seed/wazafni-pro/1920/1080",
+      "imageUrl": "/home.png",
       "imageHint": "professional office"
     },
     {
       "id": "logo-main",
       "description": "Wazafni official logo icon",
-      "imageUrl": "https://picsum.photos/seed/wlogo/100/100",
+      "imageUrl": "/logo.png",
       "imageHint": "corporate logo"
     },
     {
       "id": "company-hsa-logo",
       "description": "HSA Group Logo",
-      "imageUrl": "https://picsum.photos/seed/hsa/200/200",
+      "imageUrl": "/logo-1.png",
       "imageHint": "corporate logo"
     },
     {
       "id": "company-hsa-cover",
       "description": "HSA Group Office Cover",
-      "imageUrl": "https://picsum.photos/seed/hsa-cover/1200/400",
+      "imageUrl": "/cam-1.png",
       "imageHint": "modern office"
     },
     {
       "id": "company-kuraimi-logo",
       "description": "Al-Kuraimi Bank Logo",
-      "imageUrl": "https://picsum.photos/seed/kuraimi/200/200",
+      "imageUrl": "/logo-2.png",
       "imageHint": "bank logo"
     },
     {
       "id": "company-kuraimi-cover",
       "description": "Al-Kuraimi Bank Cover",
-      "imageUrl": "https://picsum.photos/seed/kuraimi-cover/1200/400",
+      "imageUrl": "/cam-2.png",
       "imageHint": "bank building"
     },
     {
       "id": "company-ytech-logo",
       "description": "Yemen Tech Logo",
-      "imageUrl": "https://picsum.photos/seed/ytech/200/200",
+      "imageUrl": "/logo-3.png",
       "imageHint": "tech logo"
     },
     {
       "id": "company-ytech-cover",
       "description": "Yemen Tech Cover",
-      "imageUrl": "https://picsum.photos/seed/ytech-cover/1200/400",
+      "imageUrl": "/cam-3.png",
       "imageHint": "data center"
-    },
-    {
-      "id": "company-1",
-      "description": "General Company Logo 1",
-      "imageUrl": "https://picsum.photos/seed/comp1/200/200",
-      "imageHint": "company logo"
-    },
-    {
-      "id": "company-2",
-      "description": "General Company Logo 2",
-      "imageUrl": "https://picsum.photos/seed/comp2/200/200",
-      "imageHint": "company logo"
     },
     {
       "id": "service-cv",
       "description": "Modern resume builder interface",
-      "imageUrl": "https://picsum.photos/seed/resume/800/600",
+      "imageUrl": "/services-2.png",
       "imageHint": "resume design"
     },
     {
       "id": "service-ai",
       "description": "AI matching visualization",
-      "imageUrl": "https://picsum.photos/seed/ai/800/600",
+      "imageUrl": "/services-1.png",
       "imageHint": "artificial intelligence"
     },
     {
       "id": "service-business",
       "description": "Corporate hiring solutions",
-      "imageUrl": "https://picsum.photos/seed/business/800/600",
+      "imageUrl": "/services-3.png",
       "imageHint": "business recruitment"
     },
     {
       "id": "about-vision",
       "description": "Strategic vision concept",
-      "imageUrl": "https://picsum.photos/seed/vision/1200/800",
+      "imageUrl": "/about.png",
       "imageHint": "strategic planning"
     },
     {
       "id": "contact-bg",
       "description": "Support team workspace",
-      "imageUrl": "https://picsum.photos/seed/contact/1200/800",
+      "imageUrl": "/job-1.png",
       "imageHint": "customer support"
     },
     {
       "id": "job-tech",
       "description": "Technology job placeholder",
-      "imageUrl": "https://picsum.photos/seed/tech-job/400/400",
+      "imageUrl": "/job-2.png",
       "imageHint": "software developer"
     },
     {
       "id": "job-marketing",
       "description": "Marketing job placeholder",
-      "imageUrl": "https://picsum.photos/seed/marketing-job/400/400",
+      "imageUrl": "/job-3.png",
       "imageHint": "digital marketing"
     },
     {
       "id": "job-eng",
       "description": "Engineering job placeholder",
-      "imageUrl": "https://picsum.photos/seed/eng-job/400/400",
+      "imageUrl": "/job-4.png",
       "imageHint": "civil engineer"
     },
     {
       "id": "job-finance",
       "description": "Finance job placeholder",
-      "imageUrl": "https://picsum.photos/seed/finance-job/400/400",
+      "imageUrl": "/job-5.png",
       "imageHint": "accounting finance"
     },
     {
       "id": "job-design",
       "description": "Design job placeholder",
-      "imageUrl": "https://picsum.photos/seed/design-job/400/400",
+      "imageUrl": "/job-6.png",
       "imageHint": "ux design"
     }
   ]

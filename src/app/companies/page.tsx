@@ -3,45 +3,21 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, MapPin, Users, Briefcase, Star, ArrowUpRight } from 'lucide-react';
+import { Search, MapPin, Briefcase, Star, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function CompaniesPage() {
-  const getLogo = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
+  const getImg = (id: string) => {
+    const img = PlaceHolderImages.find(img => img.id === id);
+    return img?.imageUrl || "/logo.png";
+  };
 
   const companies = [
-    {
-      id: 1,
-      name: "مجموعة هائل سعيد أنعم",
-      category: "مجموعة شركات متنوعة",
-      location: "تعز، اليمن",
-      employees: "20,000+",
-      jobs: 15,
-      rating: 4.9,
-      logoId: "company-hsa-logo"
-    },
-    {
-      id: 2,
-      name: "بنك الكريمي الإسلامي",
-      category: "خدمات مالية وبنكية",
-      location: "صنعاء، اليمن",
-      employees: "2,500+",
-      jobs: 8,
-      rating: 4.7,
-      logoId: "company-kuraimi-logo"
-    },
-    {
-      id: 3,
-      name: "يمن تيك للحلول الرقمية",
-      category: "تقنية معلومات",
-      location: "ريموت / صنعاء",
-      employees: "50-100",
-      jobs: 4,
-      rating: 4.8,
-      logoId: "company-ytech-logo"
-    }
+    { id: 1, name: "مجموعة هائل سعيد أنعم", category: "مجموعة شركات متنوعة", location: "تعز، اليمن", jobs: 15, rating: 4.9, logoId: "company-hsa-logo" },
+    { id: 2, name: "بنك الكريمي الإسلامي", category: "خدمات مالية وبنكية", location: "صنعاء، اليمن", jobs: 8, rating: 4.7, logoId: "company-kuraimi-logo" },
+    { id: 3, name: "يمن تيك للحلول الرقمية", category: "تقنية معلومات", location: "ريموت / صنعاء", jobs: 4, rating: 4.8, logoId: "company-ytech-logo" }
   ];
 
   return (
@@ -74,9 +50,8 @@ export default function CompaniesPage() {
                 <div className="flex flex-col items-center text-center space-y-6">
                   <div className="relative group/logo">
                     <div className="absolute -inset-6 bg-secondary/20 blur-3xl rounded-full scale-0 group-hover:scale-110 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
-                    
-                    <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] group-hover:border-secondary/20">
-                      <Image src={getLogo(company.logoId)} alt={company.name} width={96} height={96} className="object-cover w-full h-full" />
+                    <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] group-hover:border-secondary/20 flex items-center justify-center p-3">
+                      <Image src={getImg(company.logoId)} alt={company.name} width={96} height={96} className="object-contain w-full h-full" />
                     </div>
                   </div>
                   

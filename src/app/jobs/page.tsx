@@ -11,7 +11,6 @@ import {
   ChevronDown, 
   Briefcase, 
   Clock, 
-  DollarSign,
   Sparkles,
   Building2,
   Bookmark,
@@ -23,84 +22,18 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function JobsPage() {
-  const getPlaceholder = (id: string) => {
+  const getImg = (id: string) => {
     const img = PlaceHolderImages.find(img => img.id === id);
-    return img?.imageUrl || "https://picsum.photos/seed/default/200/200";
+    return img?.imageUrl || "/logo.png";
   };
 
   const jobs = [
-    {
-      id: 1,
-      title: "مطور برمجيات أول (React & Node.js)",
-      company: "شركة يمن تيك للحلول الرقمية",
-      location: "صنعاء - ريموت",
-      salary: "5,600 - 9,400 ر.س",
-      type: "دوام كامل",
-      posted: "منذ يومين",
-      match: 95,
-      skills: ["React", "TypeScript", "Node.js"],
-      logo: getPlaceholder('company-ytech-logo')
-    },
-    {
-      id: 2,
-      title: "أخصائي تسويق رقمي",
-      company: "مجموعة هائل سعيد أنعم",
-      location: "تعز - المقر الرئيسي",
-      salary: "12,000 - 18,000 ر.س",
-      type: "دوام كامل",
-      posted: "منذ 4 ساعات",
-      match: 88,
-      skills: ["SEO", "Content Strategy", "Ads"],
-      logo: getPlaceholder('company-hsa-logo')
-    },
-    {
-      id: 3,
-      title: "مدير مشاريع إنشائية",
-      company: "شركة تهامة للهندسة والمقاولات",
-      location: "عدن - كريتر",
-      salary: "7,500 - 13,000 ر.س",
-      type: "عقد",
-      posted: "منذ أسبوع",
-      match: 72,
-      skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: getPlaceholder('company-1')
-    },
-    {
-      id: 4,
-      title: "مصمم تجربة مستخدم UI/UX",
-      company: "أنا مبرمج للتقنية",
-      location: "حضرموت - المكلا",
-      salary: "4,500 - 6,800 ر.س",
-      type: "دوام كامل",
-      posted: "منذ 3 أيام",
-      match: 91,
-      skills: ["Figma", "UI Design", "UX Research"],
-      logo: getPlaceholder('company-ytech-logo')
-    },
-    {
-      id: 5,
-      title: "محاسب قانوني",
-      company: "شركة العمقي للصرافة",
-      location: "صنعاء",
-      salary: "7,500 - 10,500 ر.س",
-      type: "دوام كامل",
-      posted: "منذ يومين",
-      match: 65,
-      skills: ["Accounting", "Excel", "ERP"],
-      logo: getPlaceholder('company-kuraimi-logo')
-    },
-    {
-      id: 6,
-      title: "مهندس شبكات وأمن معلومات",
-      company: "يمن موبايل",
-      location: "صنعاء",
-      salary: "6,800 - 9,000 ر.س",
-      type: "دوام كامل",
-      posted: "منذ 6 ساعات",
-      match: 82,
-      skills: ["CCNA", "Security", "Networking"],
-      logo: getPlaceholder('company-2')
-    }
+    { id: 1, title: "مطور برمجيات أول (React & Node.js)", company: "شركة يمن تيك للحلول الرقمية", location: "صنعاء - ريموت", salary: "5,600 - 9,400 ر.س", type: "دوام كامل", posted: "منذ يومين", match: 95, skills: ["React", "TypeScript", "Node.js"], logo: getImg('job-tech') },
+    { id: 2, title: "أخصائي تسويق رقمي", company: "مجموعة هائل سعيد أنعم", location: "تعز - المقر الرئيسي", salary: "12,000 - 18,000 ر.س", type: "دوام كامل", posted: "منذ 4 ساعات", match: 88, skills: ["SEO", "Content Strategy", "Ads"], logo: getImg('job-marketing') },
+    { id: 3, title: "مدير مشاريع إنشائية", company: "شركة تهامة للهندسة والمقاولات", location: "عدن - كريتر", salary: "7,500 - 13,000 ر.س", type: "عقد", posted: "منذ أسبوع", match: 72, skills: ["PMP", "Project Mgmt", "Civil Eng"], logo: getImg('job-eng') },
+    { id: 4, title: "مصمم تجربة مستخدم UI/UX", company: "أنا مبرمج للتقنية", location: "حضرموت - المكلا", salary: "4,500 - 6,800 ر.س", type: "دوام كامل", posted: "منذ 3 أيام", match: 91, skills: ["Figma", "UI Design", "UX Research"], logo: getImg('job-design') },
+    { id: 5, title: "محاسب قانوني", company: "شركة العمقي للصرافة", location: "صنعاء", salary: "7,500 - 10,500 ر.س", type: "دوام كامل", posted: "منذ يومين", match: 65, skills: ["Accounting", "Excel", "ERP"], logo: getImg('job-finance') },
+    { id: 6, title: "مهندس شبكات وأمن معلومات", company: "يمن موبايل", location: "صنعاء", salary: "6,800 - 9,000 ر.س", type: "دوام كامل", posted: "منذ 6 ساعات", match: 82, skills: ["CCNA", "Security", "Networking"], logo: getImg('job-tech') }
   ];
 
   return (
@@ -108,7 +41,6 @@ export default function JobsPage() {
       <Navbar />
       
       <main className="flex-1">
-        {/* Modern Search Header */}
         <section className="bg-primary pt-20 pb-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
           <div className="container mx-auto px-4 relative z-10 text-center space-y-8">
@@ -129,7 +61,6 @@ export default function JobsPage() {
           </div>
         </section>
 
-        {/* Top Filters Bar */}
         <div className="container mx-auto px-4 -mt-12 relative z-20">
           <div className="bg-white p-6 rounded-[30px] shadow-xl border border-border/50 flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-3 px-4 py-2 bg-primary/5 text-primary rounded-xl font-black text-sm">
@@ -159,7 +90,6 @@ export default function JobsPage() {
           </div>
         </div>
 
-        {/* Jobs Grid Display */}
         <section className="container mx-auto px-4 py-16 space-y-12">
           <div className="flex items-center justify-between">
             <p className="text-muted-foreground font-bold">وجدنا <span className="text-primary font-black text-2xl">1,248</span> وظيفة متاحة تناسب مهاراتك</p>
@@ -172,12 +102,10 @@ export default function JobsPage() {
                   <div className="flex justify-between items-start">
                     <div className="relative group/logo">
                       <div className="absolute -inset-2 bg-secondary/30 blur-xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
-                      
                       <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-md relative z-10 transition-all duration-500 group-hover:shadow-xl group-hover:border-secondary/20 flex items-center justify-center p-2">
-                        {job.logo && <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />}
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
                       </div>
                     </div>
-                    
                     <Button variant="ghost" size="icon" className="rounded-xl hover:bg-red-50 hover:text-red-500 transition-colors">
                       <Bookmark size={22} />
                     </Button>

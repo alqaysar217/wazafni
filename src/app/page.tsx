@@ -14,7 +14,6 @@ import {
   Quote,
   Briefcase,
   Clock,
-  DollarSign,
   ChevronRight,
   ArrowUpRight
 } from 'lucide-react';
@@ -22,12 +21,16 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 
 export default function Home() {
-  const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-') && img.id.endsWith('-logo'));
+  const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg')?.imageUrl;
+  const partners = [
+    { id: 'company-hsa-logo', alt: 'HSA Group' },
+    { id: 'company-kuraimi-logo', alt: 'Al-Kuraimi Bank' },
+    { id: 'company-ytech-logo', alt: 'Yemen Tech' }
+  ];
   
-  const getPlaceholder = (id: string) => {
+  const getImg = (id: string) => {
     const img = PlaceHolderImages.find(img => img.id === id);
-    return img?.imageUrl || "https://picsum.photos/seed/default/200/200";
+    return img?.imageUrl || "/logo.png";
   };
 
   const featuredJobs = [
@@ -40,8 +43,7 @@ export default function Home() {
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 95,
-      skills: ["React", "TypeScript", "Node.js"],
-      logo: getPlaceholder('company-ytech-logo')
+      logo: getImg('job-tech')
     },
     {
       id: 2,
@@ -52,8 +54,7 @@ export default function Home() {
       type: "دوام كامل",
       posted: "منذ 4 ساعات",
       match: 88,
-      skills: ["SEO", "Content Strategy", "Ads"],
-      logo: getPlaceholder('company-hsa-logo')
+      logo: getImg('job-marketing')
     },
     {
       id: 3,
@@ -64,8 +65,7 @@ export default function Home() {
       type: "عقد",
       posted: "منذ أسبوع",
       match: 72,
-      skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: getPlaceholder('company-1')
+      logo: getImg('job-eng')
     }
   ];
 
@@ -75,30 +75,27 @@ export default function Home() {
       name: "مجموعة هائل سعيد أنعم",
       category: "مجموعة شركات متنوعة",
       location: "تعز، اليمن",
-      employees: "20,000+",
       jobs: 15,
       rating: 4.9,
-      logo: getPlaceholder('company-hsa-logo')
+      logo: getImg('company-hsa-logo')
     },
     {
       id: 2,
       name: "بنك الكريمي الإسلامي",
       category: "خدمات مالية وبنكية",
       location: "صنعاء، اليمن",
-      employees: "2,500+",
       jobs: 8,
       rating: 4.7,
-      logo: getPlaceholder('company-kuraimi-logo')
+      logo: getImg('company-kuraimi-logo')
     },
     {
       id: 3,
       name: "يمن تيك للحلول الرقمية",
       category: "تقنية معلومات",
       location: "ريموت / صنعاء",
-      employees: "50-100",
       jobs: 4,
       rating: 4.8,
-      logo: getPlaceholder('company-ytech-logo')
+      logo: getImg('company-ytech-logo')
     }
   ];
 
@@ -107,13 +104,13 @@ export default function Home() {
       name: "أحمد المقطري",
       role: "مطور برمجيات",
       content: "بفضل وظفني، وجدت الوظيفة التي كنت أحلم بها في أقل من أسبوعين. النظام الذكي ساعدني كثيراً في تحسين سيرتي الذاتية.",
-      avatar: "https://picsum.photos/seed/u1/100/100"
+      avatar: "/logo.png"
     },
     {
       name: "سارة العبسي",
       role: "مديرة تسويق",
       content: "أفضل منصة توظيف في اليمن بدون منازع. السهولة في التعامل والاحترافية في عرض الوظائف تجعل التجربة رائعة.",
-      avatar: "https://picsum.photos/seed/u2/100/100"
+      avatar: "/logo.png"
     }
   ];
 
@@ -122,12 +119,11 @@ export default function Home() {
       <Navbar />
       
       <main>
-        {/* Section 1: Hero Section */}
         <section className="relative min-h-[85vh] flex items-center py-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
-            {heroImg?.imageUrl && (
+            {heroImg && (
               <Image 
-                src={heroImg.imageUrl} 
+                src={heroImg} 
                 alt="Professional Background"
                 fill
                 className="object-cover"
@@ -176,7 +172,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 2: Why Choose Us */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
@@ -186,24 +181,9 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
-                {
-                  title: "مطابقة ذكية",
-                  desc: "نظام ذكاء اصطناعي يقوم بتحليل مهاراتك وربطها بالوظائف الأكثر توافقاً مع طموحاتك.",
-                  icon: <Sparkles className="w-10 h-10" />,
-                  bg: "bg-blue-50 text-blue-600"
-                },
-                {
-                  title: "تطوير السيرة الذاتية",
-                  desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية وزيادة فرص قبولك بنسبة 300%.",
-                  icon: <TrendingUp className="w-10 h-10" />,
-                  bg: "bg-indigo-50 text-indigo-600"
-                },
-                {
-                  title: "فرص حصرية",
-                  desc: "نربطك مباشرة بكبرى الشركات اليمنية والدولية التي تبحث عن خبراتك الفريدة.",
-                  icon: <Building2 className="w-10 h-10" />,
-                  bg: "bg-emerald-50 text-emerald-600"
-                }
+                { title: "مطابقة ذكية", desc: "نظام ذكاء اصطناعي يقوم بتحليل مهاراتك وربطها بالوظائف الأكثر توافقاً مع طموحاتك.", icon: <Sparkles className="w-10 h-10" />, bg: "bg-blue-50 text-blue-600" },
+                { title: "تطوير السيرة الذاتية", desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية وزيادة فرص قبولك بنسبة 300%.", icon: <TrendingUp className="w-10 h-10" />, bg: "bg-indigo-50 text-indigo-600" },
+                { title: "فرص حصرية", desc: "نربطك مباشرة بكبرى الشركات اليمنية والدولية التي تبحث عن خبراتك الفريدة.", icon: <Building2 className="w-10 h-10" />, bg: "bg-emerald-50 text-emerald-600" }
               ].map((feature, i) => (
                 <div key={i} className="p-10 rounded-3xl border bg-[#F8F7FA] hover:bg-white hover:shadow-xl transition-all duration-300 group">
                   <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-8 ${feature.bg} group-hover:scale-110 transition-transform shadow-sm`}>
@@ -217,7 +197,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 3: Latest Jobs */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -236,7 +215,7 @@ export default function Home() {
                   <div className="p-8 space-y-6 flex-1">
                     <div className="flex justify-between items-start">
                       <div className="w-16 h-16 rounded-2xl overflow-hidden border border-border/50 bg-white shrink-0 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center p-2">
-                        {job.logo && <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />}
+                        <Image src={job.logo} alt={job.company} width={64} height={64} className="object-contain w-full h-full" />
                       </div>
                       <div className="flex items-center gap-2 text-green-600 bg-green-50 w-fit px-3 py-1 rounded-lg text-xs font-black">
                         <Sparkles size={12} /> توافق {job.match}%
@@ -270,7 +249,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 4: Featured Companies */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-right">
@@ -292,7 +270,7 @@ export default function Home() {
                   
                   <div className="flex flex-col items-center text-center space-y-6">
                     <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[#F8F7FA] shadow-inner mb-2 flex items-center justify-center p-3 bg-white">
-                      {company.logo && <Image src={company.logo} alt={company.name} width={96} height={96} className="object-contain" />}
+                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-contain" />
                     </div>
                     
                     <div className="space-y-2">
@@ -322,7 +300,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 5: Success Partners (Logos Only) */}
         <section className="py-24 bg-[#F8F7FA] border-b">
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-16">شركاء النجاح - مؤسسات تثق بنا</p>
@@ -330,8 +307,8 @@ export default function Home() {
               {partners.map((partner, index) => (
                 <div key={index} className="relative w-48 h-20 group">
                   <Image 
-                    src={partner.imageUrl} 
-                    alt={partner.description} 
+                    src={getImg(partner.id)} 
+                    alt={partner.alt} 
                     fill 
                     className="object-contain" 
                   />
@@ -341,7 +318,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 6: Testimonials */}
         <section className="py-24 bg-primary text-white overflow-hidden relative">
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -374,7 +350,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 7: CTA */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
             <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
