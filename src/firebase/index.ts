@@ -18,11 +18,10 @@ export function initializeFirebase() {
       app = initializeApp(firebaseConfig);
     }
     
-    // نستخدم إعدادات متقدمة لضمان الاتصال في البيئات المقيدة
+    // نستخدم Long Polling لضمان تجاوز قيود الشبكة في بيئات العمل السحابية
     if (!db) {
       db = initializeFirestore(app, {
         experimentalForceLongPolling: true,
-        experimentalAutoDetectLongPolling: true,
       });
     } else {
       db = getFirestore(app);
