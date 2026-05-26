@@ -1,3 +1,4 @@
+
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -19,8 +20,11 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function JobsPage() {
+  const getPlaceholder = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || "";
+
   const jobs = [
     {
       id: 1,
@@ -32,7 +36,7 @@ export default function JobsPage() {
       posted: "منذ يومين",
       match: 95,
       skills: ["React", "TypeScript", "Node.js"],
-      logo: "https://picsum.photos/seed/tech1/100/100"
+      logo: getPlaceholder('company-ytech-logo')
     },
     {
       id: 2,
@@ -44,7 +48,7 @@ export default function JobsPage() {
       posted: "منذ 4 ساعات",
       match: 88,
       skills: ["SEO", "Content Strategy", "Ads"],
-      logo: "https://picsum.photos/seed/hsa/100/100"
+      logo: getPlaceholder('company-hsa-logo')
     },
     {
       id: 3,
@@ -56,7 +60,7 @@ export default function JobsPage() {
       posted: "منذ أسبوع",
       match: 72,
       skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: "https://picsum.photos/seed/eng/100/100"
+      logo: getPlaceholder('job-eng')
     },
     {
       id: 4,
@@ -68,7 +72,7 @@ export default function JobsPage() {
       posted: "منذ 3 أيام",
       match: 91,
       skills: ["Figma", "UI Design", "UX Research"],
-      logo: "https://picsum.photos/seed/design/100/100"
+      logo: getPlaceholder('job-design')
     },
     {
       id: 5,
@@ -80,7 +84,7 @@ export default function JobsPage() {
       posted: "منذ يومين",
       match: 65,
       skills: ["Accounting", "Excel", "ERP"],
-      logo: "https://picsum.photos/seed/finance/100/100"
+      logo: getPlaceholder('job-finance')
     },
     {
       id: 6,
@@ -92,7 +96,7 @@ export default function JobsPage() {
       posted: "منذ 6 ساعات",
       match: 82,
       skills: ["CCNA", "Security", "Networking"],
-      logo: "https://picsum.photos/seed/net/100/100"
+      logo: getPlaceholder('job-tech')
     }
   ];
 

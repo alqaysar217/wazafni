@@ -25,6 +25,8 @@ export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-') && img.id.endsWith('-logo'));
   
+  const getPlaceholder = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || "";
+
   const featuredJobs = [
     {
       id: 1,
@@ -36,7 +38,7 @@ export default function Home() {
       posted: "منذ يومين",
       match: 95,
       skills: ["React", "TypeScript", "Node.js"],
-      logo: PlaceHolderImages.find(img => img.id === 'company-ytech-logo')?.imageUrl || ""
+      logo: getPlaceholder('company-ytech-logo')
     },
     {
       id: 2,
@@ -48,7 +50,7 @@ export default function Home() {
       posted: "منذ 4 ساعات",
       match: 88,
       skills: ["SEO", "Content Strategy", "Ads"],
-      logo: PlaceHolderImages.find(img => img.id === 'company-hsa-logo')?.imageUrl || ""
+      logo: getPlaceholder('company-hsa-logo')
     },
     {
       id: 3,
@@ -60,7 +62,7 @@ export default function Home() {
       posted: "منذ أسبوع",
       match: 72,
       skills: ["PMP", "Project Mgmt", "Civil Eng"],
-      logo: "https://picsum.photos/seed/eng/100/100"
+      logo: getPlaceholder('job-eng')
     }
   ];
 
@@ -73,7 +75,7 @@ export default function Home() {
       employees: "20,000+",
       jobs: 15,
       rating: 4.9,
-      logo: PlaceHolderImages.find(img => img.id === 'company-hsa-logo')?.imageUrl || ""
+      logo: getPlaceholder('company-hsa-logo')
     },
     {
       id: 2,
@@ -83,7 +85,7 @@ export default function Home() {
       employees: "2,500+",
       jobs: 8,
       rating: 4.7,
-      logo: PlaceHolderImages.find(img => img.id === 'company-kuraimi-logo')?.imageUrl || ""
+      logo: getPlaceholder('company-kuraimi-logo')
     },
     {
       id: 3,
@@ -93,7 +95,7 @@ export default function Home() {
       employees: "50-100",
       jobs: 4,
       rating: 4.8,
-      logo: PlaceHolderImages.find(img => img.id === 'company-ytech-logo')?.imageUrl || ""
+      logo: getPlaceholder('company-ytech-logo')
     }
   ];
 
@@ -189,7 +191,7 @@ export default function Home() {
                 },
                 {
                   title: "تطوير السيرة الذاتية",
-                  desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية وزيادة فرص قبولك.",
+                  desc: "أدوات متقدمة لتحسين سيرتك الذاتية لتتوافق مع أنظمة ATS العالمية وزيادة فرص قبولك بنسبة 300%.",
                   icon: <TrendingUp className="w-10 h-10" />,
                   bg: "bg-indigo-50 text-indigo-600"
                 },
@@ -301,7 +303,6 @@ export default function Home() {
                         <p className="font-bold text-primary flex items-center justify-center gap-1 text-xs"><MapPin size={12} /> {company.location.split('،')[0]}</p>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-xs font-bold text-muted-foreground uppercase">الوظائف</p>
                         <p className="font-bold text-secondary flex items-center justify-center gap-1 text-xs"><Briefcase size={12} /> {company.jobs} شاغرة</p>
                       </div>
                     </div>
@@ -373,7 +374,7 @@ export default function Home() {
         {/* Section 7: CTA */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
-            <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5_xl mx-auto">
+            <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
               <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center text-primary mx-auto mb-6">
                 <Sparkles size={40} />
               </div>
