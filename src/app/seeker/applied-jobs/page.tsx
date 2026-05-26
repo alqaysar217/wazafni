@@ -1,37 +1,19 @@
-
 'use client';
 
 import { Navbar } from '@/components/layout/Navbar';
 import { 
-  LayoutDashboard, 
   Briefcase, 
-  FileText, 
-  MessageSquare, 
-  Bell, 
-  Settings, 
-  BrainCircuit,
   Search,
   Clock,
   CheckCircle2,
   XCircle,
-  AlertCircle,
   ChevronRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function AppliedJobsPage() {
-  const sidebarItems = [
-    { label: "لوحة التحكم", icon: <LayoutDashboard size={20} />, href: "/seeker/dashboard" },
-    { label: "وظائفي", icon: <Briefcase size={20} />, active: true, href: "/seeker/applied-jobs" },
-    { label: "السيرة الذاتية", icon: <FileText size={20} />, href: "/seeker/resume" },
-    { label: "الرسائل", icon: <MessageSquare size={20} />, href: "/seeker/messages" },
-    { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={20} />, href: "/seeker/ai-tools" },
-    { label: "الإعدادات", icon: <Settings size={20} />, href: "/seeker/settings" }
-  ];
-
   const applications = [
     {
       id: 1,
@@ -63,66 +45,47 @@ export default function AppliedJobsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F7FA] flex flex-col">
+    <div className="min-h-screen bg-[#F8F7FA] flex flex-col" dir="rtl">
       <Navbar />
       
-      <div className="flex-1 flex container mx-auto px-4 py-8 gap-8">
-        {/* Dashboard Sidebar */}
-        <aside className="hidden lg:block w-72 shrink-0 space-y-6">
-          <div className="premium-card bg-white p-6 space-y-8 h-fit shadow-sm rounded-[30px] border">
-            <nav className="space-y-2">
-              {sidebarItems.map(item => (
-                <Link 
-                  key={item.label} 
-                  href={item.href} 
-                  className={`flex items-center gap-3 p-3 rounded-xl font-medium transition-all ${item.active ? 'bg-primary text-white shadow-lg' : 'text-muted-foreground hover:bg-muted'}`}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-black font-headline text-primary">وظائفي المتقدم لها</h1>
-              <p className="text-muted-foreground">تابع حالة طلبات التوظيف الخاصة بك هنا.</p>
+      <div className="flex-1 container mx-auto px-4 py-10 max-w-6xl">
+        <main className="space-y-10">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-black font-headline text-primary tracking-tighter">وظائفي المتقدم لها</h1>
+              <p className="text-lg text-muted-foreground font-medium">تابع حالة طلبات التوظيف الخاصة بك هنا.</p>
             </div>
-            <Button asChild className="rounded-xl px-8 bg-primary">
-              <Link href="/jobs">ابحث عن وظيفة جديدة <Search size={18} className="mr-2" /></Link>
+            <Button asChild size="lg" className="rounded-2xl px-10 bg-primary font-black shadow-xl shadow-primary/10 h-14">
+              <Link href="/jobs" className="gap-3">ابحث عن وظيفة جديدة <Search size={20} /></Link>
             </Button>
           </div>
 
-          <div className="bg-white rounded-[35px] border shadow-sm overflow-hidden">
+          <div className="bg-white rounded-[40px] border border-primary/5 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-right">
                 <thead>
                   <tr className="bg-muted/30 border-b">
-                    <th className="px-8 py-6 font-black text-primary">الوظيفة</th>
-                    <th className="px-8 py-6 font-black text-primary">الشركة</th>
-                    <th className="px-8 py-6 font-black text-primary">تاريخ التقديم</th>
-                    <th className="px-8 py-6 font-black text-primary">الحالة</th>
-                    <th className="px-8 py-6 font-black text-primary text-left">الإجراء</th>
+                    <th className="px-10 py-6 font-black text-primary">الوظيفة</th>
+                    <th className="px-10 py-6 font-black text-primary">الشركة</th>
+                    <th className="px-10 py-6 font-black text-primary">تاريخ التقديم</th>
+                    <th className="px-10 py-6 font-black text-primary">الحالة</th>
+                    <th className="px-10 py-6 font-black text-primary text-left">الإجراء</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {applications.map((app) => (
                     <tr key={app.id} className="hover:bg-muted/10 transition-colors">
-                      <td className="px-8 py-6 font-bold text-primary">{app.title}</td>
-                      <td className="px-8 py-6 font-medium text-muted-foreground">{app.company}</td>
-                      <td className="px-8 py-6 font-medium text-muted-foreground">{app.appliedDate}</td>
-                      <td className="px-8 py-6">
-                        <Badge className={`rounded-full px-4 py-1 border-none font-bold ${app.statusColor}`}>
+                      <td className="px-10 py-8 font-bold text-xl text-primary">{app.title}</td>
+                      <td className="px-10 py-8 font-black text-muted-foreground">{app.company}</td>
+                      <td className="px-10 py-8 font-bold text-muted-foreground/60">{app.appliedDate}</td>
+                      <td className="px-10 py-8">
+                        <Badge className={`rounded-full px-5 py-2 border-none font-black text-xs ${app.statusColor}`}>
                           <span className="flex items-center gap-2">{app.icon} {app.status}</span>
                         </Badge>
                       </td>
-                      <td className="px-8 py-6 text-left">
-                        <Button variant="ghost" className="text-primary font-bold hover:bg-primary/5 rounded-lg group">
-                          التفاصيل <ChevronRight size={14} className="rtl:rotate-180 group-hover:translate-x-1 transition-transform" />
+                      <td className="px-10 py-8 text-left">
+                        <Button variant="ghost" className="text-primary font-black hover:bg-primary/5 rounded-xl group h-12">
+                          التفاصيل <ChevronRight size={18} className="rtl:rotate-180 group-hover:translate-x-1 transition-transform mr-2" />
                         </Button>
                       </td>
                     </tr>

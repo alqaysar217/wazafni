@@ -2,11 +2,7 @@
 
 import { Navbar } from '@/components/layout/Navbar';
 import { 
-  LayoutDashboard, 
   Briefcase, 
-  FileText, 
-  MessageSquare, 
-  Settings, 
   Sparkles, 
   ChevronRight,
   Clock,
@@ -31,15 +27,6 @@ import { cn } from '@/lib/utils';
 export default function SeekerDashboard() {
   const { user } = useUser();
 
-  const sidebarItems = [
-    { label: "لوحة التحكم", icon: <LayoutDashboard size={22} />, active: true, href: "/seeker/dashboard" },
-    { label: "وظائفي المتقدم لها", icon: <Briefcase size={22} />, href: "/seeker/applied-jobs" },
-    { label: "السيرة الذاتية", icon: <FileText size={22} />, href: "/seeker/resume" },
-    { label: "الرسائل", icon: <MessageSquare size={22} />, href: "/seeker/messages", badge: 3 },
-    { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={22} />, href: "/seeker/ai-tools" },
-    { label: "الإعدادات", icon: <Settings size={22} />, href: "/seeker/settings" }
-  ];
-
   const stats = [
     { label: "تم التقديم", value: "12", icon: <Briefcase />, color: "text-blue-600", bg: "bg-blue-50" },
     { label: "مشاهدات", value: "348", icon: <Eye />, color: "text-purple-600", bg: "bg-purple-50" },
@@ -51,74 +38,13 @@ export default function SeekerDashboard() {
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col" dir="rtl">
       <Navbar />
       
-      <div className="flex-1 flex container mx-auto px-4 py-10 gap-10">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-80 shrink-0">
-          <div className="sticky top-28 space-y-6">
-            <div className="bg-white p-8 rounded-[40px] shadow-sm border border-primary/5 space-y-8">
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative group">
-                  <div className="absolute -inset-2 bg-gradient-to-tr from-primary to-secondary rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white relative z-10 shadow-xl">
-                    <Image src={user?.photoURL || "https://picsum.photos/seed/seeker/200/200"} alt="Avatar" width={96} height={96} className="object-cover" />
-                  </div>
-                  <div className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white z-20 shadow-lg"></div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-primary leading-tight line-clamp-1">{user?.displayName || "أحمد محمد المقطري"}</h3>
-                  <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase mt-1">مطور برمجيات أول</p>
-                </div>
-              </div>
-              
-              <nav className="space-y-1">
-                {sidebarItems.map(item => (
-                  <Link 
-                    key={item.label} 
-                    href={item.href} 
-                    className={cn(
-                      "flex items-center justify-between p-4 rounded-2xl font-black transition-all duration-300 group",
-                      item.active 
-                        ? "bg-primary text-white shadow-xl shadow-primary/20" 
-                        : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
-                    )}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className={cn(item.active ? "text-secondary" : "text-primary/40 group-hover:text-primary/60")}>
-                        {item.icon}
-                      </span>
-                      <span className="text-[15px]">{item.label}</span>
-                    </div>
-                    {item.badge && (
-                      <span className="w-6 h-6 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-black shadow-lg shadow-red-200">
-                        {item.badge}
-                      </span>
-                    )}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-            
-            <div className="rounded-[40px] bg-primary p-8 text-white space-y-6 relative overflow-hidden group shadow-2xl shadow-primary/20">
-              <Zap className="absolute -top-10 -left-10 w-40 h-40 text-white/5 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-              <div className="relative z-10 space-y-4 text-center">
-                <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mx-auto text-secondary">
-                  <Star fill="currentColor" size={24} />
-                </div>
-                <h4 className="font-black text-xl leading-tight">باقة بريميوم (PRO)</h4>
-                <p className="text-sm text-white/60 font-medium">احصل على ظهور أعلى في نتائج البحث بنسبة 5 أضعاف.</p>
-                <Button className="w-full bg-white text-primary hover:bg-secondary hover:text-white rounded-2xl font-black transition-all">ترقية الآن</Button>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 space-y-10 min-w-0">
+      <div className="flex-1 container mx-auto px-4 py-10 max-w-6xl">
+        <main className="space-y-10">
           <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-secondary mb-2">
                 <Sparkles size={20} className="animate-pulse" />
-                <span className="text-sm font-black uppercase tracking-widest">لوحة التحكم الذكية</span>
+                <span className="text-sm font-black uppercase tracking-widest text-primary">لوحة التحكم الذكية</span>
               </div>
               <h1 className="text-4xl lg:text-5xl font-black font-headline text-primary tracking-tighter">أهلاً بك، {user?.displayName?.split(' ')[0] || "أحمد"} 👋</h1>
               <p className="text-lg text-muted-foreground font-medium">لديك اليوم 4 فرص وظيفية جديدة تناسب ملفك الشخصي.</p>
@@ -238,6 +164,21 @@ export default function SeekerDashboard() {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Moved Premium Banner here */}
+          <div className="rounded-[40px] bg-primary p-12 text-white relative overflow-hidden group shadow-2xl shadow-primary/20">
+            <Zap className="absolute -top-10 -left-10 w-64 h-64 text-white/5 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+              <div className="space-y-4 text-center md:text-right">
+                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-secondary mb-4 mx-auto md:mx-0">
+                  <Star fill="currentColor" size={32} />
+                </div>
+                <h4 className="font-black text-3xl leading-tight">باقة بريميوم (PRO)</h4>
+                <p className="text-xl text-white/60 font-medium max-w-xl">احصل على ظهور أعلى في نتائج البحث بنسبة 5 أضعاف وتواصل مباشر مع مدراء التوظيف.</p>
+              </div>
+              <Button size="lg" className="h-16 px-12 bg-white text-primary hover:bg-secondary hover:text-white rounded-2xl font-black text-xl transition-all shadow-2xl">ترقية حسابك الآن</Button>
             </div>
           </div>
         </main>

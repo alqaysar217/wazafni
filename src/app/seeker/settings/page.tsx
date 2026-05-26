@@ -2,19 +2,15 @@
 
 import { Navbar } from '@/components/layout/Navbar';
 import { 
-  LayoutDashboard, 
-  Briefcase, 
-  FileText, 
-  MessageSquare, 
-  Settings, 
-  BrainCircuit,
   User,
   Lock,
   Bell,
   Eye,
   LogOut,
   Save,
-  Globe
+  Globe,
+  Briefcase,
+  MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,155 +18,133 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { useUser } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
   const { user } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
 
-  const sidebarItems = [
-    { label: "لوحة التحكم", icon: <LayoutDashboard size={22} />, href: "/seeker/dashboard" },
-    { label: "وظائفي المتقدم لها", icon: <Briefcase size={22} />, href: "/seeker/applied-jobs" },
-    { label: "السيرة الذاتية", icon: <FileText size={22} />, href: "/seeker/resume" },
-    { label: "الرسائل", icon: <MessageSquare size={22} />, href: "/seeker/messages" },
-    { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={22} />, href: "/seeker/ai-tools" },
-    { label: "الإعدادات", icon: <Settings size={22} />, active: true, href: "/seeker/settings" }
-  ];
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/login');
+  };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col" dir="rtl">
       <Navbar />
       
-      <div className="flex-1 flex container mx-auto px-4 py-10 gap-10">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-80 shrink-0">
-          <div className="bg-white p-8 rounded-[40px] shadow-sm border border-primary/5 h-fit sticky top-28">
-            <nav className="space-y-1">
-              {sidebarItems.map(item => (
-                <Link 
-                  key={item.label} 
-                  href={item.href} 
-                  className={cn(
-                    "flex items-center gap-4 p-4 rounded-2xl font-black transition-all group",
-                    item.active ? "bg-primary text-white shadow-xl shadow-primary/20" : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
-                  )}
-                >
-                  <span className={cn(item.active ? "text-secondary" : "text-primary/40 group-hover:text-primary/60")}>{item.icon}</span>
-                  <span className="text-[15px]">{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-            <div className="mt-10 pt-10 border-t">
-              <Button variant="ghost" className="w-full justify-start gap-4 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-2xl font-black h-14 transition-all">
-                <LogOut size={20} /> تسجيل الخروج
-              </Button>
+      <div className="flex-1 container mx-auto px-4 py-10 max-w-5xl">
+        <main className="space-y-12">
+          <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-3">
+              <h1 className="text-5xl font-black font-headline text-primary tracking-tighter">إعدادات الحساب</h1>
+              <p className="text-xl text-muted-foreground font-medium">تحكم في ملفك الشخصي، الأمان، وتفضيلات الإشعارات الخاصة بك.</p>
             </div>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 space-y-10">
-          <header className="space-y-2">
-            <h1 className="text-4xl lg:text-5xl font-black font-headline text-primary tracking-tighter">إعدادات الحساب</h1>
-            <p className="text-lg text-muted-foreground font-medium">تحكم في ملفك الشخصي، الأمان، وتفضيلات الإشعارات.</p>
+            <Button onClick={handleLogout} variant="outline" className="h-14 px-8 rounded-2xl border-red-100 text-red-500 hover:bg-red-50 hover:text-red-600 font-black gap-3 transition-all">
+              <LogOut size={22} /> تسجيل الخروج
+            </Button>
           </header>
 
-          <Tabs defaultValue="profile" className="w-full space-y-8" dir="rtl">
-            <TabsList className="bg-white p-2 rounded-2xl shadow-sm border h-16 w-fit grid grid-cols-3 gap-2">
-              <TabsTrigger value="profile" className="rounded-xl px-8 font-black data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2">
-                <User size={18} /> الشخصي
+          <Tabs defaultValue="profile" className="w-full space-y-10" dir="rtl">
+            <TabsList className="bg-white p-3 rounded-[30px] shadow-sm border h-20 w-full md:w-fit grid grid-cols-3 gap-4">
+              <TabsTrigger value="profile" className="rounded-2xl px-10 font-black text-lg data-[state=active]:bg-primary data-[state=active]:text-white flex items-center justify-center gap-3">
+                <User size={20} /> الشخصي
               </TabsTrigger>
-              <TabsTrigger value="security" className="rounded-xl px-8 font-black data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2">
-                <Lock size={18} /> الأمان
+              <TabsTrigger value="security" className="rounded-2xl px-10 font-black text-lg data-[state=active]:bg-primary data-[state=active]:text-white flex items-center justify-center gap-3">
+                <Lock size={20} /> الأمان
               </TabsTrigger>
-              <TabsTrigger value="notifications" className="rounded-xl px-8 font-black data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2">
-                <Bell size={18} /> الإشعارات
+              <TabsTrigger value="notifications" className="rounded-2xl px-10 font-black text-lg data-[state=active]:bg-primary data-[state=active]:text-white flex items-center justify-center gap-3">
+                <Bell size={20} /> الإشعارات
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="profile" className="space-y-8 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[40px] border-none shadow-sm p-10 bg-white">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-4">
-                    <Label className="font-black text-primary">الاسم بالكامل</Label>
-                    <Input defaultValue={user?.displayName || "أحمد محمد المقطري"} className="h-14 rounded-2xl bg-muted/30 border-none font-bold" />
+            <TabsContent value="profile" className="space-y-10 animate-in fade-in-50 duration-500">
+              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="space-y-5">
+                    <Label className="font-black text-primary text-md mr-2">الاسم بالكامل</Label>
+                    <Input defaultValue={user?.displayName || "أحمد محمد المقطري"} className="h-16 rounded-3xl bg-muted/20 border-none font-bold px-8 text-lg focus-visible:ring-primary/10" />
                   </div>
-                  <div className="space-y-4">
-                    <Label className="font-black text-primary">البريد الإلكتروني</Label>
-                    <Input defaultValue={user?.email || "emp@gmail.com"} className="h-14 rounded-2xl bg-muted/30 border-none font-bold" />
+                  <div className="space-y-5">
+                    <Label className="font-black text-primary text-md mr-2">البريد الإلكتروني</Label>
+                    <Input defaultValue={user?.email || "emp@gmail.com"} className="h-16 rounded-3xl bg-muted/20 border-none font-bold px-8 text-lg focus-visible:ring-primary/10" />
                   </div>
-                  <div className="space-y-4">
-                    <Label className="font-black text-primary">المسمى الوظيفي الحالي</Label>
-                    <Input placeholder="مثال: مطور برمجيات" className="h-14 rounded-2xl bg-muted/30 border-none font-bold" />
+                  <div className="space-y-5">
+                    <Label className="font-black text-primary text-md mr-2">المسمى الوظيفي الحالي</Label>
+                    <Input placeholder="مثال: مطور برمجيات أول" className="h-16 rounded-3xl bg-muted/20 border-none font-bold px-8 text-lg focus-visible:ring-primary/10" />
                   </div>
-                  <div className="space-y-4">
-                    <Label className="font-black text-primary">رقم الهاتف</Label>
-                    <Input placeholder="+967 7xx xxx xxx" className="h-14 rounded-2xl bg-muted/30 border-none font-bold" />
+                  <div className="space-y-5">
+                    <Label className="font-black text-primary text-md mr-2">رقم الهاتف</Label>
+                    <Input placeholder="+967 7xx xxx xxx" className="h-16 rounded-3xl bg-muted/20 border-none font-bold px-8 text-lg focus-visible:ring-primary/10" />
                   </div>
                 </div>
-                <div className="mt-10 pt-10 border-t flex justify-end">
-                  <Button className="h-14 px-12 rounded-2xl bg-primary text-lg font-black gap-3 shadow-xl shadow-primary/20">
-                    <Save size={20} /> حفظ التغييرات
+                <div className="mt-12 pt-10 border-t border-primary/5 flex justify-end">
+                  <Button className="h-16 px-16 rounded-3xl bg-primary text-xl font-black gap-4 shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+                    <Save size={24} /> حفظ كافة التغييرات
                   </Button>
                 </div>
               </Card>
             </TabsContent>
 
-            <TabsContent value="security" className="space-y-8 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[40px] border-none shadow-sm p-10 bg-white space-y-10">
-                <div className="space-y-6">
-                  <h3 className="text-xl font-black text-primary flex items-center gap-3">
-                    <Lock className="text-secondary" /> تغيير كلمة المرور
+            <TabsContent value="security" className="space-y-10 animate-in fade-in-50 duration-500">
+              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white space-y-12">
+                <div className="space-y-8">
+                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline">
+                    <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary"><Lock size={20} /></div>
+                    تغيير كلمة المرور
                   </h3>
-                  <div className="grid grid-cols-1 gap-6 max-w-md">
-                    <div className="space-y-3">
-                      <Label className="font-bold">كلمة المرور الحالية</Label>
-                      <Input type="password" placeholder="••••••••" className="h-14 rounded-2xl bg-muted/30 border-none" />
+                  <div className="grid grid-cols-1 gap-8 max-w-xl">
+                    <div className="space-y-4">
+                      <Label className="font-bold mr-2">كلمة المرور الحالية</Label>
+                      <Input type="password" placeholder="••••••••" className="h-16 rounded-3xl bg-muted/20 border-none px-8 text-lg" />
                     </div>
-                    <div className="space-y-3">
-                      <Label className="font-bold">كلمة المرور الجديدة</Label>
-                      <Input type="password" placeholder="••••••••" className="h-14 rounded-2xl bg-muted/30 border-none" />
+                    <div className="space-y-4">
+                      <Label className="font-bold mr-2">كلمة المرور الجديدة</Label>
+                      <Input type="password" placeholder="••••••••" className="h-16 rounded-3xl bg-muted/20 border-none px-8 text-lg" />
                     </div>
                   </div>
-                  <Button className="h-12 px-8 rounded-xl bg-primary font-bold">تحديث كلمة المرور</Button>
+                  <Button size="lg" className="h-14 px-10 rounded-2xl bg-primary font-black shadow-lg shadow-primary/10">تحديث كلمة المرور</Button>
                 </div>
 
-                <div className="pt-10 border-t space-y-6">
-                  <h3 className="text-xl font-black text-primary flex items-center gap-3">
-                    <Globe className="text-secondary" /> المصادقة الثنائية
+                <div className="pt-12 border-t border-primary/5 space-y-8">
+                  <h3 className="text-2xl font-black text-primary flex items-center gap-4 font-headline">
+                    <div className="w-10 h-10 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary"><Globe size={20} /></div>
+                    المصادقة الثنائية (2FA)
                   </h3>
-                  <div className="flex items-center justify-between p-6 bg-muted/20 rounded-3xl border border-dashed">
-                    <div className="space-y-1">
-                      <p className="font-black text-primary">إرسال كود التحقق عبر البريد</p>
-                      <p className="text-sm text-muted-foreground font-medium">سيطلب منك التطبيق كود تحقق عند كل عملية دخول جديدة.</p>
+                  <div className="flex items-center justify-between p-10 bg-muted/10 rounded-[40px] border border-dashed border-primary/20 group hover:bg-muted/20 transition-all">
+                    <div className="space-y-2">
+                      <p className="font-black text-xl text-primary">إرسال كود التحقق عبر البريد</p>
+                      <p className="text-md text-muted-foreground font-medium">سيطلب منك النظام كود تحقق عند كل عملية دخول جديدة من جهاز مختلف.</p>
                     </div>
-                    <Switch />
+                    <Switch className="scale-125" />
                   </div>
                 </div>
               </Card>
             </TabsContent>
 
-            <TabsContent value="notifications" className="space-y-8 animate-in fade-in-50 duration-500">
-              <Card className="rounded-[40px] border-none shadow-sm p-10 bg-white space-y-8">
-                <div className="space-y-10">
+            <TabsContent value="notifications" className="space-y-10 animate-in fade-in-50 duration-500">
+              <Card className="rounded-[50px] border-none shadow-xl p-12 bg-white space-y-10">
+                <div className="space-y-12">
                   {[
-                    { title: "تنبيهات الوظائف الجديدة", desc: "أرسل لي بريداً عند نشر وظائف تناسب مهاراتي.", icon: <Briefcase /> },
-                    { title: "رسائل الشركات", desc: "تلقي إشعار فوري عند استلام رسالة جديدة من صاحب عمل.", icon: <MessageSquare /> },
-                    { title: "حالة الطلبات", desc: "إشعارات عند تغيير حالة طلب التوظيف الخاص بي.", icon: <Eye /> },
-                    { title: "نشرات مهنية", desc: "أهم الأخبار والنصائح الوظيفية في سوق العمل اليمني.", icon: <Globe /> }
+                    { title: "تنبيهات الوظائف الجديدة", desc: "أرسل لي بريداً فورياً عند نشر وظائف تتناسب مع مهاراتي وخبراتي.", icon: <Briefcase /> },
+                    { title: "رسائل الشركات", desc: "تلقي إشعار فوري عند استلام رسالة جديدة أو دعوة مقابلة من صاحب عمل.", icon: <MessageSquare /> },
+                    { title: "حالة طلبات التوظيف", desc: "تنبيهات عند تغيير حالة طلب التوظيف (مراجعة، مقابلة، قبول).", icon: <Eye /> },
+                    { title: "أخبار ونشرات مهنية", desc: "أهم الأخبار والنصائح الوظيفية الحصرية في سوق العمل اليمني.", icon: <Globe /> }
                   ].map((pref, i) => (
-                    <div key={i} className="flex items-center justify-between group">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                    <div key={i} className="flex items-center justify-between group p-6 hover:bg-muted/10 rounded-[35px] transition-all">
+                      <div className="flex items-center gap-8">
+                        <div className="w-16 h-16 bg-primary/5 rounded-[25px] flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                           {pref.icon}
                         </div>
-                        <div className="space-y-1">
-                          <p className="font-black text-primary">{pref.title}</p>
-                          <p className="text-sm text-muted-foreground font-medium">{pref.desc}</p>
+                        <div className="space-y-2">
+                          <p className="font-black text-xl text-primary">{pref.title}</p>
+                          <p className="text-md text-muted-foreground font-medium max-w-md">{pref.desc}</p>
                         </div>
                       </div>
-                      <Switch defaultChecked />
+                      <Switch defaultChecked className="scale-110" />
                     </div>
                   ))}
                 </div>

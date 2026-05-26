@@ -2,18 +2,13 @@
 
 import { Navbar } from '@/components/layout/Navbar';
 import { 
-  LayoutDashboard, 
-  Briefcase, 
-  FileText, 
-  MessageSquare, 
-  Settings, 
-  BrainCircuit,
   Upload,
   Download,
   Trash2,
   Sparkles,
   CheckCircle2,
-  FileIcon
+  FileIcon,
+  BrainCircuit
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -22,103 +17,75 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
 
 export default function ResumePage() {
-  const sidebarItems = [
-    { label: "لوحة التحكم", icon: <LayoutDashboard size={20} />, href: "/seeker/dashboard" },
-    { label: "وظائفي", icon: <Briefcase size={20} />, href: "/seeker/applied-jobs" },
-    { label: "السيرة الذاتية", icon: <FileText size={20} />, active: true, href: "/seeker/resume" },
-    { label: "الرسائل", icon: <MessageSquare size={20} />, href: "/seeker/messages" },
-    { label: "أدوات الذكاء الاصطناعي", icon: <BrainCircuit size={20} />, href: "/seeker/ai-tools" },
-    { label: "الإعدادات", icon: <Settings size={20} />, href: "/seeker/settings" }
-  ];
-
   return (
-    <div className="min-h-screen bg-[#F8F7FA] flex flex-col">
+    <div className="min-h-screen bg-[#F8F7FA] flex flex-col" dir="rtl">
       <Navbar />
       
-      <div className="flex-1 flex container mx-auto px-4 py-8 gap-8">
-        {/* Sidebar */}
-        <aside className="hidden lg:block w-72 shrink-0">
-          <div className="premium-card bg-white p-6 space-y-8 shadow-sm rounded-[30px] border h-fit">
-            <nav className="space-y-2">
-              {sidebarItems.map(item => (
-                <Link 
-                  key={item.label} 
-                  href={item.href} 
-                  className={`flex items-center gap-3 p-3 rounded-xl font-medium transition-all ${item.active ? 'bg-primary text-white shadow-lg' : 'text-muted-foreground hover:bg-muted'}`}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 space-y-8">
-          <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-black font-headline text-primary">إدارة السيرة الذاتية</h1>
-              <p className="text-muted-foreground">ارفع سيرتك الذاتية أو قم بإنشائها باستخدام أدواتنا الذكية.</p>
+      <div className="flex-1 container mx-auto px-4 py-10 max-w-6xl">
+        <main className="space-y-10">
+          <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-black font-headline text-primary tracking-tighter">إدارة السيرة الذاتية</h1>
+              <p className="text-lg text-muted-foreground font-medium">ارفع سيرتك الذاتية أو قم بإنشائها باستخدام أدواتنا الذكية.</p>
             </div>
-            <Button className="rounded-xl px-8 bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20">
-              <Upload size={18} className="ml-2" /> رفع ملف جديد
+            <Button size="lg" className="rounded-2xl px-10 bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 h-14 font-black">
+              <Upload size={20} className="ml-3" /> رفع ملف جديد
             </Button>
           </header>
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="xl:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2 space-y-8">
               {/* Current Resume Card */}
-              <div className="bg-white p-8 rounded-[40px] border shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 bg-primary/5 rounded-[25px] flex items-center justify-center text-primary">
-                    <FileIcon size={40} />
+              <div className="bg-white p-10 rounded-[40px] border border-primary/5 shadow-sm flex flex-col md:flex-row items-center justify-between gap-10 hover:shadow-xl transition-all">
+                <div className="flex items-center gap-8">
+                  <div className="w-24 h-24 bg-primary/5 rounded-[30px] flex items-center justify-center text-primary">
+                    <FileIcon size={48} />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-primary leading-tight">Ahmed_Resume_2024.pdf</h3>
-                    <p className="text-sm text-muted-foreground font-medium">تم التحديث: 14 أكتوبر 2023 • 2.4 MB</p>
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-black text-primary leading-tight">Ahmed_Resume_2024.pdf</h3>
+                    <p className="text-md text-muted-foreground font-bold">تم التحديث: 14 أكتوبر 2023 • 2.4 MB</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <Button variant="outline" className="rounded-xl h-12 px-6 font-bold border-border">
-                    <Download size={18} />
+                  <Button variant="outline" className="rounded-2xl h-14 w-14 p-0 font-bold border-primary/10 hover:bg-primary hover:text-white">
+                    <Download size={24} />
                   </Button>
-                  <Button variant="outline" className="rounded-xl h-12 px-6 font-bold border-red-100 text-red-500 hover:bg-red-50">
-                    <Trash2 size={18} />
+                  <Button variant="outline" className="rounded-2xl h-14 w-14 p-0 font-bold border-red-100 text-red-500 hover:bg-red-50">
+                    <Trash2 size={24} />
                   </Button>
                 </div>
               </div>
 
               {/* Analysis Results Preview */}
-              <div className="bg-white p-10 rounded-[40px] border shadow-sm space-y-10">
+              <div className="bg-white p-12 rounded-[50px] border border-primary/5 shadow-sm space-y-12">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-black text-primary">تحليل الذكاء الاصطناعي للسيرة</h3>
-                  <Badge className="bg-green-500 text-white border-none rounded-full px-4 py-1 font-bold">قوية جداً</Badge>
+                  <h3 className="text-3xl font-black text-primary font-headline">تحليل الذكاء الاصطناعي</h3>
+                  <Badge className="bg-green-500 text-white border-none rounded-full px-6 py-2 font-black text-xs uppercase tracking-widest">قوية جداً</Badge>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-4">
-                    <div className="flex justify-between font-black text-primary">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="space-y-6">
+                    <div className="flex justify-between font-black text-primary text-sm uppercase tracking-widest">
                       <span>توافق الـ ATS</span>
-                      <span>92%</span>
+                      <span className="text-secondary text-lg font-headline">92%</span>
                     </div>
-                    <Progress value={92} className="h-3 rounded-full" />
-                    <p className="text-xs text-muted-foreground font-medium">سيرتك الذاتية مهيأة بشكل ممتاز لأنظمة التتبع العالمية.</p>
+                    <Progress value={92} className="h-4 rounded-full bg-primary/5" />
+                    <p className="text-sm text-muted-foreground font-medium leading-relaxed text-right">سيرتك الذاتية مهيأة بشكل ممتاز لأنظمة التتبع العالمية (Applicant Tracking Systems).</p>
                   </div>
-                  <div className="space-y-4">
-                    <div className="flex justify-between font-black text-primary">
+                  <div className="space-y-6">
+                    <div className="flex justify-between font-black text-primary text-sm uppercase tracking-widest">
                       <span>اكتمال الملف</span>
-                      <span>85%</span>
+                      <span className="text-emerald-500 text-lg font-headline">85%</span>
                     </div>
-                    <Progress value={85} className="h-3 rounded-full" />
-                    <p className="text-xs text-muted-foreground font-medium">أضف روابط أعمالك السابقة لتصل إلى 100%.</p>
+                    <Progress value={85} className="h-4 rounded-full bg-primary/5" />
+                    <p className="text-sm text-muted-foreground font-medium leading-relaxed text-right">أضف روابط أعمالك السابقة (Portfolio) لتصل إلى نسبة اكتمال 100%.</p>
                   </div>
                 </div>
 
-                <div className="pt-6">
-                  <Button asChild className="w-full h-16 rounded-2xl bg-primary text-lg font-black gap-3">
+                <div className="pt-8">
+                  <Button asChild size="lg" className="w-full h-20 rounded-[30px] bg-primary text-2xl font-black gap-4 shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-transform">
                     <Link href="/seeker/ai-tools">
-                      <Sparkles size={20} /> عرض تقرير التحليل المفصل
+                      <Sparkles size={28} /> عرض تقرير التحليل المفصل
                     </Link>
                   </Button>
                 </div>
@@ -126,32 +93,32 @@ export default function ResumePage() {
             </div>
 
             {/* Sidebar Suggestions */}
-            <div className="space-y-6">
-              <div className="bg-secondary/5 border border-secondary/10 p-8 rounded-[40px] space-y-6">
-                <h4 className="text-xl font-black text-primary flex items-center gap-2">
+            <div className="space-y-8">
+              <div className="bg-secondary/5 border border-secondary/10 p-10 rounded-[40px] space-y-8">
+                <h4 className="text-2xl font-black text-primary flex items-center gap-3">
                   <Sparkles className="text-secondary" /> نصائح سريعة
                 </h4>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {[
-                    "استخدم كلمات مفتاحية مثل 'Node.js' و 'Next.js' لرفع نسبة التوافق.",
-                    "تأكد من ذكر المشاريع التطوعية إذا كانت ذات صلة تقنية.",
-                    "تجنب استخدام الصور الشخصية لضمان قراءة ملفك بواسطة ATS."
+                    "استخدم كلمات مفتاحية مثل 'Node.js' و 'Next.js' لرفع نسبة التوافق في المجال التقني.",
+                    "تأكد من ذكر المشاريع التطوعية إذا كانت ذات صلة بمهاراتك القيادية.",
+                    "تجنب استخدام الجداول المعقدة لضمان قراءة ملفك بواسطة أنظمة ATS."
                   ].map((tip, i) => (
-                    <div key={i} className="flex gap-3 text-sm font-medium text-muted-foreground leading-relaxed">
-                      <CheckCircle2 size={16} className="text-secondary shrink-0 mt-1" />
+                    <div key={i} className="flex gap-4 text-md font-bold text-muted-foreground/80 leading-relaxed">
+                      <CheckCircle2 size={20} className="text-secondary shrink-0 mt-1" />
                       {tip}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <Alert className="rounded-[40px] border-primary/20 bg-primary/5 p-8">
-                <BrainCircuit className="h-6 w-6 text-primary" />
-                <AlertTitle className="font-black text-lg mr-8 mb-2">ميزة جديدة!</AlertTitle>
-                <AlertDescription className="text-sm font-medium leading-relaxed mr-8">
-                  يمكنك الآن توليد خطاب تقديم (Cover Letter) مخصص لكل وظيفة بضغطة واحدة.
+              <Alert className="rounded-[40px] border-primary/20 bg-primary/5 p-10 space-y-4">
+                <BrainCircuit className="h-10 w-10 text-primary" />
+                <AlertTitle className="font-black text-2xl text-primary mr-12">ميزة جديدة!</AlertTitle>
+                <AlertDescription className="text-md font-medium leading-relaxed mr-12 text-primary/70">
+                  يمكنك الآن توليد خطاب تقديم (Cover Letter) مخصص لكل وظيفة بضغطة واحدة باستخدام بيانات سيرتك الذاتية.
                 </AlertDescription>
-                <Button variant="link" className="text-primary font-black p-0 h-auto mt-4 mr-8">جربها الآن</Button>
+                <Button variant="link" className="text-secondary font-black p-0 h-auto mr-12 text-lg underline-offset-8 decoration-2">جربها الآن</Button>
               </Alert>
             </div>
           </div>
