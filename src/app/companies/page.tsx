@@ -71,18 +71,21 @@ export default function CompaniesPage() {
                 <div className="flex flex-col items-center text-center space-y-6">
                   {/* Logo Container with Glow Effect */}
                   <div className="relative group/logo">
-                    <div className="absolute inset-0 bg-secondary/30 blur-2xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
-                    <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-white bg-white shadow-xl relative z-10 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group-hover:scale-105">
-                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-cover" />
+                    {/* Glow Background Layer */}
+                    <div className="absolute -inset-4 bg-secondary/40 blur-2xl rounded-full scale-0 group-hover:scale-125 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
+                    
+                    {/* Square Logo with 5px rounded corners */}
+                    <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white bg-white shadow-lg relative z-10 transition-all duration-500 group-hover:scale-105">
+                      <Image src={company.logo} alt={company.name} width={96} height={96} className="object-cover w-full h-full" />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative z-10">
                     <h3 className="text-2xl font-black text-primary group-hover:text-secondary transition-colors leading-tight">{company.name}</h3>
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{company.category}</span>
                   </div>
 
-                  <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-border/50">
+                  <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-border/50 relative z-10">
                     <div className="space-y-1 text-center">
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">الموقع</p>
                       <p className="font-bold text-primary flex items-center justify-center gap-1 text-xs"><MapPin size={12} className="text-secondary" /> {company.location.split('،')[0]}</p>
@@ -93,7 +96,7 @@ export default function CompaniesPage() {
                     </div>
                   </div>
 
-                  <div className="w-full pt-4">
+                  <div className="w-full pt-4 relative z-10">
                     <Button asChild variant="outline" className="w-full h-14 rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black text-lg gap-2 shadow-sm">
                       <Link href={`/companies/${company.id}`}>عرض الملف <ArrowUpRight size={18} /></Link>
                     </Button>
