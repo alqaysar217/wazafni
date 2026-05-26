@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Loader2, Sparkles, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore } from '@/firebase';
@@ -32,21 +32,13 @@ export default function LoginPage() {
     const emailUpper = emailInput.toUpperCase();
     const password = formData.get('password') as string;
 
-    // 1. التحقق من حسابات الوصول السريع (Demo)
+    // 1. حسابات الدخول السريع (Demo)
     if (password === 'HA892019') {
-      if (emailUpper === 'EMP@GMAIL.COM') {
-        toast({ title: "تم الدخول بنجاح", description: "مرحباً بك في لوحة تحكم الباحث" });
-        router.push('/seeker/dashboard');
-        return;
-      } 
-      if (emailUpper === 'ADMIN@GMAIL.COM') {
-        toast({ title: "تم الدخول بنجاح", description: "مرحباً بك أيها المدير" });
-        router.push('/admin/dashboard');
-        return;
-      }
-      if (emailUpper === 'COM@GMAIL.COM') {
-        toast({ title: "تم الدخول بنجاح", description: "مرحباً بك في لوحة تحكم الشركات" });
-        router.push('/employer/dashboard');
+      if (emailUpper === 'EMP@GMAIL.COM' || emailUpper === 'ADMIN@GMAIL.COM' || emailUpper === 'COM@GMAIL.COM') {
+        toast({ title: "تم الدخول بنجاح", description: "مرحباً بك مجدداً" });
+        if (emailUpper === 'ADMIN@GMAIL.COM') router.push('/admin/dashboard');
+        else if (emailUpper === 'COM@GMAIL.COM') router.push('/employer/dashboard');
+        else router.push('/seeker/dashboard');
         return;
       }
     }
@@ -56,38 +48,40 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, emailInput, password);
       const user = userCredential.user;
 
-      // محاولة جلب بيانات المستخدم مع مهلة زمنية (Timeout)
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          toast({ 
-            title: "تم تسجيل الدخول", 
-            description: `مرحباً بك مجدداً، ${userData.fullName || 'مستخدم وظفني'}` 
-          });
-          
-          if (userData.role === 'employer') {
-            router.push('/employer/dashboard');
+      // بمجرد نجاح Auth، نعتبر الدخول ناجحاً ونتوجه للوحة التحكم مباشرة لتجنب تعليق Firestore
+      toast({ 
+        title: "تم تسجيل الدخول", 
+        description: "جاري تحميل بياناتك..." 
+      });
+
+      // نحاول جلب الدور (Role) بشكل سريع، إذا فشل أو تأخر نعتبره باحث (Seeker) كافتراضي
+      const checkRoleAndRedirect = async () => {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const role = userDoc.data().role;
+            router.push(role === 'employer' ? '/employer/dashboard' : '/seeker/dashboard');
           } else {
             router.push('/seeker/dashboard');
           }
-        } else {
+        } catch (e) {
+          // في حال فشل Firestore، ندخله كباحث مباشرة
           router.push('/seeker/dashboard');
         }
-      } catch (firestoreError) {
-        // في حال فشل Firestore (مشكلة اتصال)، ندخله كباحث كخيار احتياطي
-        console.warn("Firestore connectivity issue, falling back to seeker dashboard.");
-        router.push('/seeker/dashboard');
-      }
+      };
+
+      checkRoleAndRedirect();
+
     } catch (error: any) {
       console.error("Login error:", error);
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       
-      if (error.code === 'auth/user-not-found') {
+      if (error.code === 'auth/network-request-failed') {
+        message = "فشل الاتصال بالخادم، يرجى المحاولة مرة أخرى.";
+      } else if (error.code === 'auth/user-not-found') {
         message = "هذا الحساب غير موجود.";
       } else if (error.code === 'auth/wrong-password') {
-        message = "كلمة المرور التي أدخلتها خاطئة.";
+        message = "كلمة المرور غير صحيحة.";
       }
 
       toast({
@@ -95,7 +89,6 @@ export default function LoginPage() {
         title: "فشل تسجيل الدخول",
         description: message,
       });
-    } finally {
       setLoading(false);
     }
   };

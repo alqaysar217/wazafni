@@ -18,11 +18,11 @@ export function initializeFirebase() {
       app = initializeApp(firebaseConfig);
     }
     
-    // نستخدم initializeFirestore مع تفعيل experimentalForceLongPolling
-    // لضمان استقرار الاتصال في بيئات العمل السحابية والشبكات المقيدة
+    // نستخدم إعدادات متقدمة لضمان الاتصال في البيئات المقيدة
     if (!db) {
       db = initializeFirestore(app, {
         experimentalForceLongPolling: true,
+        experimentalAutoDetectLongPolling: true,
       });
     } else {
       db = getFirestore(app);
@@ -31,7 +31,6 @@ export function initializeFirebase() {
     auth = getAuth(app);
   } catch (error) {
     console.error("Firebase initialization error:", error);
-    // نرجيع كائنات فارغة لتجنب انهيار التطبيق بالكامل
     return { app: {} as any, db: null as any, auth: null as any };
   }
   
