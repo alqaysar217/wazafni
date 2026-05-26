@@ -13,7 +13,8 @@ import {
   Clock, 
   DollarSign,
   Heart,
-  Sparkles
+  Sparkles,
+  Building2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -60,8 +61,8 @@ export default function JobsPage() {
       
       <main className="flex-1 container mx-auto px-4 py-12 space-y-12">
         <header className="space-y-6">
-          <h1 className="text-4xl font-black font-headline">استكشف الفرص المتاحة</h1>
-          <div className="premium-card p-3 flex flex-col md:flex-row gap-4 bg-white shadow-xl border-none">
+          <h1 className="text-4xl font-black font-headline text-primary">استكشف الفرص المتاحة</h1>
+          <div className="bg-white p-3 flex flex-col md:flex-row gap-4 shadow-xl rounded-3xl border-none">
             <div className="flex-1 flex items-center px-4 gap-3 bg-muted/30 rounded-2xl h-14">
               <Search className="text-primary" size={20} />
               <Input placeholder="المسمى الوظيفي..." className="border-none bg-transparent shadow-none focus-visible:ring-0" />
@@ -77,7 +78,7 @@ export default function JobsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Sidebar Filters */}
           <aside className="lg:col-span-3 space-y-8">
-            <div className="premium-card p-6 space-y-8 bg-white">
+            <div className="bg-white p-8 rounded-[32px] border shadow-sm space-y-8">
               <div className="flex items-center justify-between border-b pb-4">
                 <h3 className="font-bold flex items-center gap-2"><Filter size={18} /> التصفية</h3>
                 <button className="text-xs text-primary font-bold">مسح الكل</button>
@@ -111,13 +112,13 @@ export default function JobsPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl bg-primary/5 p-8 border border-primary/10 space-y-4">
+            <div className="rounded-[32px] bg-primary/5 p-8 border border-primary/10 space-y-4">
               <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                 <Sparkles />
               </div>
               <h4 className="text-lg font-bold font-headline">فعل التنبيهات الذكية</h4>
-              <p className="text-sm text-muted-foreground">سنقوم بإرسال تنبيه لك عندما تتوفر وظائف تناسب مهاراتك باستخدام الذكاء الاصطناعي.</p>
-              <Button variant="outline" className="w-full rounded-xl border-primary text-primary hover:bg-primary hover:text-white">تفعيل التنبيهات</Button>
+              <p className="text-sm text-muted-foreground font-medium">سنقوم بإرسال تنبيه لك عندما تتوفر وظائف تناسب مهاراتك باستخدام الذكاء الاصطناعي.</p>
+              <Button variant="outline" className="w-full rounded-xl border-primary text-primary hover:bg-primary hover:text-white font-bold">تفعيل التنبيهات</Button>
             </div>
           </aside>
 
@@ -132,7 +133,7 @@ export default function JobsPage() {
             </div>
 
             {jobs.map(job => (
-              <div key={job.id} className="premium-card p-6 bg-white flex flex-col md:flex-row gap-6 items-start hover:scale-[1.01] transition-transform duration-300">
+              <div key={job.id} className="bg-white p-8 rounded-[32px] border flex flex-col md:flex-row gap-6 items-start hover:shadow-xl transition-all duration-300">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden border bg-muted shrink-0 shadow-inner">
                   <Image src={job.logo} alt={job.company} width={80} height={80} className="object-cover w-full h-full" />
                 </div>
@@ -160,21 +161,21 @@ export default function JobsPage() {
 
                   <div className="flex flex-wrap gap-2">
                     {["React", "TypeScript", "Node.js", "GraphQL"].map(skill => (
-                      <Badge key={skill} variant="secondary" className="rounded-lg px-3 py-1 bg-primary/5 text-primary border-none">{skill}</Badge>
+                      <Badge key={skill} variant="secondary" className="rounded-lg px-3 py-1 bg-primary/5 text-primary border-none font-bold">{skill}</Badge>
                     ))}
                   </div>
                 </div>
 
                 <div className="flex md:flex-col gap-3 shrink-0 self-stretch justify-center">
-                  <Button className="rounded-xl px-8 bg-primary">التقدم الآن</Button>
-                  <Button variant="outline" size="icon" className="rounded-xl border-border hover:bg-red-50 hover:text-red-500 hover:border-red-200">
+                  <Button className="rounded-xl px-8 bg-primary h-12 font-bold shadow-lg shadow-primary/20">التقدم الآن</Button>
+                  <Button variant="outline" size="icon" className="rounded-xl border-border h-12 w-12 hover:bg-red-50 hover:text-red-500 hover:border-red-200">
                     <Heart size={20} />
                   </Button>
                 </div>
               </div>
             ))}
             
-            <Button variant="ghost" className="w-full py-8 text-primary font-bold text-lg hover:bg-primary/5 rounded-3xl">مشاهدة المزيد من الوظائف</Button>
+            <Button variant="ghost" className="w-full py-8 text-primary font-bold text-lg hover:bg-primary/5 rounded-[32px] border-2 border-dashed border-primary/20">مشاهدة المزيد من الوظائف</Button>
           </div>
         </div>
       </main>
