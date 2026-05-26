@@ -1,18 +1,65 @@
 
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Chrome, Linkedin as LinkedinIcon } from 'lucide-react';
+import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useAuth, useFirestore } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
+  const { auth } = useAuth();
+  const db = useFirestore();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!auth || !db) return;
+
+    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Get user role to redirect appropriately
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const role = userDoc.exists() ? userDoc.data().role : 'seeker';
+
+      toast({
+        title: "تم تسجيل الدخول",
+        description: "أهلاً بك مجدداً!",
+      });
+
+      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في تسجيل الدخول",
+        description: "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-stretch" dir="rtl">
-      {/* Right side: Visual Content (First in RTL) */}
+      {/* Right side: Visual Content */}
       <div className="hidden lg:flex w-1/2 bg-primary relative items-center justify-center p-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary opacity-90"></div>
         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
@@ -41,11 +88,10 @@ export default function LoginPage() {
           </div>
         </div>
         
-        {/* Abstract Shapes */}
         <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Left side: Form (Second in RTL) */}
+      {/* Left side: Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-md space-y-10 animate-fade-in-up">
           <div className="space-y-4 text-right">
@@ -61,26 +107,26 @@ export default function LoginPage() {
             <p className="text-muted-foreground">أهلاً بك مجدداً! يرجى إدخال بياناتك للمتابعة.</p>
           </div>
 
-          <form className="space-y-6 text-right">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="font-bold flex items-center gap-2 justify-start flex-row">
-                <Mail size={16} className="text-primary/60 shrink-0" />
+          <form onSubmit={handleLogin} className="space-y-6 text-right">
+            <div className="space-y-2 text-right">
+              <Label className="font-bold flex items-center gap-2 justify-end">
                 <span>البريد الإلكتروني</span>
+                <Mail size={16} className="text-primary/60" />
               </Label>
-              <Input id="email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+              <Input name="email" type="email" required placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
             </div>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label htmlFor="password" className="font-bold flex items-center gap-2 justify-start flex-row">
-                  <Lock size={16} className="text-primary/60 shrink-0" />
+            <div className="space-y-2 text-right">
+              <div className="flex justify-between items-center flex-row-reverse">
+                <Label className="font-bold flex items-center gap-2 justify-end">
                   <span>كلمة المرور</span>
+                  <Lock size={16} className="text-primary/60" />
                 </Label>
                 <Link href="/forgot-password" title="استعادة كلمة المرور" className="text-sm font-bold text-primary hover:underline">نسيت كلمة المرور؟</Link>
               </div>
-              <Input id="password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+              <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
             </div>
-            <Button className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
-              دخول
+            <Button disabled={loading} className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
+              {loading ? <Loader2 className="animate-spin" /> : "دخول"}
             </Button>
           </form>
 

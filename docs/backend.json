@@ -1,0 +1,64 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Details for a job seeker or employer profile.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["seeker", "employer"] },
+        "phone": { "type": "string" },
+        "location": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "email", "role"]
+    },
+    "Job": {
+      "title": "Job Posting",
+      "description": "A job opening posted by an employer.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "companyId": { "type": "string" },
+        "companyName": { "type": "string" },
+        "location": { "type": "string" },
+        "salary": { "type": "string" },
+        "type": { "type": "string", "enum": ["Full-time", "Part-time", "Contract", "Remote"] },
+        "description": { "type": "string" },
+        "requirements": { "type": "array", "items": { "type": "string" } },
+        "postedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Application": {
+      "title": "Job Application",
+      "description": "An application submitted by a seeker for a job.",
+      "type": "object",
+      "properties": {
+        "jobId": { "type": "string" },
+        "seekerId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "reviewing", "interview", "accepted", "rejected"] },
+        "appliedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "auth": {
+    "providers": ["password", "google.com"]
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "#/entities/UserProfile",
+      "description": "User profile data."
+    },
+    "/jobs/{jobId}": {
+      "schema": "#/entities/Job",
+      "description": "Job postings collection."
+    },
+    "/applications/{appId}": {
+      "schema": "#/entities/Application",
+      "description": "Job applications collection."
+    }
+  }
+}

@@ -1,21 +1,76 @@
 
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useAuth, useFirestore } from '@/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
 
 export default function RegisterPage() {
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
+  const { auth } = useAuth();
+  const db = useFirestore();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<'seeker' | 'employer'>('seeker');
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!auth || !db) return;
+
+    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const fullName = formData.get('fullName') as string;
+    const phone = formData.get('phone') as string;
+    const location = formData.get('location') as string;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        fullName,
+        email,
+        role,
+        phone: phone || '',
+        location: location || '',
+        createdAt: serverTimestamp(),
+      });
+
+      toast({
+        title: "تم إنشاء الحساب بنجاح",
+        description: "مرحباً بك في منصة وظفني!",
+      });
+
+      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في إنشاء الحساب",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-stretch" dir="rtl">
-      {/* Right side: Visual Content (First in RTL) */}
+      {/* Right side: Visual Content */}
       <div className="hidden lg:flex w-1/2 bg-primary relative items-center justify-center p-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary opacity-90"></div>
         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
@@ -52,11 +107,10 @@ export default function RegisterPage() {
           </div>
         </div>
         
-        {/* Abstract Shapes */}
         <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Left side: Form (Second in RTL) */}
+      {/* Left side: Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-xl space-y-10 animate-fade-in-up">
           <div className="space-y-4 text-right">
@@ -72,7 +126,7 @@ export default function RegisterPage() {
             <p className="text-muted-foreground">اختر نوع الحساب الذي يناسب احتياجاتك للمتابعة.</p>
           </div>
 
-          <Tabs defaultValue="seeker" className="w-full space-y-8" dir="rtl">
+          <Tabs defaultValue="seeker" onValueChange={(v) => setRole(v as any)} className="w-full space-y-8" dir="rtl">
             <TabsList className="grid w-full grid-cols-2 h-16 p-2 bg-white rounded-2xl shadow-sm border">
               <TabsTrigger value="seeker" className="rounded-xl font-bold text-lg data-[state=active]:bg-primary data-[state=active]:text-white gap-2 flex items-center justify-center">
                 <User size={20} /> باحث عن عمل
@@ -82,95 +136,95 @@ export default function RegisterPage() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="seeker" className="space-y-6">
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="s-name" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <User size={16} className="text-primary/60 shrink-0" />
+            <TabsContent value="seeker">
+              <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
+                <div className="space-y-2 md:col-span-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>الاسم الكامل</span>
+                    <User size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="s-name" placeholder="أدخل اسمك الكامل" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="fullName" required placeholder="أدخل اسمك الكامل" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="s-email" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Mail size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>البريد الإلكتروني</span>
+                    <Mail size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="s-email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="email" type="email" required placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="s-phone" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Phone size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>رقم الهاتف</span>
+                    <Phone size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="s-phone" placeholder="+967 7xx xxx xxx" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="phone" placeholder="+967 7xx xxx xxx" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="s-password" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Lock size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>كلمة المرور</span>
+                    <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="s-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="s-confirm" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Lock size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>تأكيد كلمة المرور</span>
+                    <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="s-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
-                  إنشاء حساب كباحث عن عمل
+                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
+                  {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كباحث عن عمل"}
                 </Button>
               </form>
             </TabsContent>
 
-            <TabsContent value="employer" className="space-y-6">
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="c-name" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Building2 size={16} className="text-primary/60 shrink-0" />
+            <TabsContent value="employer">
+              <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
+                <div className="space-y-2 md:col-span-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>اسم الشركة / المؤسسة</span>
+                    <Building2 size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="c-name" placeholder="أدخل اسم الشركة" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="fullName" required placeholder="أدخل اسم الشركة" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="c-email" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Mail size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>البريد الإلكتروني للعمل</span>
+                    <Mail size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="c-email" type="email" placeholder="hr@company.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="email" type="email" required placeholder="hr@company.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="c-location" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <MapPin size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>مقر الشركة الرئيسي</span>
+                    <MapPin size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="c-location" placeholder="صنعاء، عدن، المكلا..." className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="location" placeholder="صنعاء، عدن، المكلا..." className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="c-password" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Lock size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>كلمة المرور</span>
+                    <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="c-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="c-confirm" className="font-bold flex items-center gap-2 justify-start flex-row">
-                    <Lock size={16} className="text-primary/60 shrink-0" />
+                <div className="space-y-2 text-right">
+                  <Label className="font-bold flex items-center gap-2 justify-end">
                     <span>تأكيد كلمة المرور</span>
+                    <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input id="c-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
-                  إنشاء حساب كصاحب عمل
+                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
+                  {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كصاحب عمل"}
                 </Button>
               </form>
             </TabsContent>
           </Tabs>
 
           <p className="text-center text-muted-foreground font-medium">
-            لديك حساب بالفعل؟ <Link href="/login" className="text-primary font-black hover:underline transition-all">تسجيل الدخول</Link>
+            لديك حساب بالفعل؟ <Link href="/login" className="text-primary font-bold hover:underline transition-all">تسجيل الدخول</Link>
           </p>
           
           <div className="text-center">
