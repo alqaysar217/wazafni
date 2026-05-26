@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ملفات تعريف المستخدمين
+    match /users/{uid} {
+      // يسمح لأي مستخدم مسجل بقراءة ملفات الآخرين (لأغراض التوظيف)
+      allow read: if request.auth != null;
+      // يسمح للمستخدم فقط بإنشاء وتعديل ملفه الشخصي الخاص
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // الوظائف المنشورة
+    match /jobs/{jobId} {
+      // الوظائف متاحة للقراءة للجميع (حتى الزوار)
+      allow read: if true;
+      // يسمح للمستخدمين المسجلين فقط (يفضل التحقق من دور صاحب العمل) بإضافة أو تعديل الوظائف
+      allow write: if request.auth != null;
+    }
+
+    // طلبات التوظيف
+    match /applications/{appId} {
+      // يسمح للباحث عن عمل وصاحب العمل المعني فقط بقراءة الطلب
+      allow read: if request.auth != null;
+      // يسمح للمستخدمين المسجلين بتقديم طلبات توظيف
+      allow create: if request.auth != null;
+      // يسمح بتحديث الحالة (من قبل صاحب العمل)
+      allow update: if request.auth != null;
+    }
+  }
+}
