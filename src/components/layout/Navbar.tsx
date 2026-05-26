@@ -24,10 +24,16 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useState, useEffect } from 'react';
 
 export function Navbar() {
   const pathname = usePathname();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navLinks = [
     { href: '/', label: 'الرئيسية', icon: <Home size={20} /> },
@@ -89,58 +95,60 @@ export function Navbar() {
           </Button>
 
           {/* Mobile Menu */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden text-primary">
-                <Menu className="w-7 h-7" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0 flex flex-col [&>button]:hidden">
-              <div className="p-6 border-b">
-                <SheetTitle className="text-right font-black text-2xl">القائمة</SheetTitle>
-              </div>
-              
-              <div className="flex-1 overflow-y-auto py-6 px-4">
-                <div className="flex flex-col gap-2">
-                  {navLinks.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className={cn(
-                          "flex items-center gap-4 p-4 rounded-xl font-bold transition-all text-lg",
-                          isActive 
-                            ? "bg-primary text-white" 
-                            : "text-muted-foreground hover:bg-muted"
-                        )}
-                      >
-                        <span className={cn(isActive ? "text-secondary" : "text-primary/60")}>
-                          {link.icon}
-                        </span>
-                        {link.label}
-                      </Link>
-                    );
-                  })}
+          {mounted && (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden text-primary">
+                  <Menu className="w-7 h-7" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0 flex flex-col [&>button]:hidden">
+                <div className="p-6 border-b">
+                  <SheetTitle className="text-right font-black text-2xl">القائمة</SheetTitle>
                 </div>
-              </div>
+                
+                <div className="flex-1 overflow-y-auto py-6 px-4">
+                  <div className="flex flex-col gap-2">
+                    {navLinks.map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className={cn(
+                            "flex items-center gap-4 p-4 rounded-xl font-bold transition-all text-lg",
+                            isActive 
+                              ? "bg-primary text-white" 
+                              : "text-muted-foreground hover:bg-muted"
+                          )}
+                        >
+                          <span className={cn(isActive ? "text-secondary" : "text-primary/60")}>
+                            {link.icon}
+                          </span>
+                          {link.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
 
-              <div className="p-6 bg-[#F8F7FA] border-t space-y-4">
-                <Button asChild variant="outline" className="w-full h-14 rounded-xl text-lg font-bold border-primary text-primary hover:bg-primary/5 flex gap-3">
-                  <Link href="/login">
-                    <LogIn size={20} />
-                    تسجيل الدخول
-                  </Link>
-                </Button>
-                <Button asChild className="w-full h-14 rounded-xl text-lg font-bold bg-primary text-white flex gap-3">
-                  <Link href="/register">
-                    <UserPlus size={20} />
-                    انضم الآن
-                  </Link>
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+                <div className="p-6 bg-[#F8F7FA] border-t space-y-4">
+                  <Button asChild variant="outline" className="w-full h-14 rounded-xl text-lg font-bold border-primary text-primary hover:bg-primary/5 flex gap-3">
+                    <Link href="/login">
+                      <LogIn size={20} />
+                      تسجيل الدخول
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full h-14 rounded-xl text-lg font-bold bg-primary text-white flex gap-3">
+                    <Link href="/register">
+                      <UserPlus size={20} />
+                      انضم الآن
+                    </Link>
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </nav>
