@@ -1,7 +1,8 @@
+
 'use client';
 
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getFirestore, Firestore } from 'firebase/firestore';
+import { initializeFirestore, getFirestore, Firestore } from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
 import { firebaseConfig } from './config';
 
@@ -17,11 +18,20 @@ export function initializeFirebase() {
       app = initializeApp(firebaseConfig);
     }
     
-    db = getFirestore(app);
+    // نستخدم initializeFirestore مع تفعيل experimentalForceLongPolling
+    // لضمان استقرار الاتصال في بيئات العمل السحابية والشبكات المقيدة
+    if (!db) {
+      db = initializeFirestore(app, {
+        experimentalForceLongPolling: true,
+      });
+    } else {
+      db = getFirestore(app);
+    }
+    
     auth = getAuth(app);
   } catch (error) {
     console.error("Firebase initialization error:", error);
-    // Return empty objects to prevent total app failure in edge cases
+    // نرجيع كائنات فارغة لتجنب انهيار التطبيق بالكامل
     return { app: {} as any, db: null as any, auth: null as any };
   }
   
