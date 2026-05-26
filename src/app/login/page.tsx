@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2, AlertTriangle } from 'lucide-react';
+import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -62,23 +62,18 @@ export default function LoginPage() {
 
       router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
     } catch (error: any) {
-      let title = "خطأ في تسجيل الدخول";
+      console.error("Login error:", error);
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
 
-      if (error.code === 'auth/user-not-found') {
-        message = "المستخدم غير موجود.";
-      } else if (error.code === 'auth/wrong-password') {
-        message = "كلمة المرور غير صحيحة.";
-      } else if (error.code === 'auth/invalid-email') {
-        message = "البريد الإلكتروني غير صحيح.";
-      } else if (error.code === 'auth/network-request-failed') {
-        title = "خطأ في الشبكة";
-        message = "تعذر الاتصال بخوادم Firebase. تأكد من تفعيل مفاتيح API وإضافة الدومين في الـ Console.";
+      if (error.code === 'auth/network-request-failed') {
+        message = "فشل في الاتصال. يرجى إضافة الدومين الحالي في Authorized Domains داخل Firebase Console.";
+      } else if (error.code === 'auth/too-many-requests') {
+        message = "تم حظر المحاولات مؤقتاً لكثرة المحاولات الخاطئة.";
       }
       
       toast({
         variant: "destructive",
-        title: title,
+        title: "خطأ في تسجيل الدخول",
         description: `${message} (${error.code})`,
       });
       setLoading(false);
@@ -102,33 +97,12 @@ export default function LoginPage() {
           </Link>
           <h2 className="text-5xl font-black font-headline leading-tight text-white">عد إلينا لنكمل <br /> قصة نجاحك.</h2>
           <p className="text-xl text-white/80 leading-relaxed font-medium">سجل دخولك لتكتشف مئات الوظائف الجديدة المتاحة اليوم في أفضل الشركات اليمنية.</p>
-          
-          <div className="pt-12 grid grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <p className="text-3xl font-black text-white">+25k</p>
-              <p className="text-white/60 text-sm">فرصة وظيفية</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-3xl font-black text-white">+1.2k</p>
-              <p className="text-white/60 text-sm">شركة موثوقة</p>
-            </div>
-          </div>
         </div>
-        
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-md space-y-10 animate-fade-in-up">
           <div className="space-y-4 text-right">
-            <Link href="/" className="lg:hidden flex items-center gap-2 mb-8 group justify-end">
-              <span className="text-2xl font-bold font-headline text-primary">وظفني</span>
-              <div className="relative w-10 h-10 bg-white rounded-xl overflow-hidden shadow-md p-1 text-primary flex items-center justify-center">
-                {logo?.imageUrl && (
-                  <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
-                )}
-              </div>
-            </Link>
             <h1 className="text-4xl font-black font-headline text-primary">تسجيل الدخول</h1>
             <p className="text-muted-foreground">أهلاً بك مجدداً! يرجى إدخال بياناتك للمتابعة.</p>
           </div>
@@ -141,40 +115,17 @@ export default function LoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-6 text-right">
             <div className="space-y-2 text-right">
-              <Label className="font-bold flex items-center gap-2 justify-end">
-                <span>البريد الإلكتروني</span>
-                <Mail size={16} className="text-primary/60" />
-              </Label>
+              <Label className="font-bold flex items-center gap-2 justify-end">البريد الإلكتروني</Label>
               <Input name="email" type="email" required placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
             </div>
             <div className="space-y-2 text-right">
-              <div className="flex justify-between items-center flex-row-reverse">
-                <Label className="font-bold flex items-center gap-2 justify-end">
-                  <span>كلمة المرور</span>
-                  <Lock size={16} className="text-primary/60" />
-                </Label>
-                <Link href="#" title="استعادة كلمة المرور" className="text-sm font-bold text-primary hover:underline">نسيت كلمة المرور؟</Link>
-              </div>
+              <Label className="font-bold flex items-center gap-2 justify-end">كلمة المرور</Label>
               <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
             </div>
             <Button disabled={loading || !firebaseReady} className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
               {loading ? <Loader2 className="animate-spin" /> : "دخول"}
             </Button>
           </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t"></span></div>
-            <div className="relative flex justify-center text-xs uppercase"><span className="bg-[#F8F7FA] px-2 text-muted-foreground font-bold">أو سجل عبر</span></div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-14 rounded-xl font-bold flex gap-2 border-border bg-white hover:bg-muted items-center justify-center">
-              <Chrome size={20} /> جوجل
-            </Button>
-            <Button variant="outline" className="h-14 rounded-xl font-bold flex gap-2 border-border bg-white hover:bg-muted items-center justify-center">
-              <LinkedinIcon size={20} /> لينكد إن
-            </Button>
-          </div>
 
           <p className="text-center text-muted-foreground font-medium">
             ليس لديك حساب؟ <Link href="/register" className="text-primary font-bold hover:underline">أنشئ حساباً جديداً</Link>
