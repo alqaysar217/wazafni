@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -222,9 +221,15 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] p-0 flex flex-col [&>button]:hidden border-none shadow-2xl rounded-l-[40px]" dir="rtl">
-              <div className="p-8 border-b border-primary/5 flex items-center justify-between">
-                <SheetTitle className="text-right font-black text-2xl text-primary">القائمة</SheetTitle>
-                <Zap size={24} className="text-secondary" />
+              <div className="p-8 border-b border-primary/5 flex items-center gap-3">
+                <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-inner bg-primary/5 flex items-center justify-center p-1">
+                  {logo?.imageUrl ? (
+                    <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain p-1" priority />
+                  ) : (
+                    <span className="text-primary font-black">W</span>
+                  )}
+                </div>
+                <SheetTitle className="text-right font-black text-2xl text-primary tracking-tighter">وظفني</SheetTitle>
               </div>
               
               <div className="flex-1 overflow-y-auto py-8 px-6">
