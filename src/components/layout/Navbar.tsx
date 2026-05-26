@@ -26,7 +26,8 @@ import {
   BarChart3,
   Star,
   Handshake,
-  User as UserIcon
+  User as UserIcon,
+  PlusCircle
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
@@ -50,14 +51,12 @@ import { signOut } from 'firebase/auth';
 
 export function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
   const [mounted, setMounted] = useState(false);
   const [localUser, setLocalUser] = useState<any>(null);
   const { user: firebaseUser } = useUser();
   const auth = useAuth();
   
-  // نراقب التغييرات في localStorage و Firebase معاً
   useEffect(() => {
     setMounted(true);
     const updateLocalUser = () => {
@@ -100,6 +99,14 @@ export function Navbar() {
     { label: "الإعدادات", icon: <Settings size={18} />, href: "/seeker/settings" }
   ];
 
+  const employerLinks = [
+    { label: "لوحة التحكم", icon: <LayoutDashboard size={18} />, href: "/employer/dashboard" },
+    { label: "إضافة وظيفة", icon: <PlusCircle size={18} />, href: "/employer/post-job" },
+    { label: "المتقدمين", icon: <Users size={18} />, href: "/employer/candidates" },
+    { label: "الرسائل", icon: <MessageSquare size={18} />, href: "/seeker/messages" },
+    { label: "إعدادات الشركة", icon: <Settings size={18} />, href: "/employer/settings" }
+  ];
+
   const adminLinks = [
     { label: "لوحة التحكم", icon: <LayoutDashboard size={18} />, href: "/admin/dashboard" },
     { label: "المستخدمين", icon: <Users size={18} />, href: "/admin/users" },
@@ -111,7 +118,7 @@ export function Navbar() {
     { label: "الإعدادات", icon: <Settings size={18} />, href: "/admin/settings" }
   ];
 
-  const activeDashboardLinks = role === 'admin' ? adminLinks : seekerLinks;
+  const activeDashboardLinks = role === 'admin' ? adminLinks : role === 'employer' ? employerLinks : seekerLinks;
 
   if (!mounted) return null;
 
@@ -165,7 +172,9 @@ export function Navbar() {
                   <button className="flex items-center gap-3 p-1 pr-3 rounded-full bg-primary/5 hover:bg-primary/10 transition-all border border-primary/5">
                     <div className="text-right hidden sm:block">
                       <p className="text-xs font-black text-primary line-clamp-1">{fullName}</p>
-                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'المدير العام' : 'حساب شخصي'}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                        {role === 'admin' ? 'المدير العام' : role === 'employer' ? 'حساب أعمال' : 'حساب شخصي'}
+                      </p>
                     </div>
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white flex items-center justify-center relative">
                       <Image src={`https://picsum.photos/seed/${user.uid || 'user'}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
@@ -240,7 +249,9 @@ export function Navbar() {
 
                 {user && (
                   <div className="mt-8 pt-8 border-t border-primary/5">
-                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4 text-right">{role === 'admin' ? 'إدارة النظام' : 'لوحة التحكم'}</p>
+                    <p className="text-xs font-black text-muted-foreground uppercase tracking-widest px-4 mb-4 text-right">
+                      {role === 'admin' ? 'إدارة النظام' : 'لوحة التحكم'}
+                    </p>
                     <div className="flex flex-col gap-2">
                       {activeDashboardLinks.map((link) => (
                         <Link key={link.href} href={link.href} className="flex items-center gap-4 p-4 rounded-2xl font-black transition-all text-primary/80 hover:bg-primary/5">
