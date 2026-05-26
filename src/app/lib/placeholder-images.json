@@ -4,13 +4,13 @@
     {
       "id": "hero-bg",
       "description": "Professional team working in a modern office environment",
-      "imageUrl": "https://picsum.photos/seed/wazafni-pro/1920/1080",
+      "imageUrl": "/home.png",
       "imageHint": "professional office"
     },
     {
       "id": "logo-main",
       "description": "Wazafni official logo icon",
-      "imageUrl": "https://picsum.photos/seed/wlogo/100/100",
+      "imageUrl": "/logo.png",
       "imageHint": "corporate logo"
     },
     {
@@ -46,25 +46,25 @@
     {
       "id": "service-cv",
       "description": "Modern resume builder interface",
-      "imageUrl": "https://picsum.photos/seed/cv-service/800/500",
+      "imageUrl": "/services-2.png",
       "imageHint": "resume design"
     },
     {
       "id": "service-ai",
       "description": "AI matching visualization",
-      "imageUrl": "https://picsum.photos/seed/ai-match/800/500",
+      "imageUrl": "/services-1.png",
       "imageHint": "artificial intelligence"
     },
     {
       "id": "service-business",
       "description": "Corporate hiring solutions",
-      "imageUrl": "https://picsum.photos/seed/business-sol/800/500",
+      "imageUrl": "/services-3.png",
       "imageHint": "business recruitment"
     },
     {
       "id": "about-vision",
       "description": "Strategic vision concept",
-      "imageUrl": "https://picsum.photos/seed/vision/1200/800",
+      "imageUrl": "/about.png",
       "imageHint": "strategic planning"
     },
     {
