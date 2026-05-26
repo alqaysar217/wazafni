@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -63,13 +63,14 @@ export default function LoginPage() {
     } catch (error: any) {
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       if (error.code === 'auth/user-not-found') message = "المستخدم غير موجود.";
-      if (error.code === 'auth/wrong-password') message = "كلمة المرور غير صحيحة.";
-      if (error.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      else if (error.code === 'auth/wrong-password') message = "كلمة المرور غير صحيحة.";
+      else if (error.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      else if (error.code === 'auth/operation-not-allowed') message = "يجب تفعيل 'Email/Password' في Firebase Console.";
       
       toast({
         variant: "destructive",
         title: "خطأ في تسجيل الدخول",
-        description: message,
+        description: `${message} (${error.code})`,
       });
       setLoading(false);
     }

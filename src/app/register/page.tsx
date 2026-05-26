@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2, AlertCircle } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -100,13 +100,15 @@ export default function RegisterPage() {
     } catch (authError: any) {
       let message = "حدث خطأ غير متوقع.";
       if (authError.code === 'auth/email-already-in-use') message = "البريد الإلكتروني مستخدم بالفعل.";
-      if (authError.code === 'auth/weak-password') message = "كلمة المرور ضعيفة جداً.";
-      if (authError.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      else if (authError.code === 'auth/weak-password') message = "كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل).";
+      else if (authError.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      else if (authError.code === 'auth/operation-not-allowed') message = "يجب تفعيل 'Email/Password' في Firebase Console.";
+      else if (authError.code === 'auth/network-request-failed') message = "فشل في الاتصال بالشبكة. يرجى التحقق من اتصالك.";
       
       toast({
         variant: "destructive",
         title: "فشل إنشاء الحساب",
-        description: message,
+        description: `${message} (${authError.code})`,
       });
       setLoading(false);
     }
@@ -170,7 +172,7 @@ export default function RegisterPage() {
 
           {!firebaseReady && (
             <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
-              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال بقاعدة البيانات...
+              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال...
             </div>
           )}
 
