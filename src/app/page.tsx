@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -22,7 +23,7 @@ import Link from 'next/link';
 
 export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-'));
+  const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-') && img.id.endsWith('-logo'));
   
   const featuredJobs = [
     {
@@ -35,7 +36,7 @@ export default function Home() {
       posted: "منذ يومين",
       match: 95,
       skills: ["React", "TypeScript", "Node.js"],
-      logo: "https://picsum.photos/seed/tech1/100/100"
+      logo: PlaceHolderImages.find(img => img.id === 'company-ytech-logo')?.imageUrl || ""
     },
     {
       id: 2,
@@ -47,7 +48,7 @@ export default function Home() {
       posted: "منذ 4 ساعات",
       match: 88,
       skills: ["SEO", "Content Strategy", "Ads"],
-      logo: "https://picsum.photos/seed/hsa/100/100"
+      logo: PlaceHolderImages.find(img => img.id === 'company-hsa-logo')?.imageUrl || ""
     },
     {
       id: 3,
@@ -72,7 +73,7 @@ export default function Home() {
       employees: "20,000+",
       jobs: 15,
       rating: 4.9,
-      logo: "https://picsum.photos/seed/hsa/150/150"
+      logo: PlaceHolderImages.find(img => img.id === 'company-hsa-logo')?.imageUrl || ""
     },
     {
       id: 2,
@@ -82,7 +83,7 @@ export default function Home() {
       employees: "2,500+",
       jobs: 8,
       rating: 4.7,
-      logo: "https://picsum.photos/seed/kuraimi/150/150"
+      logo: PlaceHolderImages.find(img => img.id === 'company-kuraimi-logo')?.imageUrl || ""
     },
     {
       id: 3,
@@ -92,7 +93,7 @@ export default function Home() {
       employees: "50-100",
       jobs: 4,
       rating: 4.8,
-      logo: "https://picsum.photos/seed/ytech/150/150"
+      logo: PlaceHolderImages.find(img => img.id === 'company-ytech-logo')?.imageUrl || ""
     }
   ];
 
@@ -329,7 +330,6 @@ export default function Home() {
                     alt={partner.description} 
                     fill 
                     className="object-contain" 
-                    data-ai-hint={partner.imageHint}
                   />
                 </div>
               ))}
@@ -373,7 +373,7 @@ export default function Home() {
         {/* Section 7: CTA */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
-            <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
+            <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5_xl mx-auto">
               <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center text-primary mx-auto mb-6">
                 <Sparkles size={40} />
               </div>
