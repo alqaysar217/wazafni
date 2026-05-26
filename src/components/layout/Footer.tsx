@@ -14,7 +14,9 @@ export function Footer() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3">
               <div className="relative w-8 h-8 rounded-md overflow-hidden">
-                <Image src={logo?.imageUrl || ''} alt="Wazafni" fill className="object-cover" />
+                {logo?.imageUrl && (
+                  <Image src={logo.imageUrl} alt="Wazafni" fill className="object-cover" />
+                )}
               </div>
               <span className="text-2xl font-bold font-headline text-primary">وظفني</span>
             </Link>
@@ -53,9 +55,9 @@ export function Footer() {
           <div>
             <h4 className="font-bold text-lg mb-8 text-primary">روابط هامة</h4>
             <ul className="space-y-4 text-[15px] text-muted-foreground font-medium">
-              <li className="flex items-center gap-3"><Mail size={16} /> info@wazafni.ye</li>
-              <li className="flex items-center gap-3"><MapPin size={16} /> صنعاء، اليمن - شارع الزبيري</li>
-              <li className="flex items-center gap-3"><Phone size={16} /> +967 770 000 000</li>
+              <li className="flex items-center gap-3 font-medium"><Mail size={16} /> info@wazafni.ye</li>
+              <li className="flex items-center gap-3 font-medium"><MapPin size={16} /> صنعاء، اليمن - شارع الزبيري</li>
+              <li className="flex items-center gap-3 font-medium"><Phone size={16} /> +967 770 000 000</li>
               <li><Link href="/faq" className="hover:text-primary transition-colors">الأسئلة الشائعة</Link></li>
               <li><Link href="/support" className="hover:text-primary transition-colors">مركز الدعم</Link></li>
             </ul>

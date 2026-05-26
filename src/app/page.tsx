@@ -1,6 +1,5 @@
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -10,9 +9,7 @@ import {
   MapPin, 
   Sparkles, 
   TrendingUp, 
-  ShieldCheck,
-  Building2,
-  Briefcase
+  Building2
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -27,14 +24,16 @@ export default function Home() {
         {/* Professional Hero Section */}
         <section className="relative min-h-[85vh] flex items-center py-20 overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <Image 
-              src={heroImg?.imageUrl || ''} 
-              alt="Professional Background"
-              fill
-              className="object-cover"
-              priority
-              data-ai-hint="professional workspace"
-            />
+            {heroImg?.imageUrl && (
+              <Image 
+                src={heroImg.imageUrl} 
+                alt="Professional Background"
+                fill
+                className="object-cover"
+                priority
+                data-ai-hint="professional workspace"
+              />
+            )}
             <div className="absolute inset-0 hero-overlay z-10"></div>
           </div>
 
@@ -145,7 +144,7 @@ export default function Home() {
                 { label: "توظيف شهري", value: "250+" }
               ].map((stat, i) => (
                 <div key={i} className="text-white">
-                  <p className="text-5xl font-black font-headline mb-2">{stat.value}</p>
+                  <p className="text-stat-value text-5xl font-black font-headline mb-2">{stat.value}</p>
                   <p className="text-white/60 font-bold tracking-wide uppercase text-xs">{stat.label}</p>
                 </div>
               ))}

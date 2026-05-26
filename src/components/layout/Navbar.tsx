@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Menu, Search } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function Navbar() {
@@ -16,12 +16,14 @@ export function Navbar() {
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10 overflow-hidden rounded-lg">
-              <Image 
-                src={logo?.imageUrl || ''} 
-                alt="Wazafni Logo" 
-                fill 
-                className="object-cover"
-              />
+              {logo?.imageUrl && (
+                <Image 
+                  src={logo.imageUrl} 
+                  alt="Wazafni Logo" 
+                  fill 
+                  className="object-cover"
+                />
+              )}
             </div>
             <span className="text-2xl font-black font-headline text-primary">وظفني</span>
           </Link>
