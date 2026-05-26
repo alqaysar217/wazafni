@@ -1,11 +1,14 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* خيارات الإعداد */
   typescript: {
+    // نتجاهل أخطاء التايب سكريبت أثناء البناء لضمان نجاح الرفع الأولي
     ignoreBuildErrors: true,
   },
   eslint: {
+    // نتجاهل تحذيرات ESLint أثناء البناء
     ignoreDuringBuilds: true,
   },
   images: {
