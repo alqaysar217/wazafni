@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Briefcase, Chrome, Github } from 'lucide-react';
+import { Briefcase, Chrome, Github, Mail, Lock } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function LoginPage() {
@@ -24,18 +24,18 @@ export default function LoginPage() {
                 <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
               )}
             </div>
-            <span className="text-3xl font-black font-headline">وظفني</span>
+            <span className="text-3xl font-black font-headline text-white">وظفني</span>
           </Link>
-          <h2 className="text-5xl font-black font-headline leading-tight">عد إلينا لنكمل <br /> قصة نجاحك.</h2>
+          <h2 className="text-5xl font-black font-headline leading-tight text-white">عد إلينا لنكمل <br /> قصة نجاحك.</h2>
           <p className="text-xl text-white/80 leading-relaxed font-light">سجل دخولك لتكتشف مئات الوظائف الجديدة المتاحة اليوم في أفضل الشركات اليمنية.</p>
           
           <div className="pt-12 grid grid-cols-2 gap-8">
             <div className="space-y-2">
-              <p className="text-3xl font-black">+25k</p>
+              <p className="text-3xl font-black text-white">+25k</p>
               <p className="text-white/60 text-sm">فرصة وظيفية</p>
             </div>
             <div className="space-y-2">
-              <p className="text-3xl font-black">+1.2k</p>
+              <p className="text-3xl font-black text-white">+1.2k</p>
               <p className="text-white/60 text-sm">شركة موثوقة</p>
             </div>
           </div>
@@ -48,32 +48,32 @@ export default function LoginPage() {
       {/* Right side: Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-md space-y-10 animate-fade-in-up">
-          <div className="space-y-4">
+          <div className="space-y-4 text-right">
             <Link href="/" className="lg:hidden flex items-center gap-2 mb-8 group">
               <div className="relative w-10 h-10 bg-white rounded-xl overflow-hidden shadow-md p-1">
                 {logo?.imageUrl && (
                   <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
                 )}
               </div>
-              <span className="text-2xl font-bold font-headline">وظفني</span>
+              <span className="text-2xl font-bold font-headline text-primary">وظفني</span>
             </Link>
-            <h1 className="text-4xl font-black font-headline text-foreground">تسجيل الدخول</h1>
+            <h1 className="text-4xl font-black font-headline text-foreground text-primary">تسجيل الدخول</h1>
             <p className="text-muted-foreground">أهلاً بك مجدداً! يرجى إدخال بياناتك للمتابعة.</p>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6 text-right">
             <div className="space-y-2">
-              <Label htmlFor="email" className="font-bold">البريد الإلكتروني</Label>
-              <Input id="email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white" />
+              <Label htmlFor="email" className="font-bold flex items-center gap-2"><Mail size={14} /> البريد الإلكتروني</Label>
+              <Input id="email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" />
             </div>
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="password" className="font-bold">كلمة المرور</Label>
                 <Link href="/forgot-password" title="استعادة كلمة المرور" className="text-sm font-bold text-primary hover:underline">نسيت كلمة المرور؟</Link>
+                <Label htmlFor="password" className="font-bold flex items-center gap-2"><Lock size={14} /> كلمة المرور</Label>
               </div>
-              <Input id="password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white" />
+              <Input id="password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" />
             </div>
-            <Button className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+            <Button className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
               دخول
             </Button>
           </form>
@@ -92,7 +92,7 @@ export default function LoginPage() {
             </Button>
           </div>
 
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-muted-foreground font-medium">
             ليس لديك حساب؟ <Link href="/register" className="text-primary font-bold hover:underline">أنشئ حساباً جديداً</Link>
           </p>
         </div>

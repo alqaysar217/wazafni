@@ -83,26 +83,26 @@ export default function RegisterPage() {
             </TabsList>
 
             <TabsContent value="seeker" className="space-y-6">
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="s-name" className="font-bold flex items-center gap-2"><User size={14} /> الاسم الكامل</Label>
-                  <Input id="s-name" placeholder="أدخل اسمك الكامل" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="s-name" placeholder="أدخل اسمك الكامل" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="s-email" className="font-bold flex items-center gap-2"><Mail size={14} /> البريد الإلكتروني</Label>
-                  <Input id="s-email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="s-email" type="email" placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="s-phone" className="font-bold flex items-center gap-2"><Phone size={14} /> رقم الهاتف</Label>
-                  <Input id="s-phone" placeholder="+967 7xx xxx xxx" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="s-phone" placeholder="+967 7xx xxx xxx" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="s-password" className="font-bold flex items-center gap-2"><Lock size={14} /> كلمة المرور</Label>
-                  <Input id="s-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="s-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="s-confirm" className="font-bold flex items-center gap-2"><Lock size={14} /> تأكيد كلمة المرور</Label>
-                  <Input id="s-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="s-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <Button className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
                   إنشاء حساب كباحث عن عمل
@@ -111,26 +111,26 @@ export default function RegisterPage() {
             </TabsContent>
 
             <TabsContent value="employer" className="space-y-6">
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-6 text-right">
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="c-name" className="font-bold flex items-center gap-2"><Building2 size={14} /> اسم الشركة / المؤسسة</Label>
-                  <Input id="c-name" placeholder="أدخل اسم الشركة" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="c-name" placeholder="أدخل اسم الشركة" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="c-email" className="font-bold flex items-center gap-2"><Mail size={14} /> البريد الإلكتروني للعمل</Label>
-                  <Input id="c-email" type="email" placeholder="hr@company.com" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="c-email" type="email" placeholder="hr@company.com" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="c-location" className="font-bold flex items-center gap-2"><MapPin size={14} /> مقر الشركة الرئيسي</Label>
-                  <Input id="c-location" placeholder="صنعاء، عدن، المكلا..." className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="c-location" placeholder="صنعاء، عدن، المكلا..." className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="c-password" className="font-bold flex items-center gap-2"><Lock size={14} /> كلمة المرور</Label>
-                  <Input id="c-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="c-password" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="c-confirm" className="font-bold flex items-center gap-2"><Lock size={14} /> تأكيد كلمة المرور</Label>
-                  <Input id="c-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white" />
+                  <Input id="c-confirm" type="password" placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" />
                 </div>
                 <Button className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
                   إنشاء حساب كصاحب عمل
