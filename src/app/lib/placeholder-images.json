@@ -4,31 +4,31 @@
     {
       "id": "hero-bg",
       "description": "Professional team working in a modern office environment",
-      "imageUrl": "https://picsum.photos/seed/wazafni-pro/1920/1080",
+      "imageUrl": "/home.png",
       "imageHint": "professional office"
     },
     {
       "id": "logo-main",
       "description": "Wazafni official logo icon",
-      "imageUrl": "https://picsum.photos/seed/wlogo/100/100",
+      "imageUrl": "/logo.png",
       "imageHint": "corporate logo"
     },
     {
       "id": "company-hsa-logo",
       "description": "HSA Group Logo",
-      "imageUrl": "https://picsum.photos/seed/hsa/200/200",
+      "imageUrl": "/logo-1.png",
       "imageHint": "corporate logo"
     },
     {
       "id": "company-hsa-cover",
       "description": "HSA Group Office Cover",
-      "imageUrl": "https://picsum.photos/seed/corp/1920/600",
+      "imageUrl": "/cam-1.png",
       "imageHint": "modern office"
     },
     {
       "id": "company-kuraimi-logo",
       "description": "Al-Kuraimi Bank Logo",
-      "imageUrl": "https://picsum.photos/seed/kuraimi/200/200",
+      "imageUrl": "/logo-2.png",
       "imageHint": "bank logo"
     },
     {
@@ -40,7 +40,7 @@
     {
       "id": "company-ytech-logo",
       "description": "Yemen Tech Logo",
-      "imageUrl": "https://picsum.photos/seed/ytech/200/200",
+      "imageUrl": "/logo-3.png",
       "imageHint": "tech logo"
     },
     {
@@ -52,25 +52,25 @@
     {
       "id": "service-cv",
       "description": "Modern resume builder interface",
-      "imageUrl": "https://picsum.photos/seed/cv-service/800/600",
+      "imageUrl": "/services-2.png",
       "imageHint": "resume design"
     },
     {
       "id": "service-ai",
       "description": "AI matching visualization",
-      "imageUrl": "https://picsum.photos/seed/ai-match/800/600",
+      "imageUrl": "/services-1.png",
       "imageHint": "artificial intelligence"
     },
     {
       "id": "service-business",
       "description": "Corporate hiring solutions",
-      "imageUrl": "https://picsum.photos/seed/business/800/600",
+      "imageUrl": "/services-3.png",
       "imageHint": "business recruitment"
     },
     {
       "id": "about-vision",
       "description": "Strategic vision concept",
-      "imageUrl": "https://picsum.photos/seed/vision/1200/800",
+      "imageUrl": "/about.png",
       "imageHint": "strategic planning"
     },
     {
