@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
@@ -55,13 +54,13 @@ export default function Home() {
       name: "أحمد المقطري",
       role: "مطور برمجيات",
       content: "بفضل وظفني، وجدت الوظيفة التي كنت أحلم بها في أقل من أسبوعين. النظام الذكي ساعدني كثيراً في تحسين سيرتي الذاتية.",
-      avatar: PlaceHolderImages.find(img => img.id === 'user-1')?.imageUrl
+      avatar: "https://picsum.photos/seed/u1/100/100"
     },
     {
       name: "سارة العبسي",
       role: "مديرة تسويق",
       content: "أفضل منصة توظيف في اليمن بدون منازع. السهولة في التعامل والاحترافية في عرض الوظائف تجعل التجربة رائعة.",
-      avatar: PlaceHolderImages.find(img => img.id === 'user-2')?.imageUrl
+      avatar: "https://picsum.photos/seed/u2/100/100"
     }
   ];
 
@@ -80,7 +79,6 @@ export default function Home() {
                 fill
                 className="object-cover"
                 priority
-                data-ai-hint="professional workspace"
               />
             )}
             <div className="absolute inset-0 hero-overlay z-10"></div>
@@ -117,7 +115,7 @@ export default function Home() {
                     className="border-none shadow-none focus-visible:ring-0 text-md font-semibold"
                   />
                 </div>
-                <Button size="lg" className="rounded-lg h-14 px-12 bg-primary font-bold w-full md:w-auto">
+                <Button size="lg" className="rounded-lg h-14 px-12 bg-primary font-bold w-full md:w-auto text-white">
                   بحث
                 </Button>
               </div>
@@ -125,7 +123,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 2: Why Choose Us (لماذا تختارنا) */}
+        {/* Section 2: Why Choose Us */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
@@ -166,7 +164,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 3: Latest Jobs (الوظائف الشاغرة) */}
+        {/* Section 3: Latest Jobs */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -209,7 +207,7 @@ export default function Home() {
                   </div>
 
                   <div className="shrink-0 self-stretch flex items-center">
-                    <Button className="rounded-xl px-10 bg-primary h-12">التفاصيل</Button>
+                    <Button className="rounded-xl px-10 bg-primary h-12 text-white">التفاصيل</Button>
                   </div>
                 </div>
               ))}
@@ -217,7 +215,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 4: Our Partners (شركاء النجاح) */}
+        {/* Section 4: Success Partners */}
         <section className="py-24 bg-white border-b">
           <div className="container mx-auto px-4">
             <p className="text-center text-sm font-bold text-muted-foreground uppercase tracking-widest mb-12">شركاء النجاح - شركات تثق بنا</p>
@@ -231,7 +229,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 5: Testimonials (آراء العملاء) */}
+        {/* Section 5: Testimonials */}
         <section className="py-24 bg-primary text-white overflow-hidden relative">
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -250,7 +248,7 @@ export default function Home() {
                     <p className="text-lg leading-relaxed font-medium relative z-10">{t.content}</p>
                     <div className="flex items-center gap-4 border-t border-white/10 pt-6">
                       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-secondary shrink-0">
-                        {t.avatar && <Image src={t.avatar} alt={t.name} width={48} height={48} className="object-cover" />}
+                        <Image src={t.avatar} alt={t.name} width={48} height={48} className="object-cover" />
                       </div>
                       <div>
                         <h4 className="font-bold">{t.name}</h4>
@@ -264,7 +262,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 6: CTA (دعوة للعمل) */}
+        {/* Section 6: CTA */}
         <section className="py-24 bg-[#F8F7FA]">
           <div className="container mx-auto px-4">
             <div className="bg-white rounded-[40px] p-12 md:p-20 text-center shadow-2xl shadow-primary/5 border border-primary/5 space-y-10 max-w-5xl mx-auto">
@@ -276,7 +274,7 @@ export default function Home() {
                 انضم الآن لآلاف المتخصصين وابدأ رحلتك المهنية مع أقوى منصة توظيف ذكية في اليمن.
               </p>
               <div className="flex flex-wrap justify-center gap-5 pt-4">
-                <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary text-xl font-bold shadow-lg shadow-primary/20">
+                <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary text-xl font-bold shadow-lg shadow-primary/20 text-white">
                   سجل كباحث عن عمل
                 </Button>
                 <Button size="lg" variant="outline" className="rounded-2xl h-16 px-12 border-primary text-primary text-xl font-bold hover:bg-primary/5">

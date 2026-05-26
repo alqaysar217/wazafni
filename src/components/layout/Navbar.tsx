@@ -16,13 +16,16 @@ export function Navbar() {
         <div className="flex items-center gap-10">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10 overflow-hidden rounded-lg">
-              {logo?.imageUrl && (
+              {logo?.imageUrl ? (
                 <Image 
                   src={logo.imageUrl} 
                   alt="Wazafni Logo" 
                   fill 
                   className="object-cover"
+                  priority
                 />
+              ) : (
+                <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold">W</div>
               )}
             </div>
             <span className="text-2xl font-black font-headline text-primary">وظفني</span>
@@ -42,7 +45,7 @@ export function Navbar() {
           <Link href="/login" className="hidden sm:block text-[15px] font-bold text-primary hover:opacity-80 px-4">
             تسجيل الدخول
           </Link>
-          <Button asChild className="rounded-lg px-8 bg-primary hover:bg-primary/90 font-bold shadow-md">
+          <Button asChild className="rounded-lg px-8 bg-primary hover:bg-primary/90 font-bold shadow-md text-white">
             <Link href="/register">انضم الآن</Link>
           </Button>
           <Button variant="ghost" size="icon" className="lg:hidden text-primary">

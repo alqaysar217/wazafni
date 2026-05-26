@@ -16,8 +16,7 @@ import {
   Building2,
   Bookmark,
   LayoutGrid,
-  List,
-  Check
+  List
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -118,7 +117,7 @@ export default function JobsPage() {
                 <MapPin className="text-primary/40" size={24} />
                 <Input placeholder="المدينة أو المنطقة..." className="border-none bg-transparent shadow-none focus-visible:ring-0 text-lg font-bold" />
               </div>
-              <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary font-black text-xl hover:scale-[1.02] transition-transform">بحث</Button>
+              <Button size="lg" className="rounded-2xl h-16 px-12 bg-primary font-black text-xl hover:scale-[1.02] transition-transform text-white">بحث</Button>
             </div>
           </div>
         </section>
@@ -197,7 +196,7 @@ export default function JobsPage() {
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <div className="font-black text-primary text-lg">{job.salary}</div>
-                    <Button className="rounded-xl px-6 bg-primary font-black shadow-lg shadow-primary/10">التفاصيل</Button>
+                    <Button className="rounded-xl px-6 bg-primary font-black shadow-lg shadow-primary/10 text-white">التفاصيل</Button>
                   </div>
                 </div>
               </div>
@@ -216,4 +215,3 @@ export default function JobsPage() {
     </div>
   );
 }
-
