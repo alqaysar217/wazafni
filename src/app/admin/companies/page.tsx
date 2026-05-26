@@ -15,7 +15,8 @@ import {
   Briefcase,
   Users,
   MoreVertical,
-  Filter
+  Filter,
+  Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,7 +60,7 @@ export default function AdminCompaniesPage() {
         </div>
 
         {/* Companies Table */}
-        <div className="bg-white rounded-[50px] border border-primary/5 shadow-sm overflow-hidden border border-primary/5">
+        <div className="bg-white rounded-[50px] border border-primary/5 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-right">
               <thead>
