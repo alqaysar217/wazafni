@@ -15,39 +15,69 @@
     },
     {
       "id": "company-1",
-      "description": "Bank logo placeholder",
-      "imageUrl": "https://picsum.photos/seed/bank1/200/100",
+      "description": "Financial sector logo",
+      "imageUrl": "https://picsum.photos/seed/bank-logo/200/100",
       "imageHint": "bank logo"
     },
     {
       "id": "company-2",
-      "description": "Tech company logo",
-      "imageUrl": "https://picsum.photos/seed/techlogo/200/100",
-      "imageHint": "tech logo"
+      "description": "Tech industry logo",
+      "imageUrl": "https://picsum.photos/seed/tech-corp/200/100",
+      "imageHint": "technology logo"
     },
     {
       "id": "company-3",
-      "description": "Industrial company logo",
-      "imageUrl": "https://picsum.photos/seed/indus/200/100",
-      "imageHint": "industry logo"
+      "description": "Manufacturing group logo",
+      "imageUrl": "https://picsum.photos/seed/factory/200/100",
+      "imageHint": "industrial logo"
     },
     {
       "id": "company-4",
-      "description": "Telecomm logo",
-      "imageUrl": "https://picsum.photos/seed/tele/200/100",
+      "description": "Telecommunications company logo",
+      "imageUrl": "https://picsum.photos/seed/telco/200/100",
       "imageHint": "telecom logo"
     },
     {
+      "id": "company-5",
+      "description": "Retail services logo",
+      "imageUrl": "https://picsum.photos/seed/retail/200/100",
+      "imageHint": "shopping logo"
+    },
+    {
+      "id": "company-6",
+      "description": "Food & Beverage logo",
+      "imageUrl": "https://picsum.photos/seed/foodco/200/100",
+      "imageHint": "food logo"
+    },
+    {
       "id": "user-1",
-      "description": "Happy user testimonial",
-      "imageUrl": "https://picsum.photos/seed/u1/100/100",
-      "imageHint": "portrait man"
+      "description": "Happy professional man",
+      "imageUrl": "https://picsum.photos/seed/u1-man/150/150",
+      "imageHint": "man portrait"
     },
     {
       "id": "user-2",
-      "description": "Happy user testimonial 2",
-      "imageUrl": "https://picsum.photos/seed/u2/100/100",
-      "imageHint": "portrait woman"
+      "description": "Professional woman in office",
+      "imageUrl": "https://picsum.photos/seed/u2-woman/150/150",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "user-3",
+      "description": "Young entrepreneur",
+      "imageUrl": "https://picsum.photos/seed/u3-young/150/150",
+      "imageHint": "portrait business"
+    },
+    {
+      "id": "about-vision",
+      "description": "Visionary business concept",
+      "imageUrl": "https://picsum.photos/seed/vision/800/600",
+      "imageHint": "innovation strategy"
+    },
+    {
+      "id": "contact-support",
+      "description": "Customer support team",
+      "imageUrl": "https://picsum.photos/seed/support/1200/800",
+      "imageHint": "customer service"
     }
   ]
 }
