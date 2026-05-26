@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Modern business workspace with Arab professionals",
+      "imageUrl": "https://picsum.photos/seed/wazafni-hero/1920/1080",
+      "imageHint": "modern office business"
+    },
+    {
+      "id": "company-logo-1",
+      "description": "Tech company logo",
+      "imageUrl": "https://picsum.photos/seed/logo1/100/100",
+      "imageHint": "abstract logo"
+    },
+    {
+      "id": "company-logo-2",
+      "description": "Service company logo",
+      "imageUrl": "https://picsum.photos/seed/logo2/100/100",
+      "imageHint": "minimal logo"
+    },
+    {
+      "id": "avatar-seeker",
+      "description": "Job seeker professional avatar",
+      "imageUrl": "https://picsum.photos/seed/seeker/150/150",
+      "imageHint": "professional person"
+    },
+    {
+      "id": "yemen-office",
+      "description": "Modern building in Sanaa or Aden style",
+      "imageUrl": "https://picsum.photos/seed/yemen/800/600",
+      "imageHint": "modern architecture"
+    }
+  ]
+}
