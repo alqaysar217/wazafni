@@ -1,14 +1,14 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2 } from 'lucide-react';
+import { Mail, Lock, Chrome, Linkedin as LinkedinIcon, Loader2, AlertCircle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -22,40 +22,59 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [firebaseReady, setFirebaseReady] = useState(false);
+
+  useEffect(() => {
+    if (auth && db) {
+      setFirebaseReady(true);
+    }
+  }, [auth, db]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!auth || !db) return;
+    
+    if (!auth || !db) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في الاتصال",
+        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى تحديث الصفحة.",
+      });
+      return;
+    }
 
     setLoading(true);
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-        // Get user role to redirect appropriately
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        const role = userDoc.exists() ? userDoc.data().role : 'seeker';
+      // Get user role to redirect appropriately
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      const role = userDoc.exists() ? userDoc.data().role : 'seeker';
 
-        toast({
-          title: "تم تسجيل الدخول",
-          description: "أهلاً بك مجدداً!",
-        });
-
-        router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
-      })
-      .catch((error: any) => {
-        toast({
-          variant: "destructive",
-          title: "خطأ في تسجيل الدخول",
-          description: "البريد الإلكتروني أو كلمة المرور غير صحيحة، أو لم يتم تفعيل خدمة الدخول في Firebase.",
-        });
-        setLoading(false);
+      toast({
+        title: "تم تسجيل الدخول",
+        description: "أهلاً بك مجدداً!",
       });
+
+      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+    } catch (error: any) {
+      let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+      if (error.code === 'auth/user-not-found') message = "المستخدم غير موجود.";
+      if (error.code === 'auth/wrong-password') message = "كلمة المرور غير صحيحة.";
+      if (error.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      
+      toast({
+        variant: "destructive",
+        title: "خطأ في تسجيل الدخول",
+        description: message,
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -108,6 +127,12 @@ export default function LoginPage() {
             <p className="text-muted-foreground">أهلاً بك مجدداً! يرجى إدخال بياناتك للمتابعة.</p>
           </div>
 
+          {!firebaseReady && (
+            <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
+              <AlertCircle size={20} /> جاري تهيئة الاتصال...
+            </div>
+          )}
+
           <form onSubmit={handleLogin} className="space-y-6 text-right">
             <div className="space-y-2 text-right">
               <Label className="font-bold flex items-center gap-2 justify-end">
@@ -122,11 +147,11 @@ export default function LoginPage() {
                   <span>كلمة المرور</span>
                   <Lock size={16} className="text-primary/60" />
                 </Label>
-                <Link href="/forgot-password" title="استعادة كلمة المرور" className="text-sm font-bold text-primary hover:underline">نسيت كلمة المرور؟</Link>
+                <Link href="#" title="استعادة كلمة المرور" className="text-sm font-bold text-primary hover:underline">نسيت كلمة المرور؟</Link>
               </div>
               <Input name="password" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
             </div>
-            <Button disabled={loading} className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
+            <Button disabled={loading || !firebaseReady} className="w-full h-14 rounded-xl text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 text-white">
               {loading ? <Loader2 className="animate-spin" /> : "دخول"}
             </Button>
           </form>

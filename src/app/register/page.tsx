@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, User, Mail, Lock, Phone, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -26,60 +26,91 @@ export default function RegisterPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<'seeker' | 'employer'>('seeker');
+  const [firebaseReady, setFirebaseReady] = useState(false);
+
+  useEffect(() => {
+    if (auth && db) {
+      setFirebaseReady(true);
+    }
+  }, [auth, db]);
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!auth || !db) return;
+    
+    if (!auth || !db) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في الاتصال",
+        description: "لا يمكن الاتصال بخدمات Firebase حالياً. يرجى تحديث الصفحة.",
+      });
+      return;
+    }
 
     setLoading(true);
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
     const fullName = formData.get('fullName') as string;
-    const phone = formData.get('phone') as string;
-    const location = formData.get('location') as string;
+    const phone = (formData.get('phone') as string) || '';
+    const location = (formData.get('location') as string) || '';
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        const userData = {
-          uid: user.uid,
-          fullName,
-          email,
-          role,
-          phone: phone || '',
-          location: location || '',
-          createdAt: serverTimestamp(),
-        };
-
-        const userDocRef = doc(db, 'users', user.uid);
-        
-        setDoc(userDocRef, userData)
-          .then(() => {
-            toast({
-              title: "تم إنشاء الحساب بنجاح",
-              description: "مرحباً بك في منصة وظفني!",
-            });
-            router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
-          })
-          .catch(async (dbError) => {
-            const permissionError = new FirestorePermissionError({
-              path: userDocRef.path,
-              operation: 'create',
-              requestResourceData: userData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-            setLoading(false);
-          });
-      })
-      .catch((authError: any) => {
-        toast({
-          variant: "destructive",
-          title: "خطأ في إنشاء الحساب",
-          description: authError.message || "تأكد من تفعيل Email/Password في Firebase Console",
-        });
-        setLoading(false);
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "خطأ في البيانات",
+        description: "كلمات المرور غير متطابقة.",
       });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      const userData = {
+        uid: user.uid,
+        fullName,
+        email,
+        role,
+        phone,
+        location,
+        createdAt: serverTimestamp(),
+      };
+
+      const userDocRef = doc(db, 'users', user.uid);
+      
+      setDoc(userDocRef, userData)
+        .then(() => {
+          toast({
+            title: "تم إنشاء الحساب بنجاح",
+            description: "مرحباً بك في منصة وظفني!",
+          });
+          router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+        })
+        .catch(async (dbError) => {
+          const permissionError = new FirestorePermissionError({
+            path: userDocRef.path,
+            operation: 'create',
+            requestResourceData: userData,
+          });
+          errorEmitter.emit('permission-error', permissionError);
+          setLoading(false);
+        });
+    } catch (authError: any) {
+      let message = "حدث خطأ غير متوقع.";
+      if (authError.code === 'auth/email-already-in-use') message = "البريد الإلكتروني مستخدم بالفعل.";
+      if (authError.code === 'auth/weak-password') message = "كلمة المرور ضعيفة جداً.";
+      if (authError.code === 'auth/invalid-email') message = "البريد الإلكتروني غير صحيح.";
+      
+      toast({
+        variant: "destructive",
+        title: "فشل إنشاء الحساب",
+        description: message,
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -140,6 +171,12 @@ export default function RegisterPage() {
             <p className="text-muted-foreground">اختر نوع الحساب الذي يناسب احتياجاتك للمتابعة.</p>
           </div>
 
+          {!firebaseReady && (
+            <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
+              <AlertCircle size={20} /> جاري تهيئة الاتصال بقاعدة البيانات...
+            </div>
+          )}
+
           <Tabs defaultValue="seeker" onValueChange={(v) => setRole(v as any)} className="w-full space-y-8" dir="rtl">
             <TabsList className="grid w-full grid-cols-2 h-16 p-2 bg-white rounded-2xl shadow-sm border">
               <TabsTrigger value="seeker" className="rounded-xl font-bold text-lg data-[state=active]:bg-primary data-[state=active]:text-white gap-2 flex items-center justify-center">
@@ -185,9 +222,9 @@ export default function RegisterPage() {
                     <span>تأكيد كلمة المرور</span>
                     <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="confirmPassword" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
+                <Button disabled={loading || !firebaseReady} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20 text-white">
                   {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كباحث عن عمل"}
                 </Button>
               </form>
@@ -228,9 +265,9 @@ export default function RegisterPage() {
                     <span>تأكيد كلمة المرور</span>
                     <Lock size={16} className="text-primary/60" />
                   </Label>
-                  <Input type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="confirmPassword" type="password" required placeholder="••••••••" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
-                <Button disabled={loading} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
+                <Button disabled={loading || !firebaseReady} className="md:col-span-2 h-14 rounded-xl text-lg font-black bg-secondary hover:bg-secondary/90 shadow-xl shadow-secondary/20 text-white">
                   {loading ? <Loader2 className="animate-spin" /> : "إنشاء حساب كصاحب عمل"}
                 </Button>
               </form>
