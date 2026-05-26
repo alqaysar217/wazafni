@@ -14,6 +14,36 @@
       "imageHint": "corporate logo"
     },
     {
+      "id": "company-hsa",
+      "description": "HSA Group Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/hsa-logo/200/80",
+      "imageHint": "manufacturing logo"
+    },
+    {
+      "id": "company-kuraimi",
+      "description": "Al-Kuraimi Bank Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/kuraimi-logo/200/80",
+      "imageHint": "banking logo"
+    },
+    {
+      "id": "company-yemenmobile",
+      "description": "Yemen Mobile Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/ym-logo/200/80",
+      "imageHint": "telecom logo"
+    },
+    {
+      "id": "company-cacbank",
+      "description": "CAC Bank Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/cac-logo/200/80",
+      "imageHint": "finance logo"
+    },
+    {
+      "id": "company-tadhamon",
+      "description": "Tadhamon Bank Logo Placeholder",
+      "imageUrl": "https://picsum.photos/seed/tadhamon-logo/200/80",
+      "imageHint": "corporate brand"
+    },
+    {
       "id": "service-cv",
       "description": "Modern resume builder interface",
       "imageUrl": "https://picsum.photos/seed/cv-service/800/500",

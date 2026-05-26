@@ -22,7 +22,7 @@ import Link from 'next/link';
 
 export default function Home() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  const companies = PlaceHolderImages.filter(img => img.id.startsWith('company-'));
+  const partners = PlaceHolderImages.filter(img => img.id.startsWith('company-'));
   
   const featuredJobs = [
     {
@@ -217,12 +217,18 @@ export default function Home() {
 
         {/* Section 4: Success Partners */}
         <section className="py-24 bg-white border-b">
-          <div className="container mx-auto px-4">
-            <p className="text-center text-sm font-bold text-muted-foreground uppercase tracking-widest mb-12">شركاء النجاح - شركات تثق بنا</p>
-            <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              {companies.map((company, index) => (
-                <div key={index} className="relative w-40 h-16">
-                  <Image src={company.imageUrl} alt={company.description} fill className="object-contain" />
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-16">شركاء النجاح - شركات يمنية تثق بنا</p>
+            <div className="flex flex-wrap justify-center items-center gap-16 lg:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+              {partners.map((partner, index) => (
+                <div key={index} className="relative w-48 h-20 group">
+                  <Image 
+                    src={partner.imageUrl} 
+                    alt={partner.description} 
+                    fill 
+                    className="object-contain" 
+                    data-ai-hint={partner.imageHint}
+                  />
                 </div>
               ))}
             </div>
