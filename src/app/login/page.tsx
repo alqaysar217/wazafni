@@ -34,43 +34,69 @@ export default function LoginPage() {
 
     // 1. حسابات الدخول السريع (Demo)
     if (password === 'HA892019') {
-      if (emailUpper === 'EMP@GMAIL.COM' || emailUpper === 'ADMIN@GMAIL.COM' || emailUpper === 'COM@GMAIL.COM') {
-        toast({ title: "تم الدخول بنجاح", description: "مرحباً بك مجدداً" });
-        if (emailUpper === 'ADMIN@GMAIL.COM') router.push('/admin/dashboard');
-        else if (emailUpper === 'COM@GMAIL.COM') router.push('/employer/dashboard');
-        else router.push('/seeker/dashboard');
-        return;
+      let role = 'seeker';
+      let name = 'أحمد محمد';
+      let path = '/seeker/dashboard';
+
+      if (emailUpper === 'ADMIN@GMAIL.COM') {
+        role = 'admin';
+        name = 'مدير النظام';
+        path = '/admin/dashboard';
+      } else if (emailUpper === 'COM@GMAIL.COM' || emailUpper === 'EMP@GMAIL.COM') {
+        role = 'employer';
+        name = 'مجموعة هائل سعيد';
+        path = '/employer/dashboard';
       }
+
+      // حفظ جلسة تجريبية ليتعرف عليها الـ Navbar
+      localStorage.setItem('wazafni_user', JSON.stringify({
+        uid: 'demo-uid',
+        email: emailInput,
+        fullName: name,
+        role: role
+      }));
+
+      toast({ title: "تم الدخول بنجاح", description: `مرحباً بك، ${name}` });
+      router.push(path);
+      // نقوم بعمل تحديث بسيط للصفحة لضمان قراءة البيانات في الـ Navbar
+      setTimeout(() => window.location.href = path, 500);
+      return;
     }
 
-    // 2. محاولة تسجيل الدخول الحقيقي
+    // 2. محاولة تسجيل الدخول الحقيقي عبر Firebase
     try {
       const userCredential = await signInWithEmailAndPassword(auth, emailInput, password);
       const user = userCredential.user;
 
-      // بمجرد نجاح Auth، نعتبر الدخول ناجحاً ونتوجه للوحة التحكم مباشرة لتجنب تعليق Firestore
       toast({ 
         title: "تم تسجيل الدخول", 
         description: "جاري تحميل بياناتك..." 
       });
 
-      // نحاول جلب الدور (Role) بشكل سريع، إذا فشل أو تأخر نعتبره باحث (Seeker) كافتراضي
-      const checkRoleAndRedirect = async () => {
-        try {
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
-          if (userDoc.exists()) {
-            const role = userDoc.data().role;
-            router.push(role === 'employer' ? '/employer/dashboard' : '/seeker/dashboard');
-          } else {
-            router.push('/seeker/dashboard');
-          }
-        } catch (e) {
-          // في حال فشل Firestore، ندخله كباحث مباشرة
-          router.push('/seeker/dashboard');
-        }
-      };
+      // جلب بيانات الدور بشكل سريع
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      let role = 'seeker';
+      let fullName = user.displayName || 'مستخدم جديد';
 
-      checkRoleAndRedirect();
+      if (userDoc.exists()) {
+        role = userDoc.data().role;
+        fullName = userDoc.data().fullName || fullName;
+      }
+
+      // تخزين البيانات للوصول السريع في الـ Navbar
+      localStorage.setItem('wazafni_user', JSON.stringify({
+        uid: user.uid,
+        email: user.email,
+        fullName: fullName,
+        role: role
+      }));
+
+      const targetPath = role === 'admin' || emailInput === 'admin@gmail.com' 
+        ? '/admin/dashboard' 
+        : role === 'employer' ? '/employer/dashboard' : '/seeker/dashboard';
+      
+      router.push(targetPath);
+      setTimeout(() => window.location.href = targetPath, 500);
 
     } catch (error: any) {
       console.error("Login error:", error);
@@ -78,10 +104,6 @@ export default function LoginPage() {
       
       if (error.code === 'auth/network-request-failed') {
         message = "فشل الاتصال بالخادم، يرجى المحاولة مرة أخرى.";
-      } else if (error.code === 'auth/user-not-found') {
-        message = "هذا الحساب غير موجود.";
-      } else if (error.code === 'auth/wrong-password') {
-        message = "كلمة المرور غير صحيحة.";
       }
 
       toast({
@@ -104,7 +126,7 @@ export default function LoginPage() {
                 <Image src={logo.imageUrl} alt="Wazafni" fill className="object-contain" />
               )}
             </div>
-            <span className="text-3xl font-black font-headline text-white">وظفني</span>
+            <span className="text-3xl font-black font-headline text-white tracking-tighter">وظفني</span>
           </Link>
           <h2 className="text-5xl font-black leading-tight text-white">عد إلينا لنكمل <br /> قصة نجاحك.</h2>
           <p className="text-xl text-white/80 leading-relaxed font-medium">سجل دخولك لتكتشف مئات الوظائف الجديدة المتاحة اليوم في أفضل الشركات اليمنية.</p>

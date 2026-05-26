@@ -25,7 +25,8 @@ import {
   Users,
   BarChart3,
   Star,
-  Handshake
+  Handshake,
+  User as UserIcon
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
@@ -53,22 +54,34 @@ export function Navbar() {
   const router = useRouter();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
   const [mounted, setMounted] = useState(false);
-  const { user, loading: authLoading } = useUser();
+  const [mockUser, setMockUser] = useState<any>(null);
+  const { user: firebaseUser, loading: authLoading } = useUser();
   const auth = useAuth();
   const db = getFirestore();
   
-  const userDocRef = user ? doc(db, 'users', user.uid) : null;
-  const { data: userData } = useDoc(userDocRef as any);
-  
-  const role = userData?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
-
+  // التحقق من وجود مستخدم تجريبي في localStorage كحل بديل للـ Demo
   useEffect(() => {
     setMounted(true);
+    const storedUser = localStorage.getItem('wazafni_user');
+    if (storedUser) {
+      setMockUser(JSON.parse(storedUser));
+    }
   }, []);
+
+  const user = firebaseUser || mockUser;
+  
+  const userDocRef = firebaseUser ? doc(db, 'users', firebaseUser.uid) : null;
+  const { data: userData } = useDoc(userDocRef as any);
+  
+  const role = userData?.role || mockUser?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
+  const fullName = userData?.fullName || mockUser?.fullName || user?.displayName || user?.email?.split('@')[0] || "مستخدم";
 
   const handleLogout = async () => {
     await signOut(auth);
+    localStorage.removeItem('wazafni_user');
+    setMockUser(null);
     router.push('/');
+    setTimeout(() => window.location.reload(), 100);
   };
 
   const navLinks = [
@@ -153,16 +166,18 @@ export function Navbar() {
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-3 p-1 pr-3 rounded-full bg-primary/5 hover:bg-primary/10 transition-all border border-primary/5">
                     <div className="text-right hidden sm:block">
-                      <p className="text-xs font-black text-primary line-clamp-1">{userData?.fullName || user.displayName || user.email?.split('@')[0]}</p>
+                      <p className="text-xs font-black text-primary line-clamp-1">{fullName}</p>
                       <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'المدير العام' : 'حساب شخصي'}</p>
                     </div>
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white flex items-center justify-center">
-                      <Image src={user.photoURL || `https://picsum.photos/seed/${user.uid}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
+                      <Image src={user.photoURL || `https://picsum.photos/seed/${user.uid || 'admin'}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
                     </div>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-primary/5 mt-2" dir="rtl">
-                  <DropdownMenuLabel className="font-black text-primary px-4 py-3 text-right">لوحة التحكم</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-black text-primary px-4 py-3 text-right flex items-center gap-3">
+                    <UserIcon size={18} className="text-secondary" /> حسابي
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   
                   {activeDashboardLinks.map((link) => (
