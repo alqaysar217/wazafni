@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -19,7 +20,9 @@ import {
   FileText,
   MessageSquare,
   BrainCircuit,
-  Settings
+  Settings,
+  Info,
+  Phone
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
@@ -59,10 +62,12 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { href: '/', label: 'الرئيسية', icon: <Home size={20} /> },
-    { href: '/jobs', label: 'الوظائف', icon: <Briefcase size={20} /> },
-    { href: '/companies', label: 'الشركات', icon: <Building2 size={20} /> },
-    { href: '/services', label: 'خدماتنا', icon: <Zap size={20} /> },
+    { href: '/', label: 'الرئيسية', icon: <Home size={18} /> },
+    { href: '/jobs', label: 'الوظائف', icon: <Briefcase size={18} /> },
+    { href: '/companies', label: 'الشركات', icon: <Building2 size={18} /> },
+    { href: '/services', label: 'خدماتنا', icon: <Zap size={18} /> },
+    { href: '/about', label: 'حول الموقع', icon: <Info size={18} /> },
+    { href: '/contact', label: 'التواصل', icon: <Phone size={18} /> },
   ];
 
   const dashboardLinks = [
@@ -97,7 +102,7 @@ export function Navbar() {
             <span className="text-2xl font-black font-headline text-primary tracking-tighter">وظفني</span>
           </Link>
           
-          <div className="hidden lg:flex items-center gap-8 text-[15px] font-bold">
+          <div className="hidden lg:flex items-center gap-6 text-[14px] font-bold">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -105,12 +110,15 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative py-1 transition-all duration-300 hover:text-primary",
+                    "flex items-center gap-2 relative py-1 transition-all duration-300 hover:text-primary",
                     isActive 
                       ? "text-primary after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[2px] after:bg-secondary after:rounded-full" 
                       : "text-muted-foreground hover:translate-y-[-1px]"
                   )}
                 >
+                  <span className={cn(isActive ? "text-secondary" : "text-primary/40")}>
+                    {link.icon}
+                  </span>
                   {link.label}
                 </Link>
               );
