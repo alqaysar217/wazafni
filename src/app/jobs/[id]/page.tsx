@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Navbar } from '@/components/layout/Navbar';
@@ -32,7 +31,7 @@ export default function JobDetailsPage() {
     title: "مطور برمجيات أول (React & Node.js)",
     company: "شركة يمن تيك للحلول الرقمية",
     location: "صنعاء - ريموت",
-    salary: "$1,500 - $2,500",
+    salary: "5,600 - 9,400 ر.س",
     type: "دوام كامل",
     posted: "منذ يومين",
     match: 95,
@@ -129,7 +128,7 @@ export default function JobDetailsPage() {
                 </div>
 
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-black text-primary border-r-4 border-secondary pr-4">المؤطلات والخبرات</h2>
+                  <h2 className="text-2xl font-black text-primary border-r-4 border-secondary pr-4">المؤهلات والخبرات</h2>
                   <ul className="grid grid-cols-1 gap-4">
                     {job.requirements.map((item, i) => (
                       <li key={i} className="flex items-start gap-4 text-lg text-muted-foreground font-medium">

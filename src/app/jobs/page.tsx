@@ -1,4 +1,3 @@
-
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ export default function JobsPage() {
       title: "مطور برمجيات أول (React & Node.js)",
       company: "شركة يمن تيك للحلول الرقمية",
       location: "صنعاء - ريموت",
-      salary: "$1,500 - $2,500",
+      salary: "5,600 - 9,400 ر.س",
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 95,
@@ -40,7 +39,7 @@ export default function JobsPage() {
       title: "أخصائي تسويق رقمي",
       company: "مجموعة هائل سعيد أنعم",
       location: "تعز - المقر الرئيسي",
-      salary: "800k - 1.2M ريال",
+      salary: "12,000 - 18,000 ر.س",
       type: "دوام كامل",
       posted: "منذ 4 ساعات",
       match: 88,
@@ -52,7 +51,7 @@ export default function JobsPage() {
       title: "مدير مشاريع إنشائية",
       company: "شركة تهامة للهندسة والمقاولات",
       location: "عدن - كريتر",
-      salary: "$2,000 - $3,500",
+      salary: "7,500 - 13,000 ر.س",
       type: "عقد",
       posted: "منذ أسبوع",
       match: 72,
@@ -64,7 +63,7 @@ export default function JobsPage() {
       title: "مصمم تجربة مستخدم UI/UX",
       company: "أنا مبرمج للتقنية",
       location: "حضرموت - المكلا",
-      salary: "$1,200 - $1,800",
+      salary: "4,500 - 6,800 ر.س",
       type: "دوام كامل",
       posted: "منذ 3 أيام",
       match: 91,
@@ -76,7 +75,7 @@ export default function JobsPage() {
       title: "محاسب قانوني",
       company: "شركة العمقي للصرافة",
       location: "صنعاء",
-      salary: "500k - 700k ريال",
+      salary: "7,500 - 10,500 ر.س",
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 65,
@@ -88,7 +87,7 @@ export default function JobsPage() {
       title: "مهندس شبكات وأمن معلومات",
       company: "يمن موبايل",
       location: "صنعاء",
-      salary: "$1,800 - $2,400",
+      salary: "6,800 - 9,000 ر.س",
       type: "دوام كامل",
       posted: "منذ 6 ساعات",
       match: 82,
@@ -133,7 +132,7 @@ export default function JobsPage() {
             <div className="flex flex-wrap gap-3">
               {[
                 { label: "نوع العمل", options: ["دوام كامل", "دوام جزئي", "عمل حر"] },
-                { label: "نطاق الراتب", options: ["أقل من $500", "$500 - $1500", "$1500+"] },
+                { label: "نطاق الراتب", options: ["أقل من 5000 ر.س", "5000 - 10000 ر.س", "10000+ ر.س"] },
                 { label: "الخبرة", options: ["مبتدئ", "متوسط", "خبير"] },
                 { label: "تاريخ النشر", options: ["اليوم", "هذا الأسبوع", "هذا الشهر"] }
               ].map((filter, index) => (

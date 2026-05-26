@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -31,7 +30,7 @@ export default function Home() {
       title: "مطور برمجيات أول (React & Node.js)",
       company: "شركة يمن تيك للحلول الرقمية",
       location: "صنعاء - ريموت",
-      salary: "$1,500 - $2,500",
+      salary: "5,600 - 9,400 ر.س",
       type: "دوام كامل",
       posted: "منذ يومين",
       match: 95,
@@ -43,7 +42,7 @@ export default function Home() {
       title: "أخصائي تسويق رقمي",
       company: "مجموعة هائل سعيد أنعم",
       location: "تعز - المقر الرئيسي",
-      salary: "800k - 1.2M ريال",
+      salary: "12,000 - 18,000 ر.س",
       type: "دوام كامل",
       posted: "منذ 4 ساعات",
       match: 88,
@@ -55,7 +54,7 @@ export default function Home() {
       title: "مدير مشاريع إنشائية",
       company: "شركة تهامة للهندسة والمقاولات",
       location: "عدن - كريتر",
-      salary: "$2,000 - $3,500",
+      salary: "7,500 - 13,000 ر.س",
       type: "عقد",
       posted: "منذ أسبوع",
       match: 72,

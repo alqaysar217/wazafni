@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Navbar } from '@/components/layout/Navbar';
@@ -44,9 +43,9 @@ export default function CompanyProfilePage() {
     logo: "https://picsum.photos/seed/hsa/200/200",
     cover: "https://picsum.photos/seed/corp/1920/600",
     openJobs: [
-      { id: 1, title: "أخصائي تسويق رقمي", type: "دوام كامل", salary: "800k - 1.2M ريال" },
-      { id: 2, title: "محاسب أول", type: "دوام كامل", salary: "Negotiable" },
-      { id: 3, title: "مهندس صيانة صناعية", type: "دوام كامل", salary: "Competitive" }
+      { id: 1, title: "أخصائي تسويق رقمي", type: "دوام كامل", salary: "12,000 - 18,000 ر.س" },
+      { id: 2, title: "محاسب أول", type: "دوام كامل", salary: "قابل للتفاوض" },
+      { id: 3, title: "مهندس صيانة صناعية", type: "دوام كامل", salary: "راتب تنافسي" }
     ]
   };
 

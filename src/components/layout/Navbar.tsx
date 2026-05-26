@@ -1,13 +1,18 @@
-
 'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -71,9 +76,39 @@ export function Navbar() {
           <Button asChild className="rounded-lg px-8 bg-primary hover:bg-primary/90 font-bold shadow-md text-white">
             <Link href="/register">انضم الآن</Link>
           </Button>
-          <Button variant="ghost" size="icon" className="lg:hidden text-primary">
-            <Menu className="w-7 h-7" />
-          </Button>
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden text-primary">
+                <Menu className="w-7 h-7" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetTitle className="text-right font-black text-2xl mb-8">القائمة</SheetTitle>
+              <div className="flex flex-col gap-6 mt-8">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={cn(
+                        "text-xl font-bold transition-all",
+                        isActive ? "text-primary" : "text-muted-foreground"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
+                <hr className="my-4" />
+                <Button asChild className="w-full h-14 rounded-xl text-lg font-bold">
+                  <Link href="/login">تسجيل الدخول</Link>
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>
