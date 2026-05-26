@@ -28,9 +28,8 @@ export default function LoginPage() {
     setLoading(true);
     
     const formData = new FormData(e.currentTarget);
-    const emailInput = formData.get('email') as string;
-    const emailUpper = emailInput.toUpperCase();
-    const password = formData.get('password') as string;
+    const emailInput = (formData.get('email') as string).trim().toLowerCase();
+    const password = (formData.get('password') as string);
 
     // 1. حسابات الدخول السريع (Demo)
     if (password === 'HA892019') {
@@ -38,28 +37,28 @@ export default function LoginPage() {
       let name = 'أحمد محمد';
       let path = '/seeker/dashboard';
 
-      if (emailUpper === 'ADMIN@GMAIL.COM') {
+      if (emailInput.includes('admin')) {
         role = 'admin';
         name = 'مدير النظام';
         path = '/admin/dashboard';
-      } else if (emailUpper === 'COM@GMAIL.COM' || emailUpper === 'EMP@GMAIL.COM') {
+      } else if (emailInput.includes('com') || emailInput.includes('emp')) {
         role = 'employer';
         name = 'مجموعة هائل سعيد';
         path = '/employer/dashboard';
       }
 
-      // حفظ جلسة تجريبية ليتعرف عليها الـ Navbar
-      localStorage.setItem('wazafni_user', JSON.stringify({
-        uid: 'demo-uid',
+      const sessionUser = {
+        uid: 'demo-uid-' + Date.now(),
         email: emailInput,
         fullName: name,
         role: role
-      }));
+      };
 
+      localStorage.setItem('wazafni_user', JSON.stringify(sessionUser));
       toast({ title: "تم الدخول بنجاح", description: `مرحباً بك، ${name}` });
-      router.push(path);
-      // نقوم بعمل تحديث بسيط للصفحة لضمان قراءة البيانات في الـ Navbar
-      setTimeout(() => window.location.href = path, 500);
+      
+      // التوجيه الفوري
+      window.location.href = path;
       return;
     }
 
@@ -68,41 +67,50 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, emailInput, password);
       const user = userCredential.user;
 
-      toast({ 
-        title: "تم تسجيل الدخول", 
-        description: "جاري تحميل بياناتك..." 
-      });
-
-      // جلب بيانات الدور بشكل سريع
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      // بمجرد نجاح Auth، نعتبر المستخدم مسجلاً ونقوم بتوجيهه مع محاولة جلب الدور
       let role = 'seeker';
-      let fullName = user.displayName || 'مستخدم جديد';
+      let fullName = user.displayName || emailInput.split('@')[0];
 
-      if (userDoc.exists()) {
-        role = userDoc.data().role;
-        fullName = userDoc.data().fullName || fullName;
+      try {
+        // محاولة جلب بيانات إضافية من Firestore (لا نعطل الدخول إذا فشلت)
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          role = userDoc.data().role || 'seeker';
+          fullName = userDoc.data().fullName || fullName;
+        }
+      } catch (firestoreError) {
+        console.warn("Could not fetch user profile, using defaults.");
       }
 
-      // تخزين البيانات للوصول السريع في الـ Navbar
-      localStorage.setItem('wazafni_user', JSON.stringify({
+      const sessionUser = {
         uid: user.uid,
         email: user.email,
         fullName: fullName,
         role: role
-      }));
+      };
 
-      const targetPath = role === 'admin' || emailInput === 'admin@gmail.com' 
+      localStorage.setItem('wazafni_user', JSON.stringify(sessionUser));
+      
+      toast({ 
+        title: "تم تسجيل الدخول", 
+        description: `مرحباً بك، ${fullName}` 
+      });
+
+      const targetPath = (role === 'admin' || emailInput === 'admin@gmail.com')
         ? '/admin/dashboard' 
         : role === 'employer' ? '/employer/dashboard' : '/seeker/dashboard';
       
-      router.push(targetPath);
-      setTimeout(() => window.location.href = targetPath, 500);
+      window.location.href = targetPath;
 
     } catch (error: any) {
       console.error("Login error:", error);
       let message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       
-      if (error.code === 'auth/network-request-failed') {
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+        message = "البيانات المدخلة غير صحيحة، يرجى التأكد من البريد وكلمة السر.";
+      } else if (error.code === 'auth/user-not-found') {
+        message = "هذا الحساب غير موجود في النظام.";
+      } else if (error.code === 'auth/network-request-failed') {
         message = "فشل الاتصال بالخادم، يرجى المحاولة مرة أخرى.";
       }
 

@@ -45,43 +45,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from 'react';
-import { useUser, useAuth, useDoc } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { doc, getFirestore } from 'firebase/firestore';
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
   const [mounted, setMounted] = useState(false);
-  const [mockUser, setMockUser] = useState<any>(null);
-  const { user: firebaseUser, loading: authLoading } = useUser();
+  const [localUser, setLocalUser] = useState<any>(null);
+  const { user: firebaseUser } = useUser();
   const auth = useAuth();
-  const db = getFirestore();
   
-  // التحقق من وجود مستخدم تجريبي في localStorage كحل بديل للـ Demo
+  // نراقب التغييرات في localStorage و Firebase معاً
   useEffect(() => {
     setMounted(true);
-    const storedUser = localStorage.getItem('wazafni_user');
-    if (storedUser) {
-      setMockUser(JSON.parse(storedUser));
-    }
-  }, []);
+    const updateLocalUser = () => {
+      const stored = localStorage.getItem('wazafni_user');
+      if (stored) setLocalUser(JSON.parse(stored));
+      else setLocalUser(null);
+    };
 
-  const user = firebaseUser || mockUser;
-  
-  const userDocRef = firebaseUser ? doc(db, 'users', firebaseUser.uid) : null;
-  const { data: userData } = useDoc(userDocRef as any);
-  
-  const role = userData?.role || mockUser?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
-  const fullName = userData?.fullName || mockUser?.fullName || user?.displayName || user?.email?.split('@')[0] || "مستخدم";
+    updateLocalUser();
+    window.addEventListener('storage', updateLocalUser);
+    return () => window.removeEventListener('storage', updateLocalUser);
+  }, [firebaseUser]);
+
+  const user = firebaseUser || localUser;
+  const role = localUser?.role || (user?.email === 'admin@gmail.com' ? 'admin' : 'seeker');
+  const fullName = localUser?.fullName || user?.displayName || user?.email?.split('@')[0] || "مستخدم";
 
   const handleLogout = async () => {
     await signOut(auth);
     localStorage.removeItem('wazafni_user');
-    setMockUser(null);
-    router.push('/');
-    setTimeout(() => window.location.reload(), 100);
+    setLocalUser(null);
+    window.location.href = '/';
   };
 
   const navLinks = [
@@ -169,8 +167,8 @@ export function Navbar() {
                       <p className="text-xs font-black text-primary line-clamp-1">{fullName}</p>
                       <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{role === 'admin' ? 'المدير العام' : 'حساب شخصي'}</p>
                     </div>
-                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white flex items-center justify-center">
-                      <Image src={user.photoURL || `https://picsum.photos/seed/${user.uid || 'admin'}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm bg-white flex items-center justify-center relative">
+                      <Image src={`https://picsum.photos/seed/${user.uid || 'user'}/100/100`} alt="Avatar" width={40} height={40} className="object-cover" />
                     </div>
                   </button>
                 </DropdownMenuTrigger>

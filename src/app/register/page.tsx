@@ -45,7 +45,7 @@ export default function RegisterPage() {
 
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
+    const email = (formData.get('email') as string).trim().toLowerCase();
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
     const fullName = formData.get('fullName') as string;
@@ -78,14 +78,27 @@ export default function RegisterPage() {
 
       const userDocRef = doc(db, 'users', user.uid);
       
-      await setDoc(userDocRef, userData);
+      // نقوم بحفظ البيانات ومتابعة العملية حتى لو تأخر Firestore
+      await setDoc(userDocRef, userData).catch(err => {
+        console.warn("Firestore error during registration:", err);
+      });
+
+      // تخزين الجلسة فوراً لضمان التعرف على المستخدم في الـ Navbar
+      localStorage.setItem('wazafni_user', JSON.stringify({
+        uid: user.uid,
+        email: email,
+        fullName: fullName,
+        role: role
+      }));
       
       toast({
         title: "تم إنشاء الحساب بنجاح",
-        description: "مرحباً بك في منصة وظفني الحقيقية!",
+        description: "مرحباً بك في منصة وظفني!",
       });
       
-      router.push(role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard');
+      const path = role === 'seeker' ? '/seeker/dashboard' : '/employer/dashboard';
+      window.location.href = path;
+
     } catch (error: any) {
       console.error("Register error:", error);
       let message = "حدث خطأ أثناء إنشاء الحساب.";
@@ -94,16 +107,14 @@ export default function RegisterPage() {
         message = "هذا البريد الإلكتروني مسجل مسبقاً.";
       } else if (error.code === 'auth/weak-password') {
         message = "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
-      } else if (error.code === 'auth/operation-not-allowed') {
-        message = "طريقة التسجيل بالبريد معطلة في Firebase Console. يرجى تفعيلها.";
       } else if (error.code === 'auth/network-request-failed') {
-        message = "فشل الاتصال بالخادم. تأكد من تفعيل النطاق الحالي في Authorized Domains.";
+        message = "فشل الاتصال بالخادم. يرجى المحاولة مرة أخرى.";
       }
       
       toast({
         variant: "destructive",
         title: "فشل إنشاء الحساب",
-        description: `${message} (${error.code})`,
+        description: `${message}`,
       });
       setLoading(false);
     }
@@ -161,8 +172,7 @@ export default function RegisterPage() {
                 <AlertCircle size={24} /> تنبيه الربط التقني
               </div>
               <p className="font-medium leading-relaxed">
-                التطبيق يحتاج إلى مفاتيح الربط الخاصة بمشروعك على Firebase. 
-                يرجى نسخ الإعدادات من لوحة التحكم ووضعها في ملف .env تحت الأسماء المخصصة لها.
+                التطبيق يحتاج إلى مفاتيح الربط الخاصة بمشروعك على Firebase للمتابعة.
               </p>
             </div>
           )}
@@ -185,7 +195,7 @@ export default function RegisterPage() {
                 </div>
                 <div className="space-y-2 text-right">
                   <Label className="font-bold">البريد الإلكتروني</Label>
-                  <Input name="email" type="email" required placeholder="example@gmail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
+                  <Input name="email" type="email" required placeholder="example@mail.com" className="h-14 rounded-xl border-border bg-white text-right" dir="rtl" />
                 </div>
                 <div className="space-y-2 text-right">
                   <Label className="font-bold">رقم الهاتف</Label>
