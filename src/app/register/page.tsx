@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -20,7 +19,7 @@ import { FirestorePermissionError } from '@/firebase/errors';
 
 export default function RegisterPage() {
   const logo = PlaceHolderImages.find(img => img.id === 'logo-main');
-  const { auth } = useAuth();
+  const auth = useAuth();
   const db = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
@@ -115,7 +114,6 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-stretch" dir="rtl">
-      {/* Right side: Visual Content */}
       <div className="hidden lg:flex w-1/2 bg-primary relative items-center justify-center p-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-secondary opacity-90"></div>
         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
@@ -155,7 +153,6 @@ export default function RegisterPage() {
         <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       </div>
 
-      {/* Left side: Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-[#F8F7FA]">
         <div className="w-full max-w-xl space-y-10 animate-fade-in-up">
           <div className="space-y-4 text-right">
@@ -173,7 +170,7 @@ export default function RegisterPage() {
 
           {!firebaseReady && (
             <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl flex items-center gap-3 text-orange-700 font-bold">
-              <AlertCircle size={20} /> جاري تهيئة الاتصال بقاعدة البيانات...
+              <Loader2 className="animate-spin w-5 h-5" /> جاري تهيئة الاتصال بقاعدة البيانات...
             </div>
           )}
 
