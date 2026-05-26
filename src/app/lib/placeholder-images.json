@@ -34,7 +34,7 @@
     {
       "id": "company-kuraimi-cover",
       "description": "Al-Kuraimi Bank Cover",
-      "imageUrl": "https://picsum.photos/seed/bank-cover/1920/600",
+      "imageUrl": "/cam-2.png",
       "imageHint": "bank building"
     },
     {
@@ -46,7 +46,7 @@
     {
       "id": "company-ytech-cover",
       "description": "Yemen Tech Cover",
-      "imageUrl": "https://picsum.photos/seed/tech-cover/1920/600",
+      "imageUrl": "/cam-3.png",
       "imageHint": "data center"
     },
     {
