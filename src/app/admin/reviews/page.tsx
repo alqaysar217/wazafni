@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Star, Quote, CheckCircle2, XCircle, Trash2, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export default function AdminReviewsPage() {
   const reviews = [
