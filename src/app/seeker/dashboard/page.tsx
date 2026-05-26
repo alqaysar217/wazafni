@@ -15,7 +15,8 @@ import {
   Eye,
   CheckCircle2,
   BrainCircuit,
-  Building2
+  Building2,
+  MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
