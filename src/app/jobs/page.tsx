@@ -19,6 +19,7 @@ import {
   List
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function JobsPage() {
   const jobs = [
@@ -196,7 +197,9 @@ export default function JobsPage() {
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <div className="font-black text-primary text-lg">{job.salary}</div>
-                    <Button className="rounded-xl px-6 bg-primary font-black shadow-lg shadow-primary/10 text-white">التفاصيل</Button>
+                    <Button asChild className="rounded-xl px-6 bg-primary font-black shadow-lg shadow-primary/10 text-white">
+                      <Link href={`/jobs/${job.id}`}>التفاصيل</Link>
+                    </Button>
                   </div>
                 </div>
               </div>

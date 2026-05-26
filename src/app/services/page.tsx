@@ -1,9 +1,12 @@
 
+'use client';
+
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function ServicesPage() {
@@ -74,8 +77,10 @@ export default function ServicesPage() {
                   </div>
                   
                   <div className="pt-6">
-                    <Button size="lg" className="h-16 px-12 rounded-2xl bg-primary text-xl font-bold shadow-xl shadow-primary/20 group-hover:bg-secondary transition-colors">
-                      ابدأ الآن <ArrowRight size={20} className="mr-2 rtl:rotate-180" />
+                    <Button asChild size="lg" className="h-16 px-12 rounded-2xl bg-primary text-xl font-bold shadow-xl shadow-primary/20 group-hover:bg-secondary transition-colors">
+                      <Link href={`/services/${service.id}`}>
+                        ابدأ الآن <ArrowRight size={20} className="mr-2 rtl:rotate-180" />
+                      </Link>
                     </Button>
                   </div>
                 </div>

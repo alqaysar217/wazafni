@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, MapPin, Users, Briefcase, Star, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CompaniesPage() {
   const companies = [
@@ -89,8 +90,8 @@ export default function CompaniesPage() {
                   </div>
 
                   <div className="w-full pt-4">
-                    <Button variant="outline" className="w-full h-14 rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black text-lg gap-2">
-                      عرض الملف <ArrowUpRight size={18} />
+                    <Button asChild variant="outline" className="w-full h-14 rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white font-black text-lg gap-2">
+                      <Link href={`/companies/${company.id}`}>عرض الملف <ArrowUpRight size={18} /></Link>
                     </Button>
                   </div>
                 </div>
