@@ -29,6 +29,7 @@ export function Navbar() {
           </Link>
           
           <div className="hidden lg:flex items-center gap-8 text-[15px] font-semibold text-muted-foreground">
+            <Link href="/" className="hover:text-primary transition-colors">الرئيسية</Link>
             <Link href="/jobs" className="hover:text-primary transition-colors">الوظائف</Link>
             <Link href="/companies" className="hover:text-primary transition-colors">الشركات</Link>
             <Link href="/services" className="hover:text-primary transition-colors">خدماتنا</Link>
